@@ -4,10 +4,18 @@ import com.team.timetableManagmentSystem.database.connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+/**
+ * is used for representing the free time for rooms and staff and ...
+ * @data_field node is an array of linked list as it each index of the array is
+ * a day and the linked list represent the free time as each node has starting
+ * time and ending time and points to the next and previous node
+ * @author Mostafa
+ */
 public class FreeTime {
 
-    //the 6-Days free time
-    //0 is saturday 6 is friday
+    /**
+     * the 6-Days free time 0 is saturday to 6 is friday
+     */
     public node dayStartEnd[];
 
     //this constructor make free Time without any free time
@@ -18,8 +26,13 @@ public class FreeTime {
         }
     }
 
-    //this constructor make all the time free Time
-    // the var x dont have any function
+    /**
+     * this constructor make all the time free Time the var x dont have any
+     * function
+     *
+     * @param x the numebr is only for make the constructor make the free time
+     * free form 8 to 17 all days
+     */
     public FreeTime(int x) {
         dayStartEnd = new node[6];
         for (int i = 0; i < dayStartEnd.length; i++) {
@@ -30,9 +43,15 @@ public class FreeTime {
 
     }
 
-    // this method add free time with the day and the start time and the end time for the free time
-    //  and if the time was added before it will do nothing
-    //  and it merges the free time if it is contious
+    /**
+     * this method add free time with the day and the start time and the end
+     * time for the free time and if the time was added before it will do
+     * nothing and it merges the free time if it is contious
+     *
+     * @param day
+     * @param start time
+     * @param end time
+     */
     public void addFreeTime(int day, int start, int end) {
         //cheak if the no free time in the day was enterd it will
         //  set the free time in this day the free time was passed 
@@ -96,8 +115,12 @@ public class FreeTime {
         n.next.privous = n;
     }
 
-    //will return an array of 6 days id the day is true this means
-    //  that the day has free time
+    /**
+     * will return an array of 6 days id the day is true this means that the day
+     * has free time
+     *
+     * @return the days of that the free time is free at
+     */
     public boolean[] getDaysOfFreeTime() {
         boolean arr[] = new boolean[6];
         for (int i = 0;
@@ -109,8 +132,10 @@ public class FreeTime {
         }
         return arr;
     }
-//  will get the number of days that has free time in
 
+    /**
+     * @return the number of days that has free time in
+     */
     public int getNumberOfDays() {
         int i = 0;
         for (int j = 0; j < 6; j++) {
@@ -120,14 +145,15 @@ public class FreeTime {
         }
         return i;
     }
-//  will return an array of arraylist that has the free time in all days
-//  as string
 
+    /**
+     * @return return an array of arraylist that has the free time in all days
+     * as string
+     */
     public ArrayList[] getfreeTimeInDays() {
         ArrayList arr[] = new ArrayList[getNumberOfDays()];
         for (int i = 0, j = 0; i < 6; i++) {
             if (dayStartEnd[i].startSession != null) {
-
                 arr[j] = new ArrayList();
                 arr[j].add(i);
                 arr[j].add(
@@ -145,8 +171,10 @@ public class FreeTime {
         }
         return arr;
     }
-//  will return the day name for the day id
 
+    /**
+     * @return the day name for the day id
+     */
     public int getNumberOfFreeHours() {
         int x = 0;
         for (int i = 0;
@@ -197,6 +225,10 @@ public class FreeTime {
         return x;
     }
 
+    /**
+     * @param day the day as number to get the day name
+     * @return day name
+     */
     public String getday(int day) {
         return switch (day) {
             case 0 ->
@@ -215,8 +247,12 @@ public class FreeTime {
                 "friday";
         };
     }
-//  will add free time with anther object of free time
 
+    /**
+     * will add free time with anther object of free time
+     *
+     * @param f the free time to add
+     */
     public void add(FreeTime f) {
         for (int i = 0;
                 i < 6;
@@ -237,51 +273,37 @@ public class FreeTime {
             }
         }
     }
-//  will format the free time array of arraylist grnrated with getfreeTimeInDays
-//      as a readable string
 
+    /**
+     * will format the free time array of arraylist grnrated with
+     * getfreeTimeInDays
+     *
+     * @return the formated string
+     */
     public String freeTimeG() {
         String s = "";
-        for (int i = 0;
-                i < getfreeTimeInDays().length;
-                i++) {
-            s += (getday(
-                    Integer.parseInt(
-                            getfreeTimeInDays()[i]
-                                    .get(0) + "")
-            )) + "\n";
-            for (int j = 1;
-                    j < getfreeTimeInDays()[i].size();
-                    j++) {
-                s += ("\t"
-                        + getfreeTimeInDays()[i]
-                                .get(j))
-                        + "\n";
+        for (int i = 0; i < getfreeTimeInDays().length; i++) {
+            s += (getday(Integer.parseInt(getfreeTimeInDays()[i].get(0) + ""))) + "\n";
+            for (int j = 1; j < getfreeTimeInDays()[i].size(); j++) {
+                s += ("\t" + getfreeTimeInDays()[i].get(j)) + "\n";
             }
         }
         return s;
     }
-//  will remove an hour from the free time by getting the ID of the day 
-//      and the hour as string (ex:11pm)
 
+    /**
+     * will remove an hour from the free time by getting the ID of the day
+     *
+     * @param day the day to remove the hour from
+     * @param h the hour to remove
+     */
     public void removeAnHour(int day, String h) {
         int x;
         if (h.contains("am")) {
-            x = Integer.parseInt(
-                    h.substring(
-                            0,
-                            h.indexOf(
-                                    "am")
-                            - 1)
-            ) + 12;
+            x = Integer.parseInt(h.substring(0, h.indexOf("am") - 1)) + 12;
 
         } else {
-            x = Integer.parseInt(
-                    h.substring(
-                            0,
-                            h.indexOf("pm")
-                    )
-            );
+            x = Integer.parseInt(h.substring(0, h.indexOf("pm")));
         }
 
         node n = dayStartEnd[day];
@@ -324,11 +346,15 @@ public class FreeTime {
         }
 
     }
-//  will remove an hour from the free time by getting the ID of the day 
-//      and the hour with its numbre (ex:23) from 0 to 23 0 is 12am 23 is 11 pm
 
-    public void removeAnHour(int day,
-            int hour) {
+
+    /**
+     * will remove an hour from the free time by getting the ID of the day 
+     * and the hour with its number (ex:23) from 0 to 23 0 is 12am 23 is 11 pm
+     * @param day the day to remove the hour from 
+     * @param hour the hour to remove
+     */
+    public void removeAnHour(int day,int hour) {
         node n = dayStartEnd[day];
         if (n.startSession == hour) {
 
@@ -380,8 +406,13 @@ public class FreeTime {
         }
 
     }
-//  return true or false if it is free at spacific time 
-
+    
+    /**
+     * 
+     * @param day the day to cheek if the freetime is free at
+     * @param h the hour to cheek if the freetime is free at
+     * @return true or false if it is free at specific time 
+     */
     public boolean isFreeAt(int day, int h) {
 
         node n = dayStartEnd[day];
@@ -404,19 +435,23 @@ public class FreeTime {
         }
         return false;
     }
-//  return the number of free hours in the week
+    
+  /**
+   * 
+   * @return the number of free hours in the week
+   */
 
     public int numberOfFreeHours() {
         int x = 0;
         if (dayStartEnd != null) {
-            for (int i = 0; i < dayStartEnd.length; i++) {
-                if (dayStartEnd[i] != null && dayStartEnd[i].endSession != null) {
-                    x += dayStartEnd[i].endSession - dayStartEnd[i].startSession;
-                    node n = dayStartEnd[i];
+            for (node dayStartEnd1 : dayStartEnd) {
+                if (dayStartEnd1 != null && dayStartEnd1.endSession != null) {
+                    x += dayStartEnd1.endSession - dayStartEnd1.startSession;
+                    node n = dayStartEnd1;
                     while (n.next != null) {
                         n = n.next;
-                        if (dayStartEnd[i] != null) {
-                            x += dayStartEnd[i].endSession - dayStartEnd[i].startSession;
+                        if (dayStartEnd1 != null) {
+                            x += dayStartEnd1.endSession - dayStartEnd1.startSession;
                         }
                     }
                 }
@@ -427,6 +462,10 @@ public class FreeTime {
         return x;
     }
 
+    /**
+     * 
+     * @return the first free hour in the week
+     */
     public int[] getTheFirstFreeHour() {
         int x[] = new int[2];
         for (int i = 0; i < 6; i++) {
@@ -443,11 +482,17 @@ public class FreeTime {
 
     }
 
-    public void getDataForStuff(int StaffId) {
+    /**
+     * 
+     * @param StaffId get the freetime for staff by the staffId
+     */
+    public void getDataForStaff(int StaffId) {
         connection conn = new connection();
         try {
             ResultSet rs;
-            rs = conn.select("select * from freetimeforstaff where StaffId =" + StaffId);
+            rs = conn.select("select * "
+                    + "from freetimeforstaff "
+                    + "where StaffId =" + StaffId);
             while (rs.next()) {
                 addFreeTime(rs.getInt(2), rs.getInt(3), rs.getInt(4));
             }
@@ -462,11 +507,17 @@ public class FreeTime {
 
     }
 
+    /**
+     * 
+     * @param RoomId get the freetime for the room by the roomId 
+     */
     public void getDataForRooms(int RoomId) {
         connection conn = new connection();
         try {
             ResultSet rs;
-            rs = conn.select("select * from freetimeforRooms where roomId =" + RoomId);
+            rs = conn.select("select * "
+                    + "from freetimeforRooms"
+                    + " where roomId =" + RoomId);
             while (rs.next()) {
                 addFreeTime(rs.getInt(2), rs.getInt(3), rs.getInt(4));
             }
@@ -477,6 +528,12 @@ public class FreeTime {
         }
     }
 
+    /**
+     * make and operation between two free times
+     * @param freeTime1
+     * @param freeTime2
+     * @return freetime of the andding the two free time
+     */
     public static FreeTime AnddingTwoFreeTimes(FreeTime freeTime1, FreeTime freeTime2) {
         FreeTime f = new FreeTime();
         for (int i = 0; i < freeTime1.dayStartEnd.length; i++) {

@@ -3,7 +3,13 @@ package com.team.timetableManagmentSystem.academictimetablemanagmentsystem;
 import com.team.timetableManagmentSystem.database.connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
+/**
+ * used in the operation of creating timeTable
+ * @data_field id is for representing the lectuerGroup
+ * @data_field name is for representing the name
+ * @data_field lecGroups is for representing the lecGroups in the LectuerGroup
+ * @author Mostafa
+ */
 public class LectureGroup {
 
     private int id;
@@ -59,10 +65,18 @@ public class LectureGroup {
         this.lecGroups = lecGroups;
     }
 
+    
+    /**
+     * get the lecGroups from the database by the lectuerGroupId
+     */
     void getTheLecGroups() {
         connection conn = new connection();
         try {
-            ResultSet rs = conn.select("select distinct lecgroup.id,lecgroupbranches.branchId from lecgroup inner join lecgroupbranches on lecgroupbranches.lecGroupId=lecgroup.id where lecturegroupId = " + id);
+            ResultSet rs = conn.select("select distinct lecgroup.id,"
+                    + "lecgroupbranches.branchId "
+                    + "from lecgroup "
+                    + "inner join lecgroupbranches on lecgroupbranches.lecGroupId=lecgroup.id "
+                    + "where lecturegroupId = " + id);
             StringBuilder sb = new StringBuilder();
             while (rs.next()) {
                 if (sb.indexOf("--" + rs.getInt(1) + "--") == -1) {

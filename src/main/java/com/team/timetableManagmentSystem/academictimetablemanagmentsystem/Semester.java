@@ -2,6 +2,18 @@ package com.team.timetableManagmentSystem.academictimetablemanagmentsystem;
 
 import java.util.ArrayList;
 
+/**
+ * used in the operation of creating timeTable
+ * @data_field id to specify the sectionGroup
+ * @data_field number to specify the number of the semester
+ * @data_field studyPlan to specify the studyPlan the semester in
+ * @data_field courses to specify the courses in the semester
+ * @data_field branches to specify the branches for the courses in the semester
+ * @data_field freeTime to specify the freeTime of the semester
+ * @data_field splitted to ensure that the semester is splitted
+ * @data_field numberOfRoomsInDay to specify the number of rooms can be in day (numberOfRooms*9 from 8 to 17)
+ * @author Mostafa
+ */
 public class Semester {
 
     private int id;

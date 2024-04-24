@@ -1,6 +1,12 @@
 package com.team.timetableManagmentSystem.academictimetablemanagmentsystem;
 
-
+/**
+ * used in the operation of creating timeTable
+ * @data_field id to specify the studyPlan
+ * @data_field name to specify the name of the studyPlan
+ * @data_field faculty to specify the faculty of the studyPlan
+ * @author Mostafa
+ */
 public class StudyPlan {
 
     private int id;
@@ -13,12 +19,8 @@ public class StudyPlan {
         this.faculty = new Faculty(facultyId, facultyName);
     }
     
-    
-
     public StudyPlan() {
     }
-    
-    
     
 
     /**

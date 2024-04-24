@@ -85,7 +85,7 @@ public class Staff {
     }
 
     void getTheFreeTime() {
-        freeTime.getDataForStuff(id);
+        freeTime.getDataForStaff(id);
     }
 
     /**

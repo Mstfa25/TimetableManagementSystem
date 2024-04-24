@@ -1,5 +1,14 @@
 package com.team.timetableManagmentSystem.academictimetablemanagmentsystem;
-
+/**
+ * used in the operation of creating timeTable
+ * @data_field  id to specify the room
+ * @data_field name to specify the name
+ * @data_field roomType to specify the type of the room
+ * @data_field capacity to specify the capacity of the room
+ * @data_field branch to specify the branch the room in
+ * @data_field freeTime to specify the freeTime of the room
+ * @author Mostafa
+ */
 public class Room {
 
     private int id;
@@ -15,7 +24,8 @@ public class Room {
         freeTime = new FreeTime();
     }
 
-    public Room(int id, String name, int capacity, int roomTypeid, String roomypename, int branchId, String branchName) {
+    public Room(int id, String name, int capacity,
+            int roomTypeid, String roomypename, int branchId, String branchName) {
         this.id = id;
         this.name = name;
         this.capacity = capacity;

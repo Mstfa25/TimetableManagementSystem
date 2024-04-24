@@ -2,6 +2,15 @@ package com.team.timetableManagmentSystem.academictimetablemanagmentsystem;
 
 import java.util.ArrayList;
 
+/**
+ * used in the operation of creating timeTable
+ * @data_field id to specify the sectionGroup
+ * @data_field name to specify the sectionGroup
+ * @data_field groups is for have the number of sections in a branch , name, freetime
+ * @data_field numberOfGroups the number of groups in the branch
+ * @data_field groupsNames for have the number of each group
+ * @author Mostafa
+ */
 public class SectionGroup {
 
     private int id;
@@ -65,6 +74,11 @@ public class SectionGroup {
         }
     }
 
+    /**
+     * 
+     * @param Groups
+     * @param remaining 
+     */
     public void setNumberOfGroups(ArrayList<Integer> Groups, int remaining) {
         this.numberOfGroups = Groups.size();
         this.Groups = new sectionGroups[Groups.size()];
@@ -74,6 +88,10 @@ public class SectionGroup {
         }
     }
 
+    /**
+     * 
+     * @param numberOfGroups 
+     */
     public void setNumberOfGroups(int numberOfGroups) {
         this.numberOfGroups = numberOfGroups;
     }

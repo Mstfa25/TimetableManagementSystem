@@ -3,15 +3,15 @@ package com.team.timetableManagmentSystem.academictimetablemanagmentsystem;
 import com.team.timetableManagmentSystem.database.connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
 /**
  * used in the operation of creating timeTable
  * its data are from the database
- * @data_field with id to specify it
+ * @data_field  id to specify the branch
  * @data_field name to specify the branch name
  * @data_field to specify the rooms in this branch
  * @data_field numberOfRoomsInDay is an integer array to have the number of rooms free in each time slot
  * @data_field numberOfHostingRoomsInDay is an integer array to have the number of Hosting rooms free in each time slot
+ * @author Mostafa
  */
 public class Branch {
 

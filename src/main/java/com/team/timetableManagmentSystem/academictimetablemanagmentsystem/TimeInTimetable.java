@@ -3,6 +3,22 @@ package com.team.timetableManagmentSystem.academictimetablemanagmentsystem;
 import com.team.timetableManagmentSystem.database.connection;
 import java.util.ArrayList;
 
+/**
+ * @data_field id to specify the timeInTimetable
+ * @data_field staff to specify the staff in the timeInTheTimetable
+ * @data_field course to specify the course in the timeInTheTimetable
+ * @data_field branches to specify the branches in the timeInTheTimetable
+ * @data_field hostingBranch to specify the hostingBranch in the timeInTheTimetable
+ * @data_field rooms to specify the rooms in the timeInTheTimetable
+ * @data_field hostingRoom to specify the hostingRoom in the timeInTheTimetable
+ * @data_field lecGroup to specify the lecGroup in the timeInTheTimetable
+ * @data_field day to specify the day in the timeInTheTimetable
+ * @data_field startingTime to specify the startingTime in the timeInTheTimetable
+ * @data_field endingTime to specify the endingTime in the timeInTheTimetable
+ * @data_field sectionGroupName to specify the sectionGroupName in the timeInTheTimetable
+ * @data_field timetable to specify the timetable the timeInTheTimetable in
+ * @author Mostafa
+ */
 public class TimeInTimetable {
 
     private int id;
@@ -19,7 +35,10 @@ public class TimeInTimetable {
     private String sectionGroupName;
     private Timetable timetable;
 
-    public TimeInTimetable(Staff staff, Course course, ArrayList<Branch> branchs, Branch hostingBranch, ArrayList<Room> rooms, Room hostingRoom, int day, int startingTime, int endingTime, String sectionGroupName, LecGroup lecGroup, Timetable timetable) {
+    public TimeInTimetable(Staff staff, Course course, ArrayList<Branch> branchs,
+            Branch hostingBranch, ArrayList<Room> rooms, Room hostingRoom,
+            int day, int startingTime, int endingTime, String sectionGroupName,
+            LecGroup lecGroup, Timetable timetable) {
         this.staff = staff;
         this.course = course;
         this.branchs = branchs;
@@ -34,7 +53,11 @@ public class TimeInTimetable {
         this.hostingRoom = hostingRoom;
     }
 
-    public TimeInTimetable(int id, Staff staff, Course course, ArrayList<Branch> branchs, Branch hostingBranch, ArrayList<Room> rooms, Room hostingRoom, int day, int startingTime, int endingTime, String sectionGroupName, LecGroup lecGroup, Timetable timetable) {
+    public TimeInTimetable(int id, Staff staff, Course course,
+            ArrayList<Branch> branchs, Branch hostingBranch,
+            ArrayList<Room> rooms, Room hostingRoom, int day,
+            int startingTime, int endingTime, String sectionGroupName,
+            LecGroup lecGroup, Timetable timetable) {
         this.id = id;
         this.staff = staff;
         this.course = course;

@@ -2,26 +2,36 @@ package com.team.timetableManagmentSystem.academictimetablemanagmentsystem;
 
 import java.util.ArrayList;
 
+/**
+ * used in the operation of creating timeTable
+ * @data_field id for representing the lecGroup 
+ * @data_field name for representing the lecGroup name (ex:a,b)
+ * @data_field lectuerGroup for representing the lectuerGroup which the lecGroup in
+ * @data_field branches is for representing the branches in the lecGroup
+ * @data_field freeTime for representing the freeTime for the lecGroup
+ * @data_field remaining the number of remaining hours for the lecGroup 
+ * @author Mostafa
+ */
 public class LecGroup {
 
     private int id;
     private String name;
     private LectureGroup lectuerGroup;
-    private ArrayList<Branch> branchs;
+    private ArrayList<Branch> branches;
     private Course course;
     private FreeTime freeTime;
     int remaining;
 
     public LecGroup(int id) {
         this.id = id;
-        branchs = new ArrayList<>();
+        branches = new ArrayList<>();
         freeTime = new FreeTime(1);
     }
 
     public LecGroup(int id, String name) {
         this.id = id;
         this.name = name;
-        branchs = new ArrayList<>();
+        branches = new ArrayList<>();
         freeTime = new FreeTime(1);
 
     }
@@ -62,17 +72,17 @@ public class LecGroup {
     }
 
     /**
-     * @return the branchs
+     * @return the branches
      */
     public ArrayList<Branch> getBranchs() {
-        return branchs;
+        return branches;
     }
 
     /**
-     * @param branchs the branchs to set
+     * @param branchs the branches to set
      */
     public void setBranchs(ArrayList<Branch> branchs) {
-        this.branchs = branchs;
+        this.branches = branchs;
     }
 
     /**
@@ -103,9 +113,15 @@ public class LecGroup {
         this.freeTime = freeTime;
     }
 
+    /**
+     * 
+     * @param day rooms free in
+     * @param hour the rooms free in 
+     * @return array list of rooms the is free at as specific day and hour 
+     */
     ArrayList<Room> getRoomsFreeAt(int day, int hour) {
         ArrayList<Room> r = new ArrayList<>();
-        for (Branch branch : branchs) {
+        for (Branch branch : branches) {
             Room r1 = branch.getARoomFreeAt(day, hour);
             if (r1 != null) {
                 r.add(r1);
@@ -116,9 +132,15 @@ public class LecGroup {
         return r;
     }
 
+    /**
+     * 
+     * @param day
+     * @param hour
+     * @return if all branches free at specific time day and hour
+     */
     boolean IsAllBranchesFreeAt(int day, int hour) {
-        for (int i = 0; i < branchs.size(); i++) {
-            if (!branchs.get(i).getFreeTime().isFreeAt(day, hour)) {
+        for (int i = 0; i < branches.size(); i++) {
+            if (!branches.get(i).getFreeTime().isFreeAt(day, hour)) {
                 return false;
             }
         }

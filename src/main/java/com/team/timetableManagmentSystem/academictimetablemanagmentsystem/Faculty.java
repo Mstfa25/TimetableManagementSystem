@@ -1,6 +1,11 @@
 package com.team.timetableManagmentSystem.academictimetablemanagmentsystem;
 
-
+/**
+ * used in the operation of creating timeTable
+ * @data_field name specify the name of the faculty
+ * @data_field id id to specify the faculty
+ * @author Mostafa
+ */
 public class Faculty {
 
     public Faculty(int id, String name) {
