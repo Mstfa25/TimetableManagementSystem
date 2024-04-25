@@ -844,9 +844,9 @@ public class Timetable {
                     }
                     break;
                 case 5:
-                    for (int i = 3; i > -1 && !added; i--) {
-                        for (int j = i - 1; j > -1 && !added; j--) {
-                            for (int k = j - 1; k > -1; k--) {
+                    for (int i = 0; i < semester.getCourses().size(); i++) {
+                        for (int j = i + 1; j < semester.getCourses().size(); j++) {
+                            for (int k = j + 1; k < semester.getCourses().size(); k++) {
                                 if (canBeInOneDay(splitedSemesters,
                                         semester.getCourses().get(i),
                                         semester.getCourses().get(j),
@@ -880,10 +880,10 @@ public class Timetable {
                             }
                         }
                     }
-                    for (int i = 3; i > -1 && !added; i--) {
-                        for (int j = i - 1; j > -1 && !added; j--) {
-                            for (int k = j - 1; k > -1; k--) {
-                                for (int l = k - 1; l > -1; l--) {
+                    for (int i = 0; i < semester.getCourses().size(); i++) {
+                        for (int j = i + 1; j < semester.getCourses().size(); j++) {
+                            for (int k = j + 1; k < semester.getCourses().size(); k++) {
+                                for (int l = k + 1; l < semester.getCourses().size(); l++) {
                                     if (canBeInOneDay(splitedSemesters, semester.getCourses().get(i),
                                             semester.getCourses().get(j),
                                             semester.getCourses().get(k),
@@ -922,9 +922,9 @@ public class Timetable {
                     }
                     break;
                 default:
-                    for (int i = 3; i > -1 && !added; i--) {
-                        for (int j = i - 1; j > -1 && !added; j--) {
-                            for (int k = j - 1; k > -1; k--) {
+                    for (int i = 0; i < semester.getCourses().size(); i++) {
+                        for (int j = i + 1; j < semester.getCourses().size(); j++) {
+                            for (int k = j + 1; k < semester.getCourses().size(); k++) {
                                 if (canBeInOneDay(splitedSemesters, semester.getCourses().get(i),
                                         semester.getCourses().get(j),
                                         semester.getCourses().get(k)) != null
@@ -959,10 +959,10 @@ public class Timetable {
                             }
                         }
                     }
-                    for (int i = 3; i > -1 && !added; i--) {
-                        for (int j = i - 1; j > -1 && !added; j--) {
-                            for (int k = j - 1; k > -1; k--) {
-                                for (int l = k - 1; l > -1; l--) {
+                    for (int i = 0; i < semester.getCourses().size(); i++) {
+                        for (int j = i + 1; j < semester.getCourses().size(); j++) {
+                            for (int k = j + 1; k < semester.getCourses().size(); k++) {
+                                for (int l = k + 1; l < semester.getCourses().size(); l++) {
                                     if (canBeInOneDay(splitedSemesters, semester.getCourses().get(i),
                                             semester.getCourses().get(j),
                                             semester.getCourses().get(k),
@@ -1000,8 +1000,100 @@ public class Timetable {
                     }
                     break;
             }
-        } else {
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        } else /*more than 6 courses*/ {
+            /*4     3   courses*/
+            if (semester.getCourses().size() == 7) {
+                for (int i = 0; i < semester.getCourses().size(); i++) {
+                    for (int j = i + 1; j < semester.getCourses().size(); j++) {
+                        for (int k = j + 1; k < semester.getCourses().size(); k++) {
+                            int arr[] = getTheOtherFourCourses(i, j, k);
+                            if (canBeInOneDay(splitedSemesters, semester.getCourses().get(i),
+                                    semester.getCourses().get(j),
+                                    semester.getCourses().get(k)) != null
+                                    && canBeInOneDay(splitedSemesters, semester.getCourses().get(arr[0]),
+                                            semester.getCourses().get(arr[1]),
+                                            semester.getCourses().get(arr[2]),
+                                            semester.getCourses().get(3)) != null) {
+                                addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters,
+                                        semester.getCourses().get(arr[0]),
+                                        semester.getCourses().get(arr[1]),
+                                        semester.getCourses().get(arr[2]),
+                                        semester.getCourses().get(arr[3])));
+                                if (canBeInOneDay(splitedSemesters,
+                                        semester.getCourses().get(i),
+                                        semester.getCourses().get(j),
+                                        semester.getCourses().get(k)) != null) {
+                                    addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters,
+                                            semester.getCourses().get(i),
+                                            semester.getCourses().get(j),
+                                            semester.getCourses().get(k)));
+                                    return;
+                                } else {
+                                    removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                            semester.getCourses().get(arr[0]));
+                                    removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                            semester.getCourses().get(arr[1]));
+                                    removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                            semester.getCourses().get(arr[2]));
+                                    removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                            semester.getCourses().get(arr[3]));
+                                }
+
+                            }
+                        }
+                    }
+                }
+                /*                                      4  2  2                                   */
+                for (int i = 0; i < semester.getCourses().size(); i++) {
+                    for (int j = i + 1; j < semester.getCourses().size(); j++) {
+                        for (int k = j + 1; k < semester.getCourses().size(); k++) {
+                            if (canBeInOneDay(splitedSemesters, semester.getCourses().get(i),
+                                    semester.getCourses().get(j),
+                                    semester.getCourses().get(k)) != null) {
+                                addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters,
+                                        semester.getCourses().get(i),
+                                        semester.getCourses().get(j),
+                                        semester.getCourses().get(k)));
+                                int arr[][] = getTheOtherFourCoursesByTwo(i, j, k);
+                                for (int l = 0; l <= arr.length; l += 2) {
+
+                                    if (l <= arr.length) {
+                                        removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                semester.getCourses().get(i));
+                                        removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                semester.getCourses().get(j));
+                                        removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                semester.getCourses().get(k));
+                                    } else if (canBeInOneDay(splitedSemesters,
+                                            semester.getCourses().get(arr[l][0]),
+                                            semester.getCourses().get(arr[l][1])) != null
+                                            && canBeInOneDay(splitedSemesters,
+                                                    semester.getCourses().get(arr[l + 1][0]),
+                                                    semester.getCourses().get(arr[l + 1][1])) != null) {
+                                        addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters,
+                                                semester.getCourses().get(arr[l + 1][0]),
+                                                semester.getCourses().get(arr[l + 1][1])));
+                                        if (canBeInOneDay(splitedSemesters,
+                                                semester.getCourses().get(arr[l][0]),
+                                                semester.getCourses().get(arr[l][1])) != null) {
+
+                                            addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters,
+                                                    semester.getCourses().get(arr[l][0]),
+                                                    semester.getCourses().get(arr[l][1])));
+                                            return;
+                                        } else {
+                                            removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                    semester.getCourses().get(arr[l + 1][0]));
+                                            removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                    semester.getCourses().get(arr[l + 1][1]));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -1013,26 +1105,21 @@ public class Timetable {
      * @return
      */
     int[] getTheOtherTwocourses(int num1, int num2) {
+        ArrayList<Integer> arr = new ArrayList<>();
 
-        if ((num1 == 0 && num2 == 1) || (num2 == 0 && num1 == 1)) {
-            int[] nums = {2, 3};
-            return nums;
-        } else if ((num1 == 0 && num2 == 2) || (num2 == 0 && num1 == 2)) {
-            int[] nums = {1, 3};
-            return nums;
-        } else if ((num1 == 0 && num2 == 3) || (num2 == 0 && num1 == 3)) {
-            int[] nums = {1, 2};
-            return nums;
-        } else if ((num1 == 1 && num2 == 2) || (num2 == 2 && num1 == 1)) {
-            int[] nums = {0, 3};
-            return nums;
-        } else if ((num1 == 1 && num2 == 3) || (num2 == 3 && num1 == 1)) {
-            int[] nums = {0, 2};
-            return nums;
-        } else {
-            int[] nums = {0, 1};
-            return nums;
+        if (num1 != 0) {
+            arr.add(0);
         }
+        if (num1 != 1 && num2 != 1) {
+            arr.add(1);
+        }
+        if (num1 != 2 && num2 != 2) {
+            arr.add(2);
+        }
+        if (num2 != 3) {
+            arr.add(3);
+        }
+        return new int[]{arr.get(0), arr.get(1)};
     }
 
     /**
@@ -1044,34 +1131,53 @@ public class Timetable {
      * @return
      */
     int[] getTheOtherTwocourses(int num1, int num2, int num3) {
-        if (num1 == 0 && num2 == 1 && num3 == 2) {
-            int nums[] = {3, 4};
-            return nums;
-        } else if (num1 == 0 && num2 == 1 && num3 == 3) {
-            int nums[] = {2, 4};
-            return nums;
-        } else if (num1 == 0 && num2 == 1 && num3 == 4) {
-            int nums[] = {2, 3};
-            return nums;
-        } else if (num1 == 0 && num2 == 2 && num3 == 3) {
-            int nums[] = {1, 4};
-            return nums;
-        } else if (num1 == 0 && num2 == 2 && num3 == 4) {
-            int nums[] = {1, 3};
-            return nums;
-        } else if (num1 == 0 && num2 == 3 && num3 == 4) {
-            int nums[] = {1, 2};
-            return nums;
-        } else if (num1 == 1 && num2 == 2 && num3 == 3) {
-            int nums[] = {0, 4};
-            return nums;
-        } else if (num1 == 1 && num2 == 2 && num3 == 4) {
-            int nums[] = {0, 3};
-            return nums;
-        } else {
-            int nums[] = {0, 1};
-            return nums;
+        ArrayList<Integer> arr = new ArrayList<>();
+
+        if (num1 != 0) {
+            arr.add(0);
         }
+        if (num1 != 1 && num2 != 1) {
+            arr.add(1);
+        }
+        if (num1 != 2 && num2 != 2 && num3 != 2) {
+            arr.add(2);
+        }
+        if (num2 != 3 && num3 != 3) {
+            arr.add(3);
+        }
+        if (num3 != 4) {
+            arr.add(4);
+        }
+
+        return new int[]{arr.get(0), arr.get(1)};
+//        if (num1 == 0 && num2 == 1 && num3 == 2) {
+//            int nums[] = {3, 4};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 1 && num3 == 3) {
+//            int nums[] = {2, 4};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 1 && num3 == 4) {
+//            int nums[] = {2, 3};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 2 && num3 == 3) {
+//            int nums[] = {1, 4};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 2 && num3 == 4) {
+//            int nums[] = {1, 3};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 3 && num3 == 4) {
+//            int nums[] = {1, 2};
+//            return nums;
+//        } else if (num1 == 1 && num2 == 2 && num3 == 3) {
+//            int nums[] = {0, 4};
+//            return nums;
+//        } else if (num1 == 1 && num2 == 2 && num3 == 4) {
+//            int nums[] = {0, 3};
+//            return nums;
+//        } else {
+//            int nums[] = {0, 1};
+//            return nums;
+//        }
     }
 
     /**
@@ -1084,161 +1190,302 @@ public class Timetable {
      * @return
      */
     int[] getTheOtherTwocourses(int num1, int num2, int num3, int num4) {
-        if (num1 == 0 && num2 == 1 && num3 == 2 && num4 == 3) {
-            int nums[] = {4, 5};
-            return nums;
-        } else if (num1 == 0 && num2 == 1 && num3 == 2 && num4 == 4) {
-            int nums[] = {3, 5};
-            return nums;
-        } else if (num1 == 0 && num2 == 1 && num3 == 2 && num4 == 5) {
-            int nums[] = {3, 4};
-            return nums;
-        } else if (num1 == 0 && num2 == 1 && num3 == 3 && num4 == 4) {
-            int nums[] = {2, 5};
-            return nums;
-        } else if (num1 == 0 && num2 == 1 && num3 == 3 && num4 == 5) {
-            int nums[] = {2, 4};
-            return nums;
-        } else if (num1 == 0 && num2 == 1 && num3 == 4 && num4 == 5) {
-            int nums[] = {2, 3};
-            return nums;
-        } else if (num1 == 0 && num2 == 2 && num3 == 3 && num4 == 4) {
-            int nums[] = {1, 5};
-            return nums;
-        } else if (num1 == 0 && num2 == 2 && num3 == 4 && num4 == 5) {
-            int nums[] = {1, 3};
-            return nums;
-        } else if (num1 == 0 && num2 == 3 && num3 == 4 && num4 == 5) {
-            int nums[] = {1, 2};
-            return nums;
-        } else if (num1 == 1 && num2 == 2 && num3 == 3 && num4 == 4) {
-            int nums[] = {0, 5};
-            return nums;
-        } else if (num1 == 1 && num2 == 2 && num3 == 3 && num4 == 5) {
-            int nums[] = {0, 4};
-            return nums;
-        } else if (num1 == 1 && num2 == 2 && num3 == 4 && num4 == 5) {
-            int nums[] = {0, 3};
-            return nums;
-        } else if (num1 == 1 && num2 == 3 && num3 == 4 && num4 == 5) {
-            int nums[] = {0, 2};
-            return nums;
-        } else {
-            int nums[] = {0, 1};
-            return nums;
+        ArrayList<Integer> arr = new ArrayList<>();
+        if (num1 != 0) {
+            arr.add(0);
         }
+        if (num1 != 1 && num2 != 1) {
+            arr.add(1);
+        }
+        if (num1 != 2 && num2 != 2 && num3 != 2) {
+            arr.add(2);
+        }
+        if (num2 != 3 && num3 != 3 && num4 != 3) {
+            arr.add(3);
+        }
+        if (num3 != 4 && num4 != 4) {
+            arr.add(4);
+        }
+        if (num4 != 5) {
+            arr.add(5);
+        }
+        return new int[]{arr.get(0), arr.get(1)};
+//        if (num1 == 0 && num2 == 1 && num3 == 2 && num4 == 3) {
+//            int nums[] = {4, 5};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 1 && num3 == 2 && num4 == 4) {
+//            int nums[] = {3, 5};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 1 && num3 == 2 && num4 == 5) {
+//            int nums[] = {3, 4};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 1 && num3 == 3 && num4 == 4) {
+//            int nums[] = {2, 5};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 1 && num3 == 3 && num4 == 5) {
+//            int nums[] = {2, 4};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 1 && num3 == 4 && num4 == 5) {
+//            int nums[] = {2, 3};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 2 && num3 == 3 && num4 == 4) {
+//            int nums[] = {1, 5};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 2 && num3 == 4 && num4 == 5) {
+//            int nums[] = {1, 3};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 3 && num3 == 4 && num4 == 5) {
+//            int nums[] = {1, 2};
+//            return nums;
+//        } else if (num1 == 1 && num2 == 2 && num3 == 3 && num4 == 4) {
+//            int nums[] = {0, 5};
+//            return nums;
+//        } else if (num1 == 1 && num2 == 2 && num3 == 3 && num4 == 5) {
+//            int nums[] = {0, 4};
+//            return nums;
+//        } else if (num1 == 1 && num2 == 2 && num3 == 4 && num4 == 5) {
+//            int nums[] = {0, 3};
+//            return nums;
+//        } else if (num1 == 1 && num2 == 3 && num3 == 4 && num4 == 5) {
+//            int nums[] = {0, 2};
+//            return nums;
+//        } else {
+//            int nums[] = {0, 1};
+//            return nums;
+//        }
     }
 
     /**
      * get the fourth number with input the other three numbers
+     *
      * @param num1
      * @param num2
      * @param num3
-     * @return 
+     * @return
      */
     int getTheFourthCourse(int num1, int num2, int num3) {
-        if (num1 == 0) {
-            if (num2 == 1) {
-                if (num3 == 2) {
-                    return 3;
-                } else {
-                    return 2;
-                }
-            } else {
-                return 1;
-            }
-        } else {
-            return 0;
+        ArrayList<Integer> arr = new ArrayList<>();
+        if (num1 != 0) {
+            arr.add(0);
         }
+        if (num1 != 1 && num2 != 1) {
+            arr.add(1);
+        }
+        if (num2 != 2 && num3 != 2) {
+            arr.add(2);
+        }
+        if (num3 != 3) {
+            arr.add(3);
+        }
+        return arr.get(0);
+//        if (num1 == 0) {
+//            if (num2 == 1) {
+//                if (num3 == 2) {
+//                    return 3;
+//                } else {
+//                    return 2;
+//                }
+//            } else {
+//                return 1;
+//            }
+//        } else {
+//            return 0;
+//        }
     }
 
     /**
      * get the fifth number by input 4 courses
+     *
      * @param num1
      * @param num2
      * @param num3
      * @param num4
-     * @return 
+     * @return
      */
     int getTheFifthCourse(int num1, int num2, int num3, int num4) {
-        for (int i = 0; i < 5; i++) {
-            if (i != num1 && i != num2 && i != num3 && i != num4) {
-                return i;
-            }
+
+        ArrayList<Integer> arr = new ArrayList<>();
+        if (num1 != 0) {
+            arr.add(0);
         }
-        return -1;
+        if (num1 != 1 && num2 != 1) {
+            arr.add(1);
+        }
+        if (num2 != 2 && num3 != 2) {
+            arr.add(2);
+        }
+        if (num3 != 3 && num4 != 3) {
+            arr.add(3);
+        }
+        if (num4 != 4) {
+            arr.add(4);
+        }
+        return arr.get(0);
+
+//        for (int i = 0; i < 5; i++) {
+//            if (i != num1 && i != num2 && i != num3 && i != num4) {
+//                return i;
+//            }
+//        }
+//        return -1;
     }
 
     /**
      * get the other there courses with input three numbers
+     *
      * @param num1
      * @param num2
      * @param num3
-     * @return 
+     * @return
      */
     int[] getTheOtherThreeCourses(int num1, int num2, int num3) {
-        if (num1 == 0 && num2 == 1 && num3 == 2) {
-            int[] nums = {3, 4, 5};
-            return nums;
-        } else if (num1 == 0 && num2 == 1 && num3 == 3) {
-            int[] nums = {2, 4, 5};
-            return nums;
-        } else if (num1 == 0 && num2 == 1 && num3 == 4) {
-            int[] nums = {2, 3, 5};
-            return nums;
-        } else if (num1 == 0 && num2 == 1 && num3 == 5) {
-            int[] nums = {2, 3, 4};
-            return nums;
-        } else if (num1 == 0 && num2 == 2 && num3 == 3) {
-            int[] nums = {1, 4, 5};
-            return nums;
-        } else if (num1 == 0 && num2 == 2 && num3 == 4) {
-            int[] nums = {1, 3, 5};
-            return nums;
-        } else if (num1 == 0 && num2 == 2 && num3 == 5) {
-            int[] nums = {1, 3, 4};
-            return nums;
-        } else if (num1 == 0 && num2 == 3 && num3 == 4) {
-            int[] nums = {1, 2, 5};
-            return nums;
-        } else if (num1 == 0 && num2 == 3 && num3 == 5) {
-            int[] nums = {1, 2, 4};
-            return nums;
-        } else if (num1 == 0 && num2 == 4 && num3 == 5) {
-            int[] nums = {1, 2, 3};
-            return nums;
-        } else if (num1 == 1 && num2 == 2 && num3 == 3) {
-            int[] nums = {0, 4, 5};
-            return nums;
-        } else if (num1 == 1 && num2 == 2 && num3 == 4) {
-            int[] nums = {0, 3, 5};
-            return nums;
-        } else if (num1 == 1 && num2 == 2 && num3 == 5) {
-            int[] nums = {0, 3, 4};
-            return nums;
-        } else if (num1 == 1 && num2 == 3 && num3 == 4) {
-            int[] nums = {0, 2, 5};
-            return nums;
-        } else if (num1 == 1 && num2 == 3 && num3 == 5) {
-            int[] nums = {0, 2, 4};
-            return nums;
-        } else if (num1 == 1 && num2 == 4 && num3 == 5) {
-            int[] nums = {0, 2, 3};
-            return nums;
-        } else if (num1 == 2 && num2 == 3 && num3 == 4) {
-            int[] nums = {0, 1, 5};
-            return nums;
-        } else if (num1 == 2 && num2 == 3 && num3 == 5) {
-            int[] nums = {0, 1, 4};
-            return nums;
-        } else if (num1 == 2 && num2 == 4 && num3 == 5) {
-            int[] nums = {0, 1, 2};
-            return nums;
-        } else {
-            int[] nums = {0, 1, 2};
-            return nums;
-        }
 
+        ArrayList<Integer> arr = new ArrayList<>();
+        if (num1 != 0) {
+            arr.add(0);
+        }
+        if (num1 != 1 && num2 != 1) {
+            arr.add(1);
+        }
+        if (num1 != 2 && num2 != 2 && num3 != 2) {
+            arr.add(2);
+        }
+        if (num2 != 3 && num3 != 3 && num1 != 3) {
+            arr.add(3);
+        }
+        if (num3 != 4 && num2 != 4) {
+            arr.add(4);
+        }
+        if (num3 != 5) {
+            arr.add(5);
+        }
+        return new int[]{arr.get(0), arr.get(1), arr.get(2)};
+
+//        if (num1 == 0 && num2 == 1 && num3 == 2) {
+//            int[] nums = {3, 4, 5};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 1 && num3 == 3) {
+//            int[] nums = {2, 4, 5};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 1 && num3 == 4) {
+//            int[] nums = {2, 3, 5};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 1 && num3 == 5) {
+//            int[] nums = {2, 3, 4};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 2 && num3 == 3) {
+//            int[] nums = {1, 4, 5};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 2 && num3 == 4) {
+//            int[] nums = {1, 3, 5};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 2 && num3 == 5) {
+//            int[] nums = {1, 3, 4};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 3 && num3 == 4) {
+//            int[] nums = {1, 2, 5};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 3 && num3 == 5) {
+//            int[] nums = {1, 2, 4};
+//            return nums;
+//        } else if (num1 == 0 && num2 == 4 && num3 == 5) {
+//            int[] nums = {1, 2, 3};
+//            return nums;
+//        } else if (num1 == 1 && num2 == 2 && num3 == 3) {
+//            int[] nums = {0, 4, 5};
+//            return nums;
+//        } else if (num1 == 1 && num2 == 2 && num3 == 4) {
+//            int[] nums = {0, 3, 5};
+//            return nums;
+//        } else if (num1 == 1 && num2 == 2 && num3 == 5) {
+//            int[] nums = {0, 3, 4};
+//            return nums;
+//        } else if (num1 == 1 && num2 == 3 && num3 == 4) {
+//            int[] nums = {0, 2, 5};
+//            return nums;
+//        } else if (num1 == 1 && num2 == 3 && num3 == 5) {
+//            int[] nums = {0, 2, 4};
+//            return nums;
+//        } else if (num1 == 1 && num2 == 4 && num3 == 5) {
+//            int[] nums = {0, 2, 3};
+//            return nums;
+//        } else if (num1 == 2 && num2 == 3 && num3 == 4) {
+//            int[] nums = {0, 1, 5};
+//            return nums;
+//        } else if (num1 == 2 && num2 == 3 && num3 == 5) {
+//            int[] nums = {0, 1, 4};
+//            return nums;
+//        } else if (num1 == 2 && num2 == 4 && num3 == 5) {
+//            int[] nums = {0, 1, 2};
+//            return nums;
+//        } else {
+//            int[] nums = {0, 1, 2};
+//            return nums;
+//        }
+    }
+
+    int[] getTheOtherFourCourses(int num1, int num2, int num3) {
+        ArrayList<Integer> arr = new ArrayList<>();
+        if (num1 != 0) {
+            arr.add(0);
+        }
+        if (num1 != 1 && num2 != 1) {
+            arr.add(1);
+        }
+        if (num1 != 2 && num2 != 2 && num3 != 2) {
+            arr.add(2);
+        }
+        if (num1 != 3 && num2 != 3 && num3 != 3) {
+            arr.add(3);
+        }
+        if (num1 != 4 && num2 != 4 && num3 != 4) {
+            arr.add(4);
+        }
+        if (num2 != 5 && num3 != 5) {
+            arr.add(5);
+        }
+        if (num3 != 6) {
+            arr.add(6);
+        }
+        arr.sort((o1, o2) -> {
+            return o1 - o2;
+        });
+        return new int[]{arr.get(0), arr.get(1), arr.get(2), arr.get(3)};
+    }
+
+    int[][] getTheOtherFourCoursesByTwo(int num1, int num2, int num3) {
+        ArrayList<Integer> arr = new ArrayList<>();
+        if (num1 != 0) {
+            arr.add(0);
+        }
+        if (num1 != 1 && num2 != 1) {
+            arr.add(1);
+        }
+        if (num1 != 2 && num2 != 2 && num3 != 2) {
+            arr.add(2);
+        }
+        if (num1 != 3 && num2 != 3 && num3 != 3) {
+            arr.add(3);
+        }
+        if (num1 != 4 && num2 != 4 && num3 != 4) {
+            arr.add(4);
+        }
+        if (num2 != 5 && num3 != 5) {
+            arr.add(5);
+        }
+        if (num3 != 6) {
+            arr.add(6);
+        }
+        arr.sort((o1, o2) -> {
+            return o1 - o2;
+        });
+        return new int[][]{{arr.get(0), arr.get(1)},
+        {arr.get(2), arr.get(3)},
+        {arr.get(0), arr.get(2)},
+        {arr.get(1), arr.get(3)},
+        {arr.get(0), arr.get(3)},
+        {arr.get(1), arr.get(2)}
+        };
     }
 
     void setHostingRoomsInDaysForStaff(ArrayList<Staff> staff
@@ -1256,8 +1503,7 @@ public class Timetable {
         }
     }
 
-    coursesWithDay canBeInOneDay(splitedSemestersWithDays splitedSemesters, Course... courses
-    ) {
+    coursesWithDay canBeInOneDay(splitedSemestersWithDays splitedSemesters, Course... courses) {
         coursesWithDay c = null;
         FreeTime f = new FreeTime(1);
         for (Course course : courses) {
@@ -1271,6 +1517,7 @@ public class Timetable {
                 for (int j = 0; j < splitedSemesters.getCourses().get(i).size(); j++) {
                     if (splitedSemesters.getCourses().get(i).get(j).getSemester().getId() == courses[0].getSemester().getId()) {
                         fetted = false;
+                        break;
                     }
                 }
                 if (daysOfFreeTime[i] && fetted) {
