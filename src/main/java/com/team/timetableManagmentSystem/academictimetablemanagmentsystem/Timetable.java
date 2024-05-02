@@ -102,10 +102,24 @@ public class Timetable {
         RemoveHostingBranchesFromLecGroups(courses);
         makeTheLecFreeTimeRefranceInEachSemester(semesters);
         splitedSemestersWithDays s = splitTheSemesterIntoDays(semesters);
+        if (!cheekIfallSemestersWereAddAndRemoveTheAddedSemesters(s, semesters)) {
+            System.out.println("not all the semesters were added");
+        }
         addTheLectureCoursesToTheTimeTable(s);
+
         System.out.println(timesInTimetable.size());
         System.out.println(courses.length);
         System.out.println("            ----------------------                  ");
+    }
+
+    boolean cheekIfallSemestersWereAddAndRemoveTheAddedSemesters(splitedSemestersWithDays s, ArrayList<Semester> semesters) {
+        /*
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < s.getCourses().get(i).size(); j++) {
+                semesters.remove(s.getCourses().get(i).get(j).getSemester());
+            }
+        }*/
+        return semesters.isEmpty();
     }
 
     /**
@@ -579,7 +593,6 @@ public class Timetable {
         for (int i = 0; i < semester.getCourses().size(); i++) {
             for (int j = 0; j < semester.getCourses().get(i).getLecGroups().size(); j++) {
                 for (int k = 8; k < 17; k++) {
-
                     if (semester.getCourses().get(i).getLecGroups().get(j).getFreeTime().isFreeAt(day, k) && semester.getCourses().get(i).getLecGroups().get(j).remaining > 0) {
                         Room hostingRoom = semester.getCourses().get(i).getStaff().getBranch().getAHostingRoomFreeAt(day, k);
                         ArrayList<Room> rooms = semester.getCourses().get(i).getLecGroups().get(j).getRoomsFreeAt(day, k);
@@ -625,7 +638,6 @@ public class Timetable {
                 }
             }
         }
-
     }
 
     /**
@@ -765,43 +777,42 @@ public class Timetable {
             }
         } else if (semester.getCourses().size() <= 6) {
             //
-            boolean added = false;
             switch (semester.getCourses().size()) {
-                case 4:
-                    for (int i = 3; i > -1 && !added; i--) {
-                        for (int j = i - 1; j > -1 && !added; j--) {
+                case 4 -> {
+                    for (int i = 0; i < semester.getCourses().size(); i++) {
+                        for (int j = i + 1; j < semester.getCourses().size(); j++) {
+                            int arr[] = getTheOtherTwocourses(i, j);
                             if (canBeInOneDay(splitedSemesters,
                                     semester.getCourses().get(i),
                                     semester.getCourses().get(j)) != null
                                     && canBeInOneDay(splitedSemesters,
-                                            semester.getCourses().get(getTheOtherTwocourses(i, j)[0]),
-                                            semester.getCourses().get(getTheOtherTwocourses(i, j)[1])) != null) {
-                                added = true;
+                                            semester.getCourses().get(arr[0]),
+                                            semester.getCourses().get(arr[1])) != null) {
                                 addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                         canBeInOneDay(splitedSemesters,
                                                 semester.getCourses().get(i),
                                                 semester.getCourses().get(j)));
                                 if (canBeInOneDay(splitedSemesters,
-                                        semester.getCourses().get(getTheOtherTwocourses(i, j)[0]),
-                                        semester.getCourses().get(getTheOtherTwocourses(i, j)[1])) != null) {
+                                        semester.getCourses().get(arr[0]),
+                                        semester.getCourses().get(arr[1])) != null) {
                                     addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                             canBeInOneDay(splitedSemesters,
-                                                    semester.getCourses().get(getTheOtherTwocourses(i, j)[0]),
-                                                    semester.getCourses().get(getTheOtherTwocourses(i, j)[1])));
+                                                    semester.getCourses().get(arr[0]),
+                                                    semester.getCourses().get(arr[1])));
                                     return;
                                 } else {
                                     removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                             semester.getCourses().get(i));
                                     removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                             semester.getCourses().get(j));
-                                    added = false;
                                 }
                             }
                         }
                     }
-                    for (int i = 3; i > -1 && !added; i--) {
-                        for (int j = i - 1; j > -1 && !added; j--) {
-                            for (int k = j - 1; k > -1 && !added; k--) {
+                    for (int i = 0; i < semester.getCourses().size(); i++) {
+                        for (int j = i + 1; j < semester.getCourses().size(); j++) {
+                            for (int k = j + 1; k < semester.getCourses().size(); k++) {
+                                int x = getTheFourthCourse(k, j, i);
                                 if (canBeInOneDay(splitedSemesters,
                                         semester.getCourses().get(i),
                                         semester.getCourses().get(j),
@@ -809,25 +820,25 @@ public class Timetable {
                                         != null
                                         && canBeInOneDay(splitedSemesters,
                                                 semester.getCourses().get(getTheOtherTwocourses(i, j)[0]),
-                                                semester.getCourses().get(getTheFourthCourse(k, j, i)))
+                                                semester.getCourses().get(x))
                                         != null) {
-                                    added = true;
                                     addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                             canBeInOneDay(splitedSemesters, semester.getCourses().get(i),
-                                                    semester.getCourses().get(j), semester.getCourses().get(k)));
+                                                    semester.getCourses().get(j),
+                                                    semester.getCourses().get(k)));
                                     if (canBeInOneDay(splitedSemesters,
-                                            semester.getCourses().get(getTheFourthCourse(k, j, i))) != null) {
+                                            semester.getCourses().get(x)) != null) {
                                         addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                                 canBeInOneDay(splitedSemesters,
-                                                        semester.getCourses().get(getTheFourthCourse(k, j, i))));
+                                                        semester.getCourses().get(x)));
                                         return;
                                     } else {
                                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                                 semester.getCourses().get(i));
                                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                                 semester.getCourses().get(j));
-                                        removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, semester.getCourses().get(k));
-                                        added = false;
+                                        removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                semester.getCourses().get(k));
                                     }
                                 }
                             }
@@ -836,14 +847,13 @@ public class Timetable {
                     Course[] c = semester.getCourses().toArray(new Course[semester.getCourses().size()]);
                     if (canBeInOneDay(splitedSemesters, c) != null) {
                         // System.out.println("fetted " + semester.getId() + "    " + semester.getCourses().get(0).getId());
-                        System.out.println(canBeInOneDay(splitedSemesters, c));
                         addCoursesToTheLecuterTimeSplitedSemester(
                                 splitedSemesters,
                                 canBeInOneDay(splitedSemesters, c)
                         );
                     }
-                    break;
-                case 5:
+                }
+                case 5 -> {
                     for (int i = 0; i < semester.getCourses().size(); i++) {
                         for (int j = i + 1; j < semester.getCourses().size(); j++) {
                             for (int k = j + 1; k < semester.getCourses().size(); k++) {
@@ -852,20 +862,20 @@ public class Timetable {
                                         semester.getCourses().get(j),
                                         semester.getCourses().get(k)) != null
                                         && canBeInOneDay(splitedSemesters,
-                                                semester.getCourses().get(getTheOtherTwocourses(k, j, i)[0]),
-                                                semester.getCourses().get(getTheOtherTwocourses(k, j, i)[1])) != null) {
+                                                semester.getCourses().get(getTheOtherTwocourses(i, j, k)[0]),
+                                                semester.getCourses().get(getTheOtherTwocourses(i, j, k)[1])) != null) {
                                     addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                             canBeInOneDay(splitedSemesters,
                                                     semester.getCourses().get(i),
                                                     semester.getCourses().get(j),
                                                     semester.getCourses().get(k)));
                                     if (canBeInOneDay(splitedSemesters,
-                                            semester.getCourses().get(getTheOtherTwocourses(k, j, i)[0]),
-                                            semester.getCourses().get(getTheOtherTwocourses(k, j, i)[1])) != null) {
+                                            semester.getCourses().get(getTheOtherTwocourses(i, j, k)[0]),
+                                            semester.getCourses().get(getTheOtherTwocourses(i, j, k)[1])) != null) {
                                         addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                                 canBeInOneDay(splitedSemesters,
-                                                        semester.getCourses().get(getTheOtherTwocourses(k, j, i)[0]),
-                                                        semester.getCourses().get(getTheOtherTwocourses(k, j, i)[1])));
+                                                        semester.getCourses().get(getTheOtherTwocourses(i, j, k)[0]),
+                                                        semester.getCourses().get(getTheOtherTwocourses(i, j, k)[1])));
                                         return;
                                     } else {
                                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
@@ -874,7 +884,6 @@ public class Timetable {
                                                 semester.getCourses().get(k));
                                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                                 semester.getCourses().get(j));
-                                        added = false;
                                     }
                                 }
                             }
@@ -900,9 +909,8 @@ public class Timetable {
                                                 semester.getCourses().get(getTheFifthCourse(i, j, k, l))) != null) {
                                             addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                                     canBeInOneDay(splitedSemesters,
-                                                            semester.getCourses().get(getTheOtherTwocourses(k, j, i)[0]),
+                                                            semester.getCourses().get(getTheOtherTwocourses(i, j, k)[0]),
                                                             semester.getCourses().get(getTheFifthCourse(i, j, k, l))));
-                                            added = true;
                                             return;
                                         } else {
                                             removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
@@ -913,15 +921,14 @@ public class Timetable {
                                                     semester.getCourses().get(j));
                                             removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                                     semester.getCourses().get(l));
-                                            added = false;
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                    break;
-                default:
+                }
+                default -> {
                     for (int i = 0; i < semester.getCourses().size(); i++) {
                         for (int j = i + 1; j < semester.getCourses().size(); j++) {
                             for (int k = j + 1; k < semester.getCourses().size(); k++) {
@@ -944,7 +951,6 @@ public class Timetable {
                                                         semester.getCourses().get(getTheOtherThreeCourses(k, j, i)[0]),
                                                         semester.getCourses().get(getTheOtherThreeCourses(k, j, i)[1]),
                                                         semester.getCourses().get(getTheOtherThreeCourses(k, j, i)[2])));
-                                        added = true;
                                         return;
                                     } else {
                                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
@@ -953,7 +959,6 @@ public class Timetable {
                                                 semester.getCourses().get(k));
                                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                                 semester.getCourses().get(j));
-                                        added = false;
                                     }
                                 }
                             }
@@ -980,7 +985,6 @@ public class Timetable {
                                                 semester.getCourses().get(getTheOtherTwocourses(l, k, j, i)[0]),
                                                 semester.getCourses().get(getTheOtherTwocourses(l, k, j, i)[1])) != null) {
                                             addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters, semester.getCourses().get(getTheOtherTwocourses(l, k, j, i)[0]), semester.getCourses().get(getTheOtherTwocourses(l, k, j, i)[1])));
-                                            added = true;
                                             return;
                                         } else {
                                             removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
@@ -991,14 +995,13 @@ public class Timetable {
                                                     semester.getCourses().get(j));
                                             removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                                     semester.getCourses().get(l));
-                                            added = false;
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                    break;
+                }
             }
         } else /*more than 6 courses*/ {
             /*4     3   courses*/
@@ -1107,7 +1110,7 @@ public class Timetable {
     int[] getTheOtherTwocourses(int num1, int num2) {
         ArrayList<Integer> arr = new ArrayList<>();
 
-        if (num1 != 0) {
+        if (num1 != 0 && num2 != 0) {
             arr.add(0);
         }
         if (num1 != 1 && num2 != 1) {
@@ -1116,7 +1119,7 @@ public class Timetable {
         if (num1 != 2 && num2 != 2) {
             arr.add(2);
         }
-        if (num2 != 3) {
+        if (num1 != 3 && num2 != 3) {
             arr.add(3);
         }
         return new int[]{arr.get(0), arr.get(1)};
@@ -1133,19 +1136,19 @@ public class Timetable {
     int[] getTheOtherTwocourses(int num1, int num2, int num3) {
         ArrayList<Integer> arr = new ArrayList<>();
 
-        if (num1 != 0) {
+        if (num1 != 0 && num2 != 0 && num3 != 0) {
             arr.add(0);
         }
-        if (num1 != 1 && num2 != 1) {
+        if (num1 != 1 && num2 != 1 && num3 != 1) {
             arr.add(1);
         }
         if (num1 != 2 && num2 != 2 && num3 != 2) {
             arr.add(2);
         }
-        if (num2 != 3 && num3 != 3) {
+        if (num2 != 3 && num3 != 3 && num1 != 3) {
             arr.add(3);
         }
-        if (num3 != 4) {
+        if (num3 != 4 && num2 != 4 && num1 != 4) {
             arr.add(4);
         }
 
@@ -1191,22 +1194,22 @@ public class Timetable {
      */
     int[] getTheOtherTwocourses(int num1, int num2, int num3, int num4) {
         ArrayList<Integer> arr = new ArrayList<>();
-        if (num1 != 0) {
+        if (num1 != 0 && num4 != 0 && num2 != 0 && num3 != 0) {
             arr.add(0);
         }
-        if (num1 != 1 && num2 != 1) {
+        if (num1 != 1 && num4 != 1 && num2 != 1 && num3 != 1) {
             arr.add(1);
         }
-        if (num1 != 2 && num2 != 2 && num3 != 2) {
+        if (num1 != 2 && num4 != 2 && num2 != 2 && num3 != 2) {
             arr.add(2);
         }
-        if (num2 != 3 && num3 != 3 && num4 != 3) {
+        if (num1 != 3 && num4 != 3 && num2 != 3 && num3 != 3) {
             arr.add(3);
         }
-        if (num3 != 4 && num4 != 4) {
+        if (num1 != 4 && num4 != 4 && num2 != 4 && num3 != 4) {
             arr.add(4);
         }
-        if (num4 != 5) {
+        if (num1 != 5 && num4 != 5 && num2 != 5 && num3 != 5) {
             arr.add(5);
         }
         return new int[]{arr.get(0), arr.get(1)};
@@ -1265,16 +1268,16 @@ public class Timetable {
      */
     int getTheFourthCourse(int num1, int num2, int num3) {
         ArrayList<Integer> arr = new ArrayList<>();
-        if (num1 != 0) {
+        if (num1 != 0 && num2 != 0 && num3 != 0) {
             arr.add(0);
         }
-        if (num1 != 1 && num2 != 1) {
+        if (num1 != 1 && num2 != 1 && num3 != 1) {
             arr.add(1);
         }
-        if (num2 != 2 && num3 != 2) {
+        if (num1 != 2 && num2 != 2 && num3 != 2) {
             arr.add(2);
         }
-        if (num3 != 3) {
+        if (num1 != 3 && num2 != 3 && num3 != 3) {
             arr.add(3);
         }
         return arr.get(0);
@@ -1305,19 +1308,19 @@ public class Timetable {
     int getTheFifthCourse(int num1, int num2, int num3, int num4) {
 
         ArrayList<Integer> arr = new ArrayList<>();
-        if (num1 != 0) {
+        if (num1 != 0 && num2 != 0 && num3 != 0 && num4 != 0) {
             arr.add(0);
         }
-        if (num1 != 1 && num2 != 1) {
+        if (num1 != 1 && num2 != 1 && num3 != 1 && num4 != 1) {
             arr.add(1);
         }
-        if (num2 != 2 && num3 != 2) {
+        if (num1 != 2 && num2 != 2 && num3 != 2 && num4 != 2) {
             arr.add(2);
         }
-        if (num3 != 3 && num4 != 3) {
+        if (num1 != 3 && num2 != 3 && num3 != 3 && num4 != 3) {
             arr.add(3);
         }
-        if (num4 != 4) {
+        if (num1 != 4 && num2 != 4 && num3 != 4 && num4 != 4) {
             arr.add(4);
         }
         return arr.get(0);
@@ -1341,22 +1344,22 @@ public class Timetable {
     int[] getTheOtherThreeCourses(int num1, int num2, int num3) {
 
         ArrayList<Integer> arr = new ArrayList<>();
-        if (num1 != 0) {
+        if (num1 != 0 && num2 != 0 && num3 != 0) {
             arr.add(0);
         }
-        if (num1 != 1 && num2 != 1) {
+        if (num1 != 1 && num2 != 1 && num3 != 1) {
             arr.add(1);
         }
         if (num1 != 2 && num2 != 2 && num3 != 2) {
             arr.add(2);
         }
-        if (num2 != 3 && num3 != 3 && num1 != 3) {
+        if (num1 != 3 && num2 != 3 && num3 != 3) {
             arr.add(3);
         }
-        if (num3 != 4 && num2 != 4) {
+        if (num1 != 4 && num2 != 4 && num3 != 4) {
             arr.add(4);
         }
-        if (num3 != 5) {
+        if (num1 != 5 && num2 != 5 && num3 != 5) {
             arr.add(5);
         }
         return new int[]{arr.get(0), arr.get(1), arr.get(2)};
@@ -1426,10 +1429,10 @@ public class Timetable {
 
     int[] getTheOtherFourCourses(int num1, int num2, int num3) {
         ArrayList<Integer> arr = new ArrayList<>();
-        if (num1 != 0) {
+        if (num1 != 0 && num2 != 0 && num3 != 0) {
             arr.add(0);
         }
-        if (num1 != 1 && num2 != 1) {
+        if (num1 != 1 && num2 != 1 && num3 != 1) {
             arr.add(1);
         }
         if (num1 != 2 && num2 != 2 && num3 != 2) {
@@ -1441,24 +1444,21 @@ public class Timetable {
         if (num1 != 4 && num2 != 4 && num3 != 4) {
             arr.add(4);
         }
-        if (num2 != 5 && num3 != 5) {
+        if (num1 != 5 && num2 != 5 && num3 != 5) {
             arr.add(5);
         }
-        if (num3 != 6) {
+        if (num1 != 6 && num2 != 6 && num3 != 6) {
             arr.add(6);
         }
-        arr.sort((o1, o2) -> {
-            return o1 - o2;
-        });
         return new int[]{arr.get(0), arr.get(1), arr.get(2), arr.get(3)};
     }
 
     int[][] getTheOtherFourCoursesByTwo(int num1, int num2, int num3) {
         ArrayList<Integer> arr = new ArrayList<>();
-        if (num1 != 0) {
+        if (num1 != 0 && num2 != 0 && num3 != 0) {
             arr.add(0);
         }
-        if (num1 != 1 && num2 != 1) {
+        if (num1 != 1 && num2 != 1 && num3 != 1) {
             arr.add(1);
         }
         if (num1 != 2 && num2 != 2 && num3 != 2) {
@@ -1470,15 +1470,12 @@ public class Timetable {
         if (num1 != 4 && num2 != 4 && num3 != 4) {
             arr.add(4);
         }
-        if (num2 != 5 && num3 != 5) {
+        if (num1 != 5 && num2 != 5 && num3 != 5) {
             arr.add(5);
         }
-        if (num3 != 6) {
+        if (num1 != 6 && num2 != 6 && num3 != 6) {
             arr.add(6);
         }
-        arr.sort((o1, o2) -> {
-            return o1 - o2;
-        });
         return new int[][]{{arr.get(0), arr.get(1)},
         {arr.get(2), arr.get(3)},
         {arr.get(0), arr.get(2)},
@@ -1614,8 +1611,7 @@ public class Timetable {
         }
     }
 
-    void addCoursesToTheLecuterTimeSplitedSemester(splitedSemestersWithDays splitedSemesters, coursesWithDay courses
-    ) {
+    void addCoursesToTheLecuterTimeSplitedSemester(splitedSemestersWithDays splitedSemesters, coursesWithDay courses) {
         //System.out.println("");
         splitedSemesters.add(
                 courses.getCourses(),
@@ -1909,8 +1905,7 @@ public class Timetable {
         return s;
     }
 
-    ArrayList<Semester> getSemesters(ArrayList<Course> courses
-    ) {
+    ArrayList<Semester> getSemesters(ArrayList<Course> courses) {
         ArrayList<Semester> s = new ArrayList<>();
         for (Course course : courses) {
             for (int j = 0; j <= s.size(); j++) {

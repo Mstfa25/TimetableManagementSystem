@@ -25,9 +25,62 @@ public class adminService {
         conn.execute("insert into branch (name) values " + values);
         conn.close();
     }
+    
+    public void updateUser(int userId,String username,int role,String password){
+        conn=new connection();
+        System.out.println("update login set username = '"+username+"' ,password= '"+password+"', role = "+role +" where id = "+username);
+        conn.execute("update login set username = '"+username+"' ,password= '"+password+"', role = "+role +" where id = "+username);
+        conn.close();
+    }
+    
+    public void UpdateStudyPlan(int studyPlanId,int facultyId,String name){
+        connection conn=new connection();
+        conn.execute("update studyPlan set facultyId = "+facultyId+" , name ='"+name+"' where id = "+studyPlanId);
+        conn.close();
+    }
+    
+    public void UpdateSemester(int semesterId,int semesterNumber,int studyPlanId){
+        connection conn=new connection();
+        conn.execute("update semester set number = "+semesterNumber+" ,studyPlanId = "+studyPlanId+" where id = "+semesterId);
+        conn.close();
+    }
+
+    public ArrayList<jobType> getAllJobTypes() {
+        conn=new connection();
+        ArrayList<jobType> j = new ArrayList<>();
+        ResultSet rs = conn.select("select * from jobtype");
+        try {
+            while (rs.next()) {
+                j.add(new jobType(rs.getInt(1), rs.getString(2)));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            conn.close();
+        }
+        return j;
+    }
+
+    public ArrayList<userRole> getAllRoles() {
+        try {
+            connection conn=new connection();
+            ArrayList<userRole> roles = new ArrayList<>();
+            ResultSet rs = conn.select("   select * from roletype ");
+            while (rs.next()) {
+                roles.add(new userRole(rs.getInt(1), rs.getString(2)));
+            }
+            return roles;
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            conn.close();
+        }
+        return null;
+    }
 
     public ArrayList<Branch> getAllBranches() {
         try {
+            conn=new connection();
             ArrayList<Branch> branchs = new ArrayList<>();
             ResultSet rs = conn.select("select * from branch");
             while (rs.next()) {
@@ -53,13 +106,18 @@ public class adminService {
         conn.close();
     }
 
+    public void updateRoom(int id, String name, int capacity, int branchId, int typeId) {
+        conn.execute("update rooms set name = '" + name + "' , capacity = " + capacity + " , TypeId = " + typeId + ", branchId = " + branchId + " where id =" + id);
+        conn.close();
+    }
+
     public ArrayList<room> GetallRoomsInAllBranches() {
         try {
             ArrayList<room> rooms = new ArrayList<>();
 
-            ResultSet rs = conn.select("select rooms.id,rooms.name,rooms.capacity,"
-                    + "rooms.TypeId,roomstypes.RoomType,rooms.branchId,"
-                    + "branch.name from rooms"
+            ResultSet rs = conn.select("select rooms.id,rooms.name as name,rooms.capacity,"
+                    + "rooms.TypeId,roomstypes.RoomType as troom,rooms.branchId,"
+                    + "branch.name as bname from rooms"
                     + " inner join roomstypes on rooms.TypeId=roomstypes.id "
                     + "inner join branch on rooms.branchId=branch.id; ");
             while (rs.next()) {
@@ -102,12 +160,28 @@ public class adminService {
     }
 
     public void removeRoom(int roomId) {
-        conn.execute("delete from branch where id =" + roomId);
+        conn.execute("delete from rooms where id =" + roomId);
         conn.close();
     }
 
+    public ArrayList<roomType> getallRoomType() {
+        connection conn = new connection();
+        ArrayList<roomType> r = new ArrayList<>();
+        ResultSet rs = conn.select("select * from roomstypes");
+        try {
+            while (rs.next()) {
+                r.add(new roomType(rs.getInt(1), rs.getString(2)));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            conn.close();
+        }
+        return r;
+    }
+
     public void addRoom(String name, int capacity, int typeId, int branchId) {
-        conn.execute("insert into rooms (name,capacity,typeId,branchId) value ('" + name + "'," + capacity + "'," + typeId + "'," + branchId + ")");
+        conn.execute("insert into rooms (name,capacity,typeId,branchId) value ('" + name + "'," + capacity + "," + typeId + "," + branchId + ")");
         conn.close();
     }
 
@@ -129,7 +203,39 @@ public class adminService {
     public ArrayList<Staff> getAllStaffInAllBranches() {
         try {
             ArrayList<Staff> staffs = new ArrayList<>();
-            ResultSet rs = conn.select("   select staff.id,staff.name,staff.JobTypeId,jobtype.name as jobtypename,staff.branchId,branch.name as branchname from staff inner join jobtype on jobtype.Id=staff.JobTypeId inner join branch on branch.id=staff.branchId");
+            ResultSet rs = conn.select("   select staff.id,"
+                    + "staff.name,"
+                    + "staff.JobTypeId,"
+                    + "jobtype.name as jobtypename,"
+                    + "staff.branchId,"
+                    + "branch.name as branchname"
+                    + " from staff "
+                    + "inner join jobtype on jobtype.Id=staff.JobTypeId "
+                    + "inner join branch on branch.id=staff.branchId");
+            while (rs.next()) {
+                staffs.add(new Staff(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6)));
+            }
+            return staffs;
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            conn.close();
+        }
+        return null;
+    }
+    
+    public ArrayList<Staff> getAllStaffInAllBranchesWithOutExistingUsers() {
+        try {
+            ArrayList<Staff> staffs = new ArrayList<>();
+            ResultSet rs = conn.select("   select staff.id,"
+                    + "staff.name,"
+                    + "staff.JobTypeId,"
+                    + "jobtype.name as jobtypename,"
+                    + "staff.branchId,"
+                    + "branch.name as branchname"
+                    + " from staff "
+                    + "inner join jobtype on jobtype.Id=staff.JobTypeId "
+                    + "inner join branch on branch.id=staff.branchId where staff.id not in (select id from login)");
             while (rs.next()) {
                 staffs.add(new Staff(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6)));
             }
@@ -190,8 +296,8 @@ public class adminService {
         return null;
     }
 
-    public void EditStaffName(int staffId, String staffName) {
-        conn.execute("update staff set name = '" + staffName + "' where id = " + staffId);
+    public void updateStaff(int staffId, String staffName, int branchId, int jobTypeId) {
+        conn.execute("update staff set name = '" + staffName + "',branchid =" + branchId + ",JobTypeId = " + jobTypeId + " where id = " + staffId + ";");
         conn.close();
     }
 
@@ -211,7 +317,7 @@ public class adminService {
     }
 
     public void addFaculty(String name) {
-        conn.execute("insert into faculty (name) value +('" + name + "')");
+        conn.execute("insert into faculty (name) value ('" + name + "')");
         conn.close();
     }
 
@@ -257,7 +363,7 @@ public class adminService {
     }
 
     public void removeStudyPlans(int id) {
-        conn.execute("delete studyPlan where id = " + id);
+        conn.execute("delete from studyPlan where id = " + id);
         conn.close();
     }
 
@@ -294,7 +400,13 @@ public class adminService {
     }
 
     public void addSemester(int number, int studyPlanId) {
-        conn.execute("insert into semester (number,ptudyPlanId) value (" + number + "," + studyPlanId + ")");
+        conn.execute("insert into semester (number,studyPlanId) value (" + number + "," + studyPlanId + ")");
+        conn.close();
+    }
+    
+    public void deleteUser(int id){
+        connection conn=new connection();
+        conn.execute("delete from login where id = "+id);
         conn.close();
     }
 
@@ -309,7 +421,7 @@ public class adminService {
     }
 
     public void removeSemester(int id) {
-        conn.execute("delete Semester where id = " + id);
+        conn.execute("delete from Semester where id = " + id);
         conn.close();
     }
 
@@ -328,6 +440,8 @@ public class adminService {
         }
         return null;
     }
+    
+    
 
     public ArrayList<Semester> getAllSemestersInStudyPlan(int studyPlanId) {
         try {
@@ -890,13 +1004,18 @@ public class adminService {
     }
 
     /*------------------------------------------------------------------------------------------------*/
-    public void addUser(String username, String password, int role) {
-        conn.execute("insert into login (username, password, role) value('" + username + "','" + password + "'," + role + ")");
+    public void addUser(int id, String username, String password, int role) {
+        conn.execute("insert into login (id,username, password, role) value("+id+",'" + username + "','" + password + "'," + role + ")");
         conn.close();
     }
 
     public void changeUserPassword(int id, String password) {
         conn.execute("update login set password = '" + password + "' where id = " + id);
+        conn.close();
+    }
+    
+    public void editUser(int id, String username,int role) {
+        conn.execute("update login set username = '" + username + "', role = "+role+" where id = " + id);
         conn.close();
     }
 
@@ -908,10 +1027,32 @@ public class adminService {
     public ArrayList<user> GetUsers() {
         try {
             ArrayList<user> users = new ArrayList<>();
-            ResultSet rs = conn.select("select * from login");
+            ResultSet rs = conn.select("select login.id,"
+                    + " login.username,"
+                    + " login.role,"
+                    + " roletype.RoleName,"
+                    + " staff.name,"
+                    + " staff.JobTypeId,"
+                    + " jobtype.name,"
+                    + " staff.branchId,"
+                    + " branch.name "
+                    + "from login "
+                    + "inner join staff on staff.id=login.id "
+                    + "inner join branch on branch.id=staff.branchId "
+                    + "inner join jobtype on jobtype.Id=staff.JobTypeId "
+                    + "inner join roletype on roletype.id=login.role; ");
             while (rs.next()) {
-                users.add(new user(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
-
+                users.add(new user(rs.getInt(1),
+                        rs.getString(2),
+                        rs.getInt(3),
+                        rs.getString(4),
+                        new Staff(rs.getInt(1),
+                                rs.getString(5),
+                                rs.getInt(6),
+                                rs.getString(7),
+                                rs.getInt(8),
+                                rs.getString(9))
+                ));
             }
             return users;
         } catch (Exception e) {

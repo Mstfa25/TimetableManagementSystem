@@ -23,6 +23,10 @@ public class room {
         this.id=id;
         this.name=name;
     }
+
+    public room() {
+    }
+    
     
     
 

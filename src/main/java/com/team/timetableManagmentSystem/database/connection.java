@@ -12,7 +12,7 @@ public class connection {
     public void makeConnection() {
 
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost/timetablemanagementsystem", "root", "25251436");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/timetablemanagementsystem", "root", "12345");
         } catch (SQLException ex) {
             System.out.println(ex);
         }
@@ -29,13 +29,9 @@ public class connection {
 
     public void close() {
         try {
-            if (stat != null) {
-                stat.getConnection().close();
-                stat = null;
-            }
+            
             if (con != null) {
                 con.close();
-                con = null;
             }
         } catch (Exception ex) {
             System.out.println(ex + "1");

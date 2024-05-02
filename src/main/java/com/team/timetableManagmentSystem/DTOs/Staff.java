@@ -20,6 +20,15 @@ public class Staff {
         this.branch = new Branch(branchId, branchName);
     }
 
+    public Staff(int id, String name, jobType type, Branch branch) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.branch = branch;
+    }
+    
+    
+
     public Staff(int id, String name) {
         this.name = name;
         this.id = id;

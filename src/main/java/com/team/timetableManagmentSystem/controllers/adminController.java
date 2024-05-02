@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,15 +16,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
 @RequestMapping("/api/admin")
 public class adminController {
 
     @Autowired
     private adminService adminService;
 
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     public ResponseEntity<?> adminResponse(HttpSession session) {
         ArrayList<String> s = new ArrayList<>();
-        if (session.getAttribute("user") != null) {
+        System.out.println(session.getAttribute("username"));
+        if (session.getAttribute("username") != null) {
             if (session.getAttribute("role").equals(1)) {
                 s.add("done");
                 return new ResponseEntity<>(s, HttpStatus.OK);
@@ -37,7 +41,8 @@ public class adminController {
         }
     }
 
-    @PostMapping("/addBranch")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("/addBranch")
     public ResponseEntity<?> addBranch(@RequestBody Branch branch, HttpSession session) {
         if (isadmin(session)) {
             adminService.insertNewBranch(branch.getName());
@@ -46,7 +51,8 @@ public class adminController {
 
     }
 
-    @PostMapping("/addBranches")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("/addBranches")
     public ResponseEntity<?> addBranches(HttpSession session, @RequestBody Branch... branchs) {
         if (isadmin(session)) {
             StringBuilder sb = new StringBuilder();
@@ -59,7 +65,8 @@ public class adminController {
 
     }
 
-    @PostMapping("getAllBranches")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllBranches")
     public Object getAllBranches(HttpSession session) {
         if (isadmin(session)) {
             ArrayList<Branch> branches = adminService.getAllBranches();
@@ -68,7 +75,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editBranchName")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editBranchName")
     public ResponseEntity<?> editBranchName(@RequestBody Branch branch, HttpSession session) {
         if (isadmin(session)) {
             adminService.editBranchName(branch.getId(), branch.getName());
@@ -76,7 +84,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("removeBranch")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("removeBranch")
     public ResponseEntity<?> RemoveBranch(@RequestBody Branch branch, HttpSession session) {
         if (isadmin(session)) {
             adminService.removeBranch(branch.getId());
@@ -84,6 +93,7 @@ public class adminController {
         return adminResponse(session);
     }
 
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @GetMapping("getAllRoomsInAllBranches")
     public Object GetallRoomsInAllBranches(HttpSession session) {
         if (isadmin(session)) {
@@ -92,7 +102,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllRoomsInOneBranch")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllRoomsInOneBranch")
     public Object GetallRoomsInOneBranch(HttpSession session, @RequestBody Branch branch) {
         if (isadmin(session)) {
             return adminService.GetallRoomsInoneBranch(branch.getId());
@@ -100,7 +111,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("DeleteRoom")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("DeleteRoom")
     public ResponseEntity<?> DeleteRoom(HttpSession session, @RequestBody room room) {
         if (isadmin(session)) {
             adminService.removeRoom(room.getId());
@@ -108,7 +120,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("addRoom")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("addRoom")
     public ResponseEntity<?> addRoom(HttpSession session, @RequestBody room room) {
         if (isadmin(session)) {
             adminService.addRoom(room.getName(), room.getCapacity(), room.getRoomtype().getId(), room.getBranch().getId());
@@ -116,7 +129,26 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("addRooms")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("updateRoom")
+    public Object updateRoom(HttpSession session, @RequestBody room room) {
+        if (isadmin(session)) {
+            adminService.updateRoom(room.getId(), room.getName(), room.getCapacity(), room.getBranch().getId(), room.getRoomtype().getId());
+        }
+        return adminResponse(session);
+    }
+
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllRoomType")
+    public Object getAllroomType(HttpSession session) {
+        if (isadmin(session)) {
+            return adminService.getallRoomType();
+        }
+        return adminResponse(session);
+    }
+
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("addRooms")
     public ResponseEntity<?> addRooms(HttpSession session, @RequestBody room... rooms) {
         if (isadmin(session)) {
             StringBuilder sb = new StringBuilder();
@@ -128,7 +160,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("addStaff")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("addStaff")
     public ResponseEntity<?> addStaff(HttpSession session, @RequestBody Staff staff) {
         if (isadmin(session)) {
             adminService.addStaff(staff.getName(), staff.getType().getId(), staff.getBranch().getId());
@@ -136,7 +169,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("addStaffs")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("addStaffs")
     public ResponseEntity<?> addStaff(HttpSession session, @RequestBody Staff... staffs) {
         if (isadmin(session)) {
             StringBuilder sb = new StringBuilder();
@@ -148,15 +182,27 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllStaff")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllStaff")
     public Object getAllStaffInAllBranches(HttpSession session) {
         if (isadmin(session)) {
+            System.out.println(session.getAttribute("username"));
             return adminService.getAllStaffInAllBranches();
         }
         return adminResponse(session);
     }
 
-    @PostMapping("getAllStaffInOneBranch")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllUserRoles")
+    public Object getAllUserRoles(HttpSession session) {
+        if (isadmin(session)) {
+            return adminService.getAllRoles();
+        }
+        return adminResponse(session);
+    }
+
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllStaffInOneBranch")
     public Object getAllStaffInOneBranch(HttpSession session, @RequestBody Branch branch) {
         if (isadmin(session)) {
             return adminService.getAllStaffInOneBranch(branch.getId());
@@ -164,7 +210,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllStaffWithType")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllStaffWithType")
     public Object getAllStaffWithType(HttpSession session, @RequestBody Staff staff) {
         if (isadmin(session)) {
             return adminService.getAllStaffInAllBranchesWithType(staff.getType().getId());
@@ -172,7 +219,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllStaffWithTypeInOneBranch")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllStaffWithTypeInOneBranch")
     public Object getAllStaffWithTypeInOneBranch(HttpSession session, @RequestBody Staff staff) {
         if (isadmin(session)) {
             return adminService.getAllStaffInAllBranchesWithTypeInOneBranch(staff.getBranch().getId(), staff.getType().getId());
@@ -180,15 +228,31 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editStaffName")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("updateStaff")
     public ResponseEntity<?> editStaffName(HttpSession session, @RequestBody Staff staff) {
         if (isadmin(session)) {
-            adminService.EditStaffName(staff.getId(), staff.getName());
+            if (staff.getId() == 0) {
+                System.out.println("no id");
+            }
+            if (staff.getName() == null) {
+                System.out.println("noname");
+            }
+            if (staff.getBranch() == null) {
+                System.out.println("no branch");
+            }
+            if (staff.getType() == null) {
+                System.out.println("notype");
+            }
+
+            System.out.println(staff.getId() + "\t" + staff.getName() + "\t" + staff.getBranch().getId() + "\t" + staff.getType().getId());
+            adminService.updateStaff(staff.getId(), staff.getName(), staff.getBranch().getId(), staff.getType().getId());
         }
         return adminResponse(session);
     }
 
-    @PostMapping("editStaffType")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editStaffType")
     public ResponseEntity<?> editStaffType(HttpSession session, @RequestBody Staff staff) {
         if (isadmin(session)) {
             adminService.editStaffType(staff.getId(), staff.getType().getId());
@@ -196,7 +260,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editStaffBranch")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editStaffBranch")
     public ResponseEntity<?> editStaffBranch(HttpSession session, @RequestBody Staff staff) {
         if (isadmin(session)) {
             adminService.editStaffBranch(staff.getId(), staff.getBranch().getId());
@@ -204,7 +269,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("removeStaff")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("removeStaff")
     public ResponseEntity<?> removeStaff(HttpSession session, @RequestBody Staff staff) {
         if (isadmin(session)) {
             adminService.removeStaff(staff.getId());
@@ -212,7 +278,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("addFaculty")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("addFaculty")
     public ResponseEntity<?> addFaculty(@RequestBody Faculty faculty, HttpSession session) {
         if (isadmin(session)) {
             adminService.addFaculty(faculty.getName());
@@ -220,7 +287,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getFacultys")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getFacultys")
     public Object getFacultys(HttpSession session) {
         if (isadmin(session)) {
             return adminService.getFacultys();
@@ -228,7 +296,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("deleteFaculty")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("deleteFaculty")
     public ResponseEntity<?> deleteFaculty(@RequestBody Faculty faculty, HttpSession session) {
         if (isadmin(session)) {
             adminService.removeFaculty(faculty.getId());
@@ -236,7 +305,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editFacultyName")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editFacultyName")
     public ResponseEntity<?> editFacultyName(HttpSession session, @RequestBody Faculty faculty) {
         if (isadmin(session)) {
             adminService.EditFacultyName(faculty.getId(), faculty.getName());
@@ -244,7 +314,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("addStudyPlan")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("addStudyPlan")
     public ResponseEntity<?> addStudyPlan(HttpSession session, @RequestBody StudyPlan studyPlan) {
         if (isadmin(session)) {
             adminService.insertStudyPlan(studyPlan.getName(), studyPlan.getFaculty().getId());
@@ -252,7 +323,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editStudyPlanName")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editStudyPlanName")
     public ResponseEntity<?> editStudyPlanName(HttpSession session, @RequestBody StudyPlan studyPlan) {
         if (isadmin(session)) {
             adminService.editStudyPlanName(studyPlan.getId(), studyPlan.getName());
@@ -260,7 +332,17 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editStudyFaculty")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editStudyPlan")
+    public Object editStudyPlan(HttpSession session, @RequestBody StudyPlan studyPlan) {
+        if (isadmin(session)) {
+            adminService.UpdateStudyPlan(studyPlan.getId(), studyPlan.getFaculty().getId(), studyPlan.getName());
+        }
+        return adminResponse(session);
+    }
+
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editStudyPlanFaculty")
     public ResponseEntity<?> editStudyPlanFaculty(@RequestBody StudyPlan studyPlan, HttpSession session) {
         if (isadmin(session)) {
             adminService.editStudyPlanfaculty(studyPlan.getId(), studyPlan.getFaculty().getId());
@@ -268,7 +350,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("removeStudyPlan")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("removeStudyPlan")
     public ResponseEntity<?> removeStudyPlan(@RequestBody StudyPlan studyPlan, HttpSession session) {
         if (isadmin(session)) {
             adminService.removeStudyPlans(studyPlan.getId());
@@ -276,7 +359,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllStudyPlans")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllStudyPlans")
     public Object getAllStudyPlans(HttpSession session) {
         if (isadmin(session)) {
             return adminService.getAllStudyPlans();
@@ -284,7 +368,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getStudyPlansInFaculty")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getStudyPlansInFaculty")
     public Object getStudyPlansInFaculty(HttpSession session, @RequestBody Faculty faculty) {
         if (isadmin(session)) {
             return adminService.getStudyPlansInFaculty(faculty.getId());
@@ -292,7 +377,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("addSemester")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("addSemester")
     public ResponseEntity<?> addSemester(HttpSession session, @RequestBody Semester semester) {
         if (isadmin(session)) {
             adminService.addSemester(semester.getNumber(), semester.getStudyPlan().getId());
@@ -300,7 +386,17 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editSemesterNumber")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editSemester")
+    public Object editSemester(HttpSession session, @RequestBody Semester semester) {
+        if (isadmin(session)) {
+            adminService.UpdateSemester(semester.getId(), semester.getNumber(), semester.getStudyPlan().getId());
+        }
+        return adminResponse(session);
+    }
+
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editSemesterNumber")
     public ResponseEntity<?> editSemesterNumber(HttpSession session, @RequestBody Semester semester) {
         if (isadmin(session)) {
             adminService.editSemesterNumber(semester.getId(), semester.getNumber());
@@ -308,7 +404,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editSemesterStudyPlan")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editSemesterStudyPlan")
     public ResponseEntity<?> editSemesterStudyPlan(HttpSession session, @RequestBody Semester semester) {
         if (isadmin(session)) {
             adminService.editSemesterStudyPlan(semester.getId(), semester.getStudyPlan().getId());
@@ -316,7 +413,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("removeSemester")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("removeSemester")
     public ResponseEntity<?> removeSemester(HttpSession session, @RequestBody Semester semester) {
         if (isadmin(session)) {
             adminService.removeSemester(semester.getId());
@@ -324,7 +422,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllSemesters")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllSemesters")
     public Object getAllSemesters(HttpSession session) {
         if (isadmin(session)) {
             return adminService.getAllSemesters();
@@ -332,7 +431,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getSemestersInStudyPlan")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getSemestersInStudyPlan")
     public Object getSemestersInStudyPlan(HttpSession session, @RequestBody StudyPlan studyPlan) {
         if (isadmin(session)) {
             return adminService.getAllSemestersInStudyPlan(studyPlan.getId());
@@ -340,7 +440,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getSemestersInFaculty")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getSemestersInFaculty")
     public Object getSemestersInfaculty(HttpSession session, @RequestBody Faculty faculty) {
         if (isadmin(session)) {
             return adminService.getAllSemestersInFaculty(faculty.getId());
@@ -348,11 +449,12 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("createUser")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("addUser")
     public Object addUser(@RequestBody user user, HttpSession session) {
         if (isadmin(session)) {
             if (user.getUsername() != null && user.getPassword() != null && user.getRole() != 0) {
-                adminService.addUser(user.getUsername(), user.getPassword(), user.getRole());
+                adminService.addUser(user.getId(),user.getUsername(), user.getPassword(), user.getRole());
             } else {
                 System.out.println("username : " + user.getUsername() + "\npassword : " + user.getPassword() + "\nrole : " + user.getRole());
             }
@@ -360,7 +462,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("changeUserRole")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("changeUserRole")
     public Object changRole(@RequestBody user user, HttpSession session) {
         if (isadmin(session)) {
             if (user.getId() != 0 && user.getRole() != 0) {
@@ -370,7 +473,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllUsers")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllUsers")
     public Object getAllUsers(HttpSession session) {
         if (isadmin(session)) {
             return adminService.GetUsers();
@@ -378,7 +482,17 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editUserPassword")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllStaffWithoutExistingUsers")
+    public Object getAllStaffWithoutExistingUsers(HttpSession session) {
+        if (isadmin(session)) {
+            return adminService.getAllStaffInAllBranchesWithOutExistingUsers();
+        }
+        return adminResponse(session);
+    }
+
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editUserPassword")
     public Object editUserPassword(@RequestBody user user, HttpSession session) {
         if (isadmin(session)) {
             adminService.changeUserPassword(user.getId(), user.getPassword());
@@ -386,7 +500,35 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("createLectuerTimetable")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editUser")
+    public Object editUser(@RequestBody user user, HttpSession session) {
+        if (isadmin(session)) {
+            adminService.editUser(user.getId(), user.getUsername(), user.getRole());
+        }
+        return adminResponse(session);
+    }
+
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("updateUser")
+    public Object updateUser(HttpSession session, @RequestBody user user) {
+        if (isadmin(session)) {
+            adminService.updateUser(user.getId(), user.getUsername(), user.getRole(), user.getPassword());
+        }
+        return adminResponse(session);
+    }
+
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("deleteUser")
+    public Object deleteUser(HttpSession session, @RequestBody user user) {
+        if (isadmin(session)) {
+            adminService.deleteUser(user.getId());
+        }
+        return adminResponse(session);
+    }
+
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("createLectuerTimetable")
     public Object createLectureTimetable(HttpSession session, @RequestBody course... courses) {
         if (isadmin(session)) {
             ArrayList<timeInTimetable> t = adminService.createLectureTimeTable(courses);
@@ -397,7 +539,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("viewTimetable")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("viewTimetable")
     public Object viewTimetable(HttpSession session, @RequestBody Timetable timetable) {
         if (isadmin(session)) {
             return adminService.getLectuerTimesInTimetable(timetable.getId());
@@ -405,7 +548,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getFreeTimeForStaff")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getFreeTimeForStaff")
     public Object getFreeTimeForStaff(HttpSession session, @RequestBody Staff staff) {
         if (isadmin(session)) {
             return adminService.getFreeTimeForStaff(staff.getId()).dayStartEnd;
@@ -413,7 +557,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("addFreeTimeForStaff")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("addFreeTimeForStaff")
     public ResponseEntity<?> addFreeTimeForStaff(HttpSession session, @RequestBody Staff staff, freeTime freeTime) {
         if (isadmin(session)) {
             adminService.addFreeTimeForStaff(staff.getId(), freeTime);
@@ -421,7 +566,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("addFreeTimeForRoom")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("addFreeTimeForRoom")
     public ResponseEntity<?> addFreeTimeForRoom(HttpSession session, @RequestBody room room, freeTime freeTime) {
         if (isadmin(session)) {
             adminService.addFreeTimeForRooms(room.getId(), freeTime);
@@ -429,7 +575,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editFreeTimeForStaff")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editFreeTimeForStaff")
     public ResponseEntity<?> editFreeTimeForStaff(HttpSession session, @RequestBody Staff staff, freeTime freeTime) {
         if (isadmin(session)) {
             adminService.updateFreeTimeForStaff(staff.getId(), freeTime);
@@ -437,7 +584,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editFreeTimeForRoom")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editFreeTimeForRoom")
     public ResponseEntity<?> editFreeTimeForRoom(HttpSession session, @RequestBody room room, freeTime freeTime) {
         if (isadmin(session)) {
             adminService.updateFreeTimeForRooms(room.getId(), freeTime);
@@ -445,7 +593,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("addLectureGroup")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("addLectureGroup")
     public ResponseEntity<?> addLectureGroup(HttpSession session, @RequestBody LectureGroup lectuerGoup) {
         if (isadmin(session)) {
             adminService.addLectureGroup(lectuerGoup.getName());
@@ -453,7 +602,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editLectuerGroupName")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editLectuerGroupName")
     public ResponseEntity<?> editLectuerGroupName(HttpSession session, @RequestBody LectureGroup lectuerGroup) {
         if (isadmin(session)) {
             adminService.editLectuerGroupName(lectuerGroup.getId(), lectuerGroup.getName());
@@ -461,7 +611,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("removeLectuerGroup")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("removeLectuerGroup")
     public ResponseEntity<?> removeLectuerGroup(HttpSession session, @RequestBody LectureGroup lectureGroup) {
         if (isadmin(session)) {
             adminService.removeLectuerGroup(lectureGroup.getId());
@@ -469,7 +620,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllLectuerGroups")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllLectuerGroups")
     public Object getAllLectuerGroups(HttpSession session) {
         if (isadmin(session)) {
             return adminService.getAllLectuerGroups();
@@ -477,7 +629,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("addLecGroupInALectuerGroup")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("addLecGroupInALectuerGroup")
     public ResponseEntity<?> addLecGroupInALectuerGroup(HttpSession session, @RequestBody LecGroup lecGroup) {
         if (isadmin(session)) {
             adminService.addLecGroupInALectuerGroup(lecGroup.getLectuerGoup().getId(), lecGroup.getName());
@@ -485,7 +638,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editLecGroupInALectuerGroupName")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editLecGroupInALectuerGroupName")
     public ResponseEntity<?> editLecGroupInALectuerGroupName(HttpSession session, @RequestBody LecGroup lecGroup) {
         if (isadmin(session)) {
             adminService.editLecGroupInALectuerGroupName(lecGroup.getId(), lecGroup.getName());
@@ -493,7 +647,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editLecGroupInALectuerGroupLectuerGroup")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("editLecGroupInALectuerGroupLectuerGroup")
     public ResponseEntity<?> editLecGroupInALectuerGroupLectuerGroup(HttpSession session, @RequestBody LecGroup lecGroup) {
         if (isadmin(session)) {
             adminService.editLecGroupInALectuerGroupLectuerGroup(lecGroup.getId(), lecGroup.getLectuerGoup().getId());
@@ -501,7 +656,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("removeLecGroupInALectuerGroupLectuerGroup")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("removeLecGroupInALectuerGroupLectuerGroup")
     public ResponseEntity<?> removeLecGroupInALectuerGroupLectuerGroup(HttpSession session, LecGroup lecGroup) {
         if (isadmin(session)) {
             adminService.removeLecGroupInALectuerGroupLectuerGroup(lecGroup.getId());
@@ -509,7 +665,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("addBranchInALecGroup")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("addBranchInALecGroup")
     public ResponseEntity<?> addBranchInALecGroup(HttpSession session, @RequestBody LecGroup lecGroup) {
         if (isadmin(session)) {
             adminService.addBranchInALecGroup(lecGroup.getBranchs().get(0).getId(), lecGroup.getId());
@@ -518,7 +675,8 @@ public class adminController {
 
     }
 
-    @PostMapping("removeBranchFromLecGroup")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("removeBranchFromLecGroup")
     public ResponseEntity<?> removeBranchFromLecGroup(HttpSession session, @RequestBody LecGroup lecGroup) {
         if (isadmin(session)) {
             adminService.removeBranchFromLecGroup(lecGroup.getBranchs().get(0).getId(), lecGroup.getId());
@@ -526,7 +684,8 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllBranchesInLecGroup")
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllBranchesInLecGroup")
     public Object getAllBranchesInLecGroup(HttpSession session, @RequestBody LecGroup lecGroup) {
         if (isadmin(session)) {
             return adminService.getAllBranchesInLecGroup(lecGroup.getId());
@@ -534,7 +693,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("addSectionGroup")
+    @RequestMapping("addSectionGroup")
     public ResponseEntity<?> addSectionGroup(HttpSession session, @RequestBody SectionGroup sectionGroup) {
         if (isadmin(session)) {
             adminService.addSectionGroup(sectionGroup.getName());
@@ -542,7 +701,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editSectionGroupName")
+    @RequestMapping("editSectionGroupName")
     public ResponseEntity<?> editSectionGroupName(HttpSession session, @RequestBody SectionGroup sectionGroup) {
         if (isadmin(session)) {
             adminService.editSectionGroupName(sectionGroup.getId(), sectionGroup.getName());
@@ -550,7 +709,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("removeSectionGroup")
+    @RequestMapping("removeSectionGroup")
     public ResponseEntity<?> removeSectionGroup(HttpSession session, @RequestBody SectionGroup sectionGroup) {
         if (isadmin(session)) {
             adminService.removeSectionGroup(sectionGroup.getId());
@@ -558,7 +717,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllSectionGroups")
+    @RequestMapping("getAllSectionGroups")
     public Object getAllSectionGroups(HttpSession session) {
         if (isadmin(session)) {
             adminService.getAllSectionGroups();
@@ -566,7 +725,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("insertBranchInSectionGroup")
+    @RequestMapping("insertBranchInSectionGroup")
     public ResponseEntity<?> insertBranchInSectionGroup(HttpSession session, @RequestBody sectionGroupBranchs sectionGroupBranchs) {
         if (isadmin(session)) {
             adminService.insertBranchInSectionGroup(sectionGroupBranchs.getBranchWithNumberOfSectionGroupses().get(0).getBranch().getId(), sectionGroupBranchs.getSectionGroup().getId(), sectionGroupBranchs.getBranchWithNumberOfSectionGroupses().get(0).getNumberOfSectionGroups());
@@ -574,7 +733,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editBranchSectionGroupnumberOfGroups")
+    @RequestMapping("editBranchSectionGroupnumberOfGroups")
     public ResponseEntity<?> editBranchSectionGroupnumberOfGroups(HttpSession session, @RequestBody sectionGroupBranchs sectionGroupBranchs) {
         if (isadmin(session)) {
             adminService.editBranchSectionGroupnumberOfGroups(sectionGroupBranchs.getBranchWithNumberOfSectionGroupses().get(0).getBranch().getId(), sectionGroupBranchs.getSectionGroup().getId(), sectionGroupBranchs.getBranchWithNumberOfSectionGroupses().get(0).getNumberOfSectionGroups());
@@ -582,7 +741,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("changeBranchSectionGroup")
+    @RequestMapping("changeBranchSectionGroup")
     public ResponseEntity<?> changeBranchSectionGroup(HttpSession session, @RequestBody sectionGroupBranchs sectionGroupBranchs, @RequestBody sectionGroupBranchs sectionGroupBranchs1) {
 
         if (isadmin(session)) {
@@ -591,7 +750,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("removeBranchFromSectionGroup")
+    @RequestMapping("removeBranchFromSectionGroup")
     public ResponseEntity<?> removeBranchFromSectionGroup(HttpSession session, sectionGroupBranchs sectionGroupBranchs) {
 
         if (isadmin(session)) {
@@ -600,7 +759,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getSectionGroupBranchs")
+    @RequestMapping("getSectionGroupBranchs")
     public Object getSectionGroupBranchs(HttpSession session, @RequestBody SectionGroup sectionGroup) {
         if (isadmin(session)) {
             return adminService.getSectionGroupBranchs(sectionGroup.getId());
@@ -608,7 +767,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("insertCourse")
+    @RequestMapping("insertCourse")
     public ResponseEntity<?> insertCourse(HttpSession session, @RequestBody course course) {
         if (isadmin(session)) {
             adminService.insertCourse(course.getName(), course.getCode(), course.getLectureHours(), course.getLabHours(), course.getSemester().getId(), course.getStudyPlan().getId(), course.getFaculty().getId());
@@ -616,7 +775,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("setLecGroupIdForCourse")
+    @RequestMapping("setLecGroupIdForCourse")
     public ResponseEntity<?> setLecGroupIdForCourse(HttpSession session, @RequestBody course course) {
         if (isadmin(session)) {
             adminService.setLecGroupIdForCourse(course.getId(), course.getLectuerGoup().getId());
@@ -624,7 +783,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("setSectionGroupIdForCourse")
+    @RequestMapping("setSectionGroupIdForCourse")
     public ResponseEntity<?> setSectionGroupIdForCourse(HttpSession session, course course) {
         if (isadmin(session)) {
             adminService.setSectionGroupIdForCourse(course.getId(), course.getGroup().getId());
@@ -632,7 +791,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getALLCourses")
+    @RequestMapping("getALLCourses")
     public Object getALLCourses(HttpSession session) {
         if (isadmin(session)) {
             return adminService.getALLCourses();
@@ -640,7 +799,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getALLCoursesInSemester")
+    @RequestMapping("getALLCoursesInSemester")
     public Object getALLCoursesInSemester(HttpSession session, @RequestBody Semester semester) {
         if (isadmin(session)) {
             return adminService.getALLCoursesInSemester(semester.getId());
@@ -648,7 +807,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getALLCoursesInFaculty")
+    @RequestMapping("getALLCoursesInFaculty")
     public Object getALLCoursesInFaculty(HttpSession session, @RequestBody Faculty faculty) {
         if (isadmin(session)) {
             return adminService.getALLCoursesInFaculty(faculty.getId());
@@ -656,7 +815,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getALLCoursesInStudyPlan")
+    @RequestMapping("getALLCoursesInStudyPlan")
     public Object getALLCoursesInStudyPlan(HttpSession session, @RequestBody StudyPlan studyPlan) {
         if (isadmin(session)) {
             return adminService.getALLCoursesInStudyPlan(studyPlan.getId());
@@ -664,7 +823,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("insertCourseStaff")
+    @RequestMapping("insertCourseStaff")
     public ResponseEntity<?> insertCourseStaff(HttpSession session, @RequestBody CourseStaff courseStaff) {
         if (isadmin(session)) {
             adminService.insertCourseStaff(courseStaff.getCourse().getId(), courseStaff.getStaff().getId(), courseStaff.getBranch().getId());
@@ -672,7 +831,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("deleteCourseStaff")
+    @RequestMapping("deleteCourseStaff")
     public ResponseEntity<?> deleteCourseStaff(HttpSession session, @RequestBody CourseStaff courseStaff) {
         if (isadmin(session)) {
             adminService.deleteCourseStaff(courseStaff.getCourse().getId(), courseStaff.getStaff().getId(), courseStaff.getBranch().getId());
@@ -680,7 +839,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editCourseForCourseStaffInABranch")
+    @RequestMapping("editCourseForCourseStaffInABranch")
     public ResponseEntity<?> editCourseForCourseStaffInABranch(HttpSession session, @RequestBody CourseStaff courseStaff) {
         if (isadmin(session)) {
             adminService.editCourseForCourseStaffInABranch(courseStaff.getCourse().getId(), courseStaff.getStaff().getId(), courseStaff.getBranch().getId());
@@ -688,7 +847,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editBranchForCourseStaffInCourse")
+    @RequestMapping("editBranchForCourseStaffInCourse")
     public ResponseEntity<?> editBranchForCourseStaffInCourse(HttpSession session, @RequestBody CourseStaff courseStaff) {
         if (isadmin(session)) {
             adminService.editBranchForCourseStaffInCourse(courseStaff.getCourse().getId(), courseStaff.getStaff().getId(), courseStaff.getBranch().getId());
@@ -696,7 +855,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("editCourseStaffInCourseForABranch")
+    @RequestMapping("editCourseStaffInCourseForABranch")
     public ResponseEntity<?> editCourseStaffInCourseForABranch(HttpSession session, @RequestBody CourseStaff courseStaff) {
         if (isadmin(session)) {
             adminService.editCourseStaffInCourseForABranch(courseStaff.getCourse().getId(), courseStaff.getStaff().getId(), courseStaff.getBranch().getId());
@@ -704,7 +863,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllCourseStaff")
+    @RequestMapping("getAllCourseStaff")
     public Object getAllCourseStaff(HttpSession session) {
         if (isadmin(session)) {
             return adminService.getAllCourseStaff();
@@ -712,7 +871,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllCourseStaffForACourse")
+    @RequestMapping("getAllCourseStaffForACourse")
     public Object getAllCourseStaffForACourse(HttpSession session, @RequestBody course course) {
         if (isadmin(session)) {
             return adminService.getAllCourseStaffForACourse(course.getId());
@@ -720,7 +879,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllCourseStaffInSemester")
+    @RequestMapping("getAllCourseStaffInSemester")
     public Object getAllCourseStaffInSemester(HttpSession session, @RequestBody Semester semester) {
         if (isadmin(session)) {
             return adminService.getAllCourseStaffInSemester(semester.getId());
@@ -728,7 +887,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllCourseStaffInStudyPlan")
+    @RequestMapping("getAllCourseStaffInStudyPlan")
     public Object getAllCourseStaffInStudyPlan(HttpSession session, StudyPlan studyPlan) {
         if (isadmin(session)) {
             return adminService.getAllCourseStaffInStudyPlan(studyPlan.getId());
@@ -736,7 +895,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllCourseStaffInBranch")
+    @RequestMapping("getAllCourseStaffInBranch")
     public Object getAllCourseStaffInBranch(HttpSession session, @RequestBody Branch branch) {
         if (isadmin(session)) {
             return adminService.getAllCourseStaffInBranch(branch.getId());
@@ -744,7 +903,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("getAllStaffTypeInCourseStaffInBranch")
+    @RequestMapping("getAllStaffTypeInCourseStaffInBranch")
     public Object getAllStaffTypeInCourseStaffInBranch(HttpSession session, @RequestBody Staff staff) {
         if (isadmin(session)) {
             return adminService.getAllStaffTypeInCourseStaffInBranch(staff.getBranch().getId(), staff.getType().getId());
@@ -752,7 +911,7 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @PostMapping("createSectionTimetable")
+    @RequestMapping("createSectionTimetable")
     public Object createSectionTimetable(HttpSession session, @RequestBody course[] courses) {
 
         if (isadmin(session)) {
@@ -760,6 +919,14 @@ public class adminController {
             InsertTimetable insertTimeTable = new InsertTimetable((timeInTimetable[]) t.toArray(new timeInTimetable[t.size()]));
             insertTimeTable.start();
             return t;
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("getJobTypes")
+    public Object getJobTypes(HttpSession session) {
+        if (isadmin(session)) {
+            return adminService.getAllJobTypes();
         }
         return adminResponse(session);
     }

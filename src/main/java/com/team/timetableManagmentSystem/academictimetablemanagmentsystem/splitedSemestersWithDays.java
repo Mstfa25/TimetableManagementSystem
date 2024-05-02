@@ -18,12 +18,12 @@ public class splitedSemestersWithDays {
 
     void add(ArrayList<Course> courses, int day) {
         for (Course course : courses) {
-            
-                this.getCourses().get(day).add(course);
-                if(course.getStaff().getIssymmetric()[day]){
-                    this.getCourses().get((day+3)%6).add(course);
-                }
-            
+
+            this.getCourses().get(day).add(course);
+            if (course.getStaff().getIssymmetric()[day]) {
+                this.getCourses().get((day + 3) % 6).add(course);
+            }
+
         }
 
     }

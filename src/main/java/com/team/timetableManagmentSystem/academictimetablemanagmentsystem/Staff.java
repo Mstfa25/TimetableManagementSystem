@@ -1,5 +1,7 @@
 package com.team.timetableManagmentSystem.academictimetablemanagmentsystem;
 
+import java.util.ArrayList;
+
 public class Staff {
 
     private int id;
@@ -9,12 +11,14 @@ public class Staff {
     private FreeTime freeTime;
     private boolean[] isSymmetric;
     private int[] numberOfFreeHoursInDays;
+    private ArrayList<Course> courses;
 
     public Staff(int id, Branch branch) {
         this.id = id;
         this.branch = branch;
         freeTime = new FreeTime();
     }
+    
     
     
     public Staff(int id, String name, int typeid, String typeName, int branchId, String branchName) {
@@ -142,6 +146,20 @@ public class Staff {
      */
     public void setType(jobType Type) {
         this.Type = Type;
+    }
+
+    /**
+     * @return the courses
+     */
+    public ArrayList<Course> getCourses() {
+        return courses;
+    }
+
+    /**
+     * @param courses the courses to set
+     */
+    public void setCourses(ArrayList<Course> courses) {
+        this.courses = courses;
     }
 
 }

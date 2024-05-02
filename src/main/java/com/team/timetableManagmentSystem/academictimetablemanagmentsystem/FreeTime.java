@@ -173,16 +173,13 @@ public class FreeTime {
     }
 
     /**
-     * @return the day name for the day id
+     * @return the number of freeHours 
      */
     public int getNumberOfFreeHours() {
         int x = 0;
-        for (int i = 0;
-                i < dayStartEnd.length;
-                i++) {
-
-            if (dayStartEnd[i].startSession != null) {
-                node n = dayStartEnd[i];
+        for (node dayStartEnd1 : dayStartEnd) {
+            if (dayStartEnd1.startSession != null) {
+                node n = dayStartEnd1;
                 x += n.endSession - n.startSession;
                 while (n.next != null) {
                     n = n.next;

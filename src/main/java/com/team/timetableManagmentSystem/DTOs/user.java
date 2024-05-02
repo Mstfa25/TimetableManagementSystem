@@ -6,6 +6,8 @@ public class user {
     private String username;
     private String password;
     private int role;
+    private Staff staff;
+    private String roleName;
 
     public user(int id, String username, String password, int role) {
         this.id = id;
@@ -14,11 +16,19 @@ public class user {
         this.role = role;
     }
 
+    public user(int id, String username,int role, String roleName, Staff staff) {
+        this.id = id;
+        this.username = username;
+        this.role = role;
+        this.roleName=roleName;
+        this.staff = staff;
+    }
+    
+    
+
     public user() {
     }
 
-    
-    
     /**
      * @return the username
      */
@@ -73,5 +83,33 @@ public class user {
      */
     public void setId(int id) {
         this.id = id;
+    }
+
+    /**
+     * @return the staff
+     */
+    public Staff getStaff() {
+        return staff;
+    }
+
+    /**
+     * @param staff the staff to set
+     */
+    public void setStaff(Staff staff) {
+        this.staff = staff;
+    }
+
+    /**
+     * @return the roleName
+     */
+    public String getRoleName() {
+        return roleName;
+    }
+
+    /**
+     * @param roleName the roleName to set
+     */
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 }
