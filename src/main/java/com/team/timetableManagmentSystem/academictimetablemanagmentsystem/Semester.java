@@ -24,18 +24,27 @@ public class Semester {
     private FreeTime freeTime;
     private boolean splitted;
     private int[] numberOfRoomsInDay;
-
+    private ArrayList<LecGroup> AllLecGroups;
+    
     public Semester(int id) {
         this.id = id;
         courses = new ArrayList<>();
         branchs = new ArrayList<>();
         freeTime = new FreeTime(1);
+        AllLecGroups=new ArrayList<>();
     }
 
     public Semester(int id, int number, int studyPlanId, String studyPlanName, int facultyId, String facultyName) {
         this.id = id;
         this.number = number;
         this.studyPlan = new StudyPlan(studyPlanId, studyPlanName, facultyId, facultyName);
+        AllLecGroups=new ArrayList<>();
+    }
+    
+    public Semester(int id, int number) {
+        this.id = id;
+        this.number = number;
+        AllLecGroups=new ArrayList<>();
     }
 
     public Semester() {
@@ -167,6 +176,20 @@ public class Semester {
      */
     public void setStudyPlan(StudyPlan studyPlan) {
         this.studyPlan = studyPlan;
+    }
+
+    /**
+     * @return the AllLecGroups
+     */
+    public ArrayList<LecGroup> getAllLecGroups() {
+        return AllLecGroups;
+    }
+
+    /**
+     * @param AllLecGroups the AllLecGroups to set
+     */
+    public void setAllLecGroups(ArrayList<LecGroup> AllLecGroups) {
+        this.AllLecGroups = AllLecGroups;
     }
 
 }

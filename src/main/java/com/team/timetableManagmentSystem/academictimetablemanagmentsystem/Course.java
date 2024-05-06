@@ -3,21 +3,24 @@ package com.team.timetableManagmentSystem.academictimetablemanagmentsystem;
 import com.team.timetableManagmentSystem.database.connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+
 /**
  * used in the operation of creating timeTable
+ *
  * @data_field id for identifying the course
  * @data_field lectureHours is for specifying the number of lecture hours
  * @data_field labHours is for specifying the number of lab hours
  * @data_field studyPlan is for specifying the study plan of the course
  * @data_field faculty is for specifying the faculty of the course
- * @data_field staff is for specifying the staff used in timetable creation 
+ * @data_field staff is for specifying the staff used in timetable creation
  * @data_field semester is for specifying the semester of the course
  * @data_field name is for specifying the name of the course
  * @data_field code is for specifying the code of the course
- * @data_field lectureGoup is for specifying the  lectureGoup of the course
- * @data_field group is for specifying the section group 
- * @data_field lecGroups is for specifying the lecGroups in the lecture group 
- * @data_field roomsTypesForSection is for specifying the room types for the section 
+ * @data_field lectureGoup is for specifying the lectureGoup of the course
+ * @data_field group is for specifying the section group
+ * @data_field lecGroups is for specifying the lecGroups in the lecture group
+ * @data_field roomsTypesForSection is for specifying the room types for the
+ * section
  * @author Mostafa
  */
 public class Course {
@@ -35,9 +38,11 @@ public class Course {
     private SectionGroup group;
     private ArrayList<LecGroup> lecGroups;
     private ArrayList<Integer> roomsTypesForSection;
+    private ArrayList<Semester> otherSemster;
 
     public Course(int id) {
         this.id = id;
+        otherSemster=new ArrayList<>();
     }
 
     public Course(int id,
@@ -55,7 +60,7 @@ public class Course {
             String studyPlanName,
             int facultyId,
             String facultyName) {
-        
+
         this.id = id;
         this.name = name;
         this.code = code;
@@ -76,30 +81,32 @@ public class Course {
                 facultyName);
         this.studyPlan = semester.getStudyPlan();
         this.faculty = studyPlan.getFaculty();
+        otherSemster=new ArrayList<>();
     }
 
     public Course(int id,
             String name) {
         this.id = id;
         this.name = name;
+        otherSemster=new ArrayList<>();
     }
 
     public Course(int id,
             Staff staff) {
-        this.id=id;
-        this.staff=staff;
+        this.id = id;
+        this.staff = staff;
+        otherSemster=new ArrayList<>();
     }
-    
-    
 
     public Course(int id,
             String name,
             int semesterId) {
         this.id = id;
         this.name = name;
-        semester=new Semester(semesterId);
+        semester = new Semester(semesterId);
+        otherSemster=new ArrayList<>();
     }
-    
+
     /**
      * @return the id
      */
@@ -108,8 +115,8 @@ public class Course {
     }
 
     /**
-     * get the lectureHours ,semesterId , lectureGroupId, ((staffId, branchId) for doctors)
-     * from the database by the id of the course
+     * get the lectureHours ,semesterId , lectureGroupId, ((staffId, branchId)
+     * for doctors) from the database by the id of the course
      */
     void getTheDataForLectureTimetable() {
         connection conn = new connection();
@@ -130,12 +137,12 @@ public class Course {
             rs = conn.select("select staffId,"
                     + "BranchId "
                     + "from coursesstaff "
-                    + "where courseId = " + id + 
-                    " and staffId in "
-                            + "(select id "
-                            + "from staff "
-                            //the docotor type id is 1
-                            + "where JobTypeId = 1)");
+                    + "where courseId = " + id
+                    + " and staffId in "
+                    + "(select id "
+                    + "from staff "
+                    //the docotor type id is 1
+                    + "where JobTypeId = 1)");
             if (rs.next()) {
                 staff = new Staff(rs.getInt(1),
                         new Branch(rs.getInt(2)));
@@ -346,6 +353,20 @@ public class Course {
      */
     public void setStudyPlan(StudyPlan studyPlan) {
         this.studyPlan = studyPlan;
+    }
+
+    /**
+     * @return the otherSemster
+     */
+    public ArrayList<Semester> getOtherSemster() {
+        return otherSemster;
+    }
+
+    /**
+     * @param otherSemster the otherSemster to set
+     */
+    public void setOtherSemster(ArrayList<Semester> otherSemster) {
+        this.otherSemster = otherSemster;
     }
 
 }

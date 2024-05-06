@@ -83,6 +83,7 @@ public class SectionGroup {
         this.numberOfGroups = Groups.size();
         this.Groups = new sectionGroups[Groups.size()];
         for (int i = 0; i < Groups.size(); i++) {
+            System.out.println(i);
             this.Groups[i] = new sectionGroups(Groups.get(i));
             this.Groups[i].remaining = remaining;
         }
