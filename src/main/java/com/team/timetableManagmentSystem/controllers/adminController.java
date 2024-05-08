@@ -693,6 +693,24 @@ public class adminController {
         return adminResponse(session);
     }
 
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllLecGroups")
+    public Object getAllLecGroups(HttpSession session) {
+        if (isadmin(session)) {
+            return adminService.getAllLecGroups();
+        }
+        return adminResponse(session);
+    }
+    
+    @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
+    @RequestMapping("getAllLecGroupBranches")
+    public Object getAllLecGroupBranches(HttpSession session) {
+        if (isadmin(session)) {
+            return adminService.getAllLecGroupbranchs();
+        }
+        return adminResponse(session);
+    }
+    
     @RequestMapping("addSectionGroup")
     public ResponseEntity<?> addSectionGroup(HttpSession session, @RequestBody SectionGroup sectionGroup) {
         if (isadmin(session)) {

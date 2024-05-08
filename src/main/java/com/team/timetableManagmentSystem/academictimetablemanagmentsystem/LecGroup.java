@@ -131,6 +131,19 @@ public class LecGroup {
         }
         return r;
     }
+    
+    ArrayList<Room> getRoomsFreeAtTwoTimesInTwoDays(int day, int hour,int secoundday) {
+        ArrayList<Room> r = new ArrayList<>();
+        for (Branch branch : branches) {
+            Room r1 = branch.getARoomFreeAtSameHourInTwoDays(day, hour, secoundday);
+            if (r1 != null) {
+                r.add(r1);
+            } else {
+                return null;
+            }
+        }
+        return r;
+    }
 
     /**
      * 

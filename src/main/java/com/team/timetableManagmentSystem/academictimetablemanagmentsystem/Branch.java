@@ -388,6 +388,24 @@ public class Branch {
         }
         return null;
     }
+    
+    public Room getARoomFreeAtSameHourInTwoDays(int day, int hour,int dayTwo) {
+        rooms.sort((o1, o2) -> {
+            return o1
+                    .getRoomtype()
+                    .getId() - o2
+                            .getRoomtype()
+                            .getId();
+        });
+        for (Room room : rooms) {
+            if (room.getFreeTime().isFreeAt(day,hour)
+                    &&room.getFreeTime().isFreeAt(dayTwo,hour)) {
+                return room;
+            }
+        }
+        return null;
+    }
+    
 
     /**
      *

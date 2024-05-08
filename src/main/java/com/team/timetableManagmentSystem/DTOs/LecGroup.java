@@ -17,6 +17,14 @@ public class LecGroup {
         this.id = id;
         this.name = name;
     }
+
+    public LecGroup(int id, String name,  int lectuerGoupid,String lectuerGroupName) {
+        this.id = id;
+        this.name = name;
+        this.lectuerGoup=new LectureGroup(lectuerGoupid, lectuerGroupName);
+    }
+    
+    
     
     
     

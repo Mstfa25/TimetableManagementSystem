@@ -86,6 +86,7 @@ public class Timetable {
      * @param coursesIds
      */
     public void createLectureTimetable(Integer... coursesIds) {
+
         Course[] courses = new Course[coursesIds.length];
         List<Integer> a = Arrays.asList(coursesIds);
         ArrayList<Branch> allBranchesWithHostingRooms = Branch.getAllBranchesWithHostingRooms();
@@ -617,33 +618,35 @@ public class Timetable {
                         }
                         if (hostingRoom != null && rooms != null && lecGroupBranches && staff && otherBranches) {
                             if (semester.getCourses().get(i % semester.getCourses().size()).getStaff().getIssymmetric()[day % 3]) {
-                                TimeInTimetable t = new TimeInTimetable(semester.getCourses().get(i % semester.getCourses().size()).getStaff(), semester.getCourses().get(i % semester.getCourses().size()), semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j).getBranchs(), semester.getCourses().get(i % semester.getCourses().size()).getStaff().getBranch(), rooms, hostingRoom, (day) % 6, k, k + 1, null, semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j), this),
-                                        t1 = new TimeInTimetable(semester.getCourses().get(i % semester.getCourses().size()).getStaff(), semester.getCourses().get(i % semester.getCourses().size()), semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j).getBranchs(), semester.getCourses().get(i % semester.getCourses().size()).getStaff().getBranch(), rooms, hostingRoom, (day + 3) % 6, k, k + 1, null, semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j), this);
-                                timesInTimetable.add(t);
-                                timesInTimetable.add(t1);
-                                hostingRoom.getFreeTime().removeAnHour(day, k);
-                                hostingRoom.getFreeTime().removeAnHour((day + 3) % 6, k);
-                                for (int l = 0; l < rooms.size(); l++) {
-                                    rooms.get(l).getFreeTime().removeAnHour(day, k);
-                                    rooms.get(l).getFreeTime().removeAnHour((day + 3) % 6, k);
-                                }
-                                semester.getCourses().get(i % semester.getCourses().size()).getStaff().getFreeTime().removeAnHour(day, k);
-                                for (int l = 0; l < semester.getCourses().get(i % semester.getCourses().size()).getOtherSemster().size(); l++) {
-                                    for (int m = 0; m < semester.getCourses().get(i % semester.getCourses().size()).getOtherSemster().get(l).getAllLecGroups().size(); m++) {
-                                        for (int n = 0; n < semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j).getBranchs().size(); n++) {
-                                            for (int o = 0; o < semester.getCourses().get(i % semester.getCourses().size()).getOtherSemster().get(l).getAllLecGroups().get(m).getBranchs().size(); o++) {
-                                                if (semester.getCourses().get(i % semester.getCourses().size()).getOtherSemster().get(l).getAllLecGroups().get(m).getBranchs().get(o).getId() == semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j).getBranchs().get(n).getId()) {
-                                                    semester.getCourses().get(i % semester.getCourses().size()).getOtherSemster().get(l).getAllLecGroups().get(m).getFreeTime().removeAnHour(day, k);
+                                rooms = semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j).getRoomsFreeAtTwoTimesInTwoDays(day, k, (day + 3) % 6);
+                                if (rooms != null) {
+                                    TimeInTimetable t = new TimeInTimetable(semester.getCourses().get(i % semester.getCourses().size()).getStaff(), semester.getCourses().get(i % semester.getCourses().size()), semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j).getBranchs(), semester.getCourses().get(i % semester.getCourses().size()).getStaff().getBranch(), rooms, hostingRoom, (day) % 6, k, k + 1, null, semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j), this),
+                                            t1 = new TimeInTimetable(semester.getCourses().get(i % semester.getCourses().size()).getStaff(), semester.getCourses().get(i % semester.getCourses().size()), semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j).getBranchs(), semester.getCourses().get(i % semester.getCourses().size()).getStaff().getBranch(), rooms, hostingRoom, (day + 3) % 6, k, k + 1, null, semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j), this);
+                                    timesInTimetable.add(t);
+                                    timesInTimetable.add(t1);
+                                    hostingRoom.getFreeTime().removeAnHour(day, k);
+                                    hostingRoom.getFreeTime().removeAnHour((day + 3) % 6, k);
+                                    for (int l = 0; l < rooms.size(); l++) {
+                                        rooms.get(l).getFreeTime().removeAnHour(day, k);
+                                        rooms.get(l).getFreeTime().removeAnHour((day + 3) % 6, k);
+                                    }
+                                    semester.getCourses().get(i % semester.getCourses().size()).getStaff().getFreeTime().removeAnHour(day, k);
+                                    for (int l = 0; l < semester.getCourses().get(i % semester.getCourses().size()).getOtherSemster().size(); l++) {
+                                        for (int m = 0; m < semester.getCourses().get(i % semester.getCourses().size()).getOtherSemster().get(l).getAllLecGroups().size(); m++) {
+                                            for (int n = 0; n < semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j).getBranchs().size(); n++) {
+                                                for (int o = 0; o < semester.getCourses().get(i % semester.getCourses().size()).getOtherSemster().get(l).getAllLecGroups().get(m).getBranchs().size(); o++) {
+                                                    if (semester.getCourses().get(i % semester.getCourses().size()).getOtherSemster().get(l).getAllLecGroups().get(m).getBranchs().get(o).getId() == semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j).getBranchs().get(n).getId()) {
+                                                        semester.getCourses().get(i % semester.getCourses().size()).getOtherSemster().get(l).getAllLecGroups().get(m).getFreeTime().removeAnHour(day, k);
+                                                    }
                                                 }
-                                            }
 
+                                            }
                                         }
                                     }
+                                    semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j).getFreeTime().removeAnHour(day, k);
+                                    semester.getCourses().get(i % semester.getCourses().size()).getStaff().getFreeTime().removeAnHour((day + 3) % 6, k);
+                                    semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j).getFreeTime().removeAnHour((day + 3) % 6, k);
                                 }
-                                semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j).getFreeTime().removeAnHour(day, k);
-                                semester.getCourses().get(i % semester.getCourses().size()).getStaff().getFreeTime().removeAnHour((day + 3) % 6, k);
-                                semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j).getFreeTime().removeAnHour((day + 3) % 6, k);
-
                             } else {
                                 TimeInTimetable t = new TimeInTimetable(semester.getCourses().get(i % semester.getCourses().size()).getStaff(), semester.getCourses().get(i % semester.getCourses().size()), semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j).getBranchs(), semester.getCourses().get(i % semester.getCourses().size()).getStaff().getBranch(), rooms, hostingRoom, (day) % 6, k, k + 2, null, semester.getCourses().get(i % semester.getCourses().size()).getLecGroups().get(j), this);
                                 timesInTimetable.add(t);
@@ -721,8 +724,7 @@ public class Timetable {
      * @param semester
      * @param splitedSemesters
      */
-    void splitSemester(Semester semester, splitedSemestersWithDays splitedSemesters
-    ) {
+    void splitSemester(Semester semester, splitedSemestersWithDays splitedSemesters) {
         semester.setTheNumberOfRoomsInDay();
         semester.getCourses().sort((t, t1) -> {
             return t.getStaff().getFreeTime().getNumberOfDays() - t1.getStaff().getFreeTime().getNumberOfDays();
@@ -1570,8 +1572,7 @@ public class Timetable {
         }
     }
 
-    coursesWithDay canBeInOneDay(splitedSemestersWithDays splitedSemesters, Course... courses
-    ) {
+    coursesWithDay canBeInOneDay(splitedSemestersWithDays splitedSemesters, Course... courses) {
         coursesWithDay c = null;
         FreeTime f = new FreeTime(1);
         for (Course course : courses) {
@@ -1599,6 +1600,7 @@ public class Timetable {
                                 && courses[j].getStaff().getBranch().getNumberOfHostingRoomsInDay()[(i + 3) % 6] >= courses[j].getLecGroups().size()
                                 && courses[j].getSemester().getNumberOfRoomsInDay()[(i + 3) % 6] >= courses[j].getLecGroups().size()),
                                 b = ((!courses[j].getStaff().getIssymmetric()[i % 3]
+                                && courses[j].getStaff().getFreeTime().dayStartEnd[i].startSession != null
                                 && courses[j].getStaff().getNumberOfFreeHoursInDays()[i] >= courses[j].getLecGroups().size() * courses[j].getLabHours()
                                 && courses[j].getStaff().getBranch().getNumberOfHostingRoomsInDay()[i] >= courses[j].getLecGroups().size() * courses[j].getLabHours()
                                 && courses[j].getSemester().getNumberOfRoomsInDay()[i] >= courses[j].getLecGroups().size() * courses[j].getLabHours()));
@@ -1678,8 +1680,7 @@ public class Timetable {
         }
     }
 
-    void addCoursesToTheLecuterTimeSplitedSemester(splitedSemestersWithDays splitedSemesters, coursesWithDay courses
-    ) {
+    void addCoursesToTheLecuterTimeSplitedSemester(splitedSemestersWithDays splitedSemesters, coursesWithDay courses) {
         //System.out.println("");
         splitedSemesters.add(
                 courses.getCourses(),
@@ -1691,9 +1692,10 @@ public class Timetable {
                 courses.getCourses().get(j).getStaff().getBranch().getNumberOfHostingRoomsInDay()[courses.getDay()] = (courses.getCourses().get(j).getStaff().getBranch().getNumberOfHostingRoomsInDay()[courses.getDay()] - courses.getCourses().get(j).getLecGroups().size());
                 courses.getCourses().get(j).getSemester().getNumberOfRoomsInDay()[courses.getDay()] = (courses.getCourses().get(j).getSemester().getNumberOfRoomsInDay()[courses.getDay()] - courses.getCourses().get(j).getLecGroups().size());
                 courses.getCourses().get(j).getStaff().getNumberOfFreeHoursInDays()[(courses.getDay() + 3) % 6] -= courses.getCourses().get(j).getLecGroups().size();
-                courses.getCourses().get(j).getStaff().getBranch().getNumberOfHostingRoomsInDay()[(courses.getDay() + 3)] = (courses.getCourses().get(j).getStaff().getBranch().getNumberOfHostingRoomsInDay()[(courses.getDay() + 3)] - courses.getCourses().get(j).getLecGroups().size());
-                courses.getCourses().get(j).getSemester().getNumberOfRoomsInDay()[(courses.getDay() + 3)] = (courses.getCourses().get(j).getSemester().getNumberOfRoomsInDay()[(courses.getDay() + 3)] - courses.getCourses().get(j).getLecGroups().size());
-            } else {
+                courses.getCourses().get(j).getStaff().getBranch().getNumberOfHostingRoomsInDay()[(courses.getDay() + 3) % 6] = (courses.getCourses().get(j).getStaff().getBranch().getNumberOfHostingRoomsInDay()[(courses.getDay() + 3)%6] - courses.getCourses().get(j).getLecGroups().size());
+                courses.getCourses().get(j).getSemester().getNumberOfRoomsInDay()[(courses.getDay() + 3)%6] = (courses.getCourses().get(j).getSemester().getNumberOfRoomsInDay()[(courses.getDay() + 3)%6] - courses.getCourses().get(j).getLecGroups().size());
+            } else if (courses.getCourses().get(j).getStaff().getFreeTime().dayStartEnd[courses.getDay()].startSession != null) {
+
                 courses.getCourses().get(j).getStaff().getNumberOfFreeHoursInDays()[courses.getDay()] -= courses.getCourses().get(j).getLecGroups().size() * courses.getCourses().get(j).getLabHours();
                 courses.getCourses().get(j).getStaff().getBranch().getNumberOfHostingRoomsInDay()[courses.getDay()] -= (courses.getCourses().get(j).getLecGroups().size() * courses.getCourses().get(j).getLabHours());
                 courses.getCourses().get(j).getSemester().getNumberOfRoomsInDay()[courses.getDay()] -= (courses.getCourses().get(j).getLecGroups().size() * courses.getCourses().get(j).getLabHours());
@@ -1768,7 +1770,7 @@ public class Timetable {
         try {
             ResultSet rs = conn.select("select "
                     + "courseId, semesterId, semester.id "
-                    + "from ccoursesWithMoreThanSemester "
+                    + "from coursesWithMoreThanSemester "
                     + "inner join semester on semesterId=semester.id "
                     + "where courseId in "
                     + "(" + coursesIds.toString().substring(1, coursesIds.toString().length() - 1) + ")");

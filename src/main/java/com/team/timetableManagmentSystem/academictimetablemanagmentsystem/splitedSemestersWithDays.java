@@ -20,7 +20,7 @@ public class splitedSemestersWithDays {
         for (Course course : courses) {
 
             this.getCourses().get(day).add(course);
-            if (course.getStaff().getIssymmetric()[day]) {
+            if (course.getStaff().getIssymmetric()[day%3]) {
                 this.getCourses().get((day + 3) % 6).add(course);
             }
 
