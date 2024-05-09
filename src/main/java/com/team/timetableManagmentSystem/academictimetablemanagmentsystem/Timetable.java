@@ -103,6 +103,14 @@ public class Timetable {
         assineValuesToStaffIsSymmetricAndFreeTimeInDays(staff);
         RemoveHostingBranchesFromLecGroups(courses);
         makeTheLecFreeTimeRefranceInEachSemester(semesters);
+        for (Semester semester : semesters) {
+            semester.getCourses().sort((o1, o2) -> {
+                return o1.getStaff().getFreeTime().getNumberOfDays() - o2.getStaff().getFreeTime().getNumberOfDays();
+            });
+        }
+        semesters.sort((o1, o2) -> {
+            return o1.getCourses().get(0).getStaff().getFreeTime().getNumberOfDays() - o2.getCourses().get(0).getStaff().getFreeTime().getNumberOfDays();
+        });
         splitedSemestersWithDays s = splitTheSemesterIntoDays(semesters);
         if (!cheekIfallSemestersWereAddAndRemoveTheAddedSemesters(s, semesters)) {
             System.out.println("not all the semesters were added");
@@ -111,6 +119,9 @@ public class Timetable {
         System.out.println(timesInTimetable.size());
         System.out.println(courses.length);
         System.out.println("            ----------------------                  ");
+
+        System.out.println("");
+
     }
 
     boolean cheekIfallSemestersWereAddAndRemoveTheAddedSemesters(splitedSemestersWithDays s, ArrayList<Semester> semesters) {
@@ -709,8 +720,7 @@ public class Timetable {
      * @param semesters
      * @return
      */
-    splitedSemestersWithDays splitTheSemesterIntoDays(ArrayList<Semester> semesters
-    ) {
+    splitedSemestersWithDays splitTheSemesterIntoDays(ArrayList<Semester> semesters) {
         splitedSemestersWithDays splitedSemesters = new splitedSemestersWithDays();
         for (Semester semester : semesters) {
             splitSemester(semester, splitedSemesters);
@@ -726,9 +736,9 @@ public class Timetable {
      */
     void splitSemester(Semester semester, splitedSemestersWithDays splitedSemesters) {
         semester.setTheNumberOfRoomsInDay();
-        semester.getCourses().sort((t, t1) -> {
-            return t.getStaff().getFreeTime().getNumberOfDays() - t1.getStaff().getFreeTime().getNumberOfDays();
-        });
+//        semester.getCourses().sort((t, t1) -> {
+//            return t.getStaff().getFreeTime().getNumberOfDays() - t1.getStaff().getFreeTime().getNumberOfDays();
+//        });
 
         if (semester.getCourses().size() <= 3) {
             Course[] c = semester.getCourses().toArray(new Course[semester.getCourses().size()]);
@@ -915,6 +925,7 @@ public class Timetable {
                                 splitedSemesters,
                                 canBeInOneDay(splitedSemesters, c)
                         );
+                        return;
                     }
                 }
                 case 5 -> {
@@ -991,6 +1002,7 @@ public class Timetable {
                             }
                         }
                     }
+                    return;
                 }
                 default -> {
                     for (int i = 0; i < semester.getCourses().size(); i++) {
@@ -1598,6 +1610,77 @@ public class Timetable {
                                 && courses[j].getSemester().getNumberOfRoomsInDay()[i] >= courses[j].getLecGroups().size()
                                 && courses[j].getStaff().getNumberOfFreeHoursInDays()[(i + 3) % 6] >= courses[j].getLecGroups().size()
                                 && courses[j].getStaff().getBranch().getNumberOfHostingRoomsInDay()[(i + 3) % 6] >= courses[j].getLecGroups().size()
+                                && courses[j].getSemester().getNumberOfRoomsInDay()[(i + 3) % 6] >= courses[j].getLecGroups().size());
+
+                        fetted = fetted && (a);
+                        if (fetted) {
+                            if (courses[j].getStaff().getIssymmetric()[i % 3]) {
+                                courses[j].getStaff().getNumberOfFreeHoursInDays()[i] -= courses[j].getLecGroups().size();
+                                courses[j].getStaff().getBranch().getNumberOfHostingRoomsInDay()[i] = (courses[j].getStaff().getBranch().getNumberOfHostingRoomsInDay()[i] - courses[j].getLecGroups().size());
+                                courses[j].getSemester().getNumberOfRoomsInDay()[i] = (courses[j].getSemester().getNumberOfRoomsInDay()[i] - courses[j].getLecGroups().size());
+                                courses[j].getStaff().getNumberOfFreeHoursInDays()[(i + 3) % 6] -= courses[j].getLecGroups().size();
+                                courses[j].getStaff().getBranch().getNumberOfHostingRoomsInDay()[(i + 3) % 6] = (courses[j].getStaff().getBranch().getNumberOfHostingRoomsInDay()[(i + 3) % 6] - courses[j].getLecGroups().size());
+                                courses[j].getSemester().getNumberOfRoomsInDay()[(i + 3) % 6] = (courses[j].getSemester().getNumberOfRoomsInDay()[(i + 3) % 6] - courses[j].getLecGroups().size());
+                                subtracted[j] += courses[j].getLecGroups().size();
+                            } else {
+                                courses[j].getStaff().getNumberOfFreeHoursInDays()[i] -= courses[j].getLecGroups().size() * courses[j].getLabHours();
+                                courses[j].getStaff().getBranch().getNumberOfHostingRoomsInDay()[i] -= (courses[j].getLecGroups().size() * courses[j].getLabHours());
+                                courses[j].getSemester().getNumberOfRoomsInDay()[i] -= (courses[j].getLecGroups().size() * courses[j].getLabHours());
+                                subtracted[j] += courses[j].getLecGroups().size() * courses[j].getLabHours();
+                            }
+                        }
+                    }
+                    if (fetted) {
+//                            semester.setSplitted(true);
+                        c = new coursesWithDay();
+                        c.setCourses(courses);
+                        c.setDay(i);
+                        for (int j = 0; j < courses.length; j++) {
+                            courses[j].getStaff().getNumberOfFreeHoursInDays()[i] += subtracted[j];
+                            courses[j].getStaff().getBranch().getNumberOfHostingRoomsInDay()[i] += subtracted[j];
+                            courses[j].getSemester().getNumberOfRoomsInDay()[i] += subtracted[j];
+                            if (courses[j].getStaff().getIssymmetric()[i % 3]) {
+                                courses[j].getStaff().getNumberOfFreeHoursInDays()[(i + 3) % 6] += subtracted[j];
+                                courses[j].getStaff().getBranch().getNumberOfHostingRoomsInDay()[(i + 3) % 6] += subtracted[j];
+                                courses[j].getSemester().getNumberOfRoomsInDay()[(i + 3) % 6] += subtracted[j];
+                            }
+                        }
+                        break;
+                    } else {
+                        for (int j = 0; j < subtracted.length; j++) {
+                            courses[j].getStaff().getNumberOfFreeHoursInDays()[i] += subtracted[j];
+                            courses[j].getStaff().getBranch().getNumberOfHostingRoomsInDay()[i] += subtracted[j];
+                            courses[j].getSemester().getNumberOfRoomsInDay()[i] += subtracted[j];
+                            if (courses[j].getStaff().getIssymmetric()[i % 3]) {
+                                courses[j].getStaff().getNumberOfFreeHoursInDays()[(i + 3) % 6] += subtracted[j];
+                                courses[j].getStaff().getBranch().getNumberOfHostingRoomsInDay()[(i + 3) % 6] += subtracted[j];
+                                courses[j].getSemester().getNumberOfRoomsInDay()[(i + 3) % 6] += subtracted[j];
+                            }
+                        }
+                    }
+                }
+            }
+            if (fetted) {
+                return c;
+            }
+            for (int i = 0; i < 6; i++) {
+                fetted = true;
+                for (int j = 0; j < splitedSemesters.getCourses().get(i).size(); j++) {
+                    if (splitedSemesters.getCourses().get(i).get(j).getSemester().getId() == courses[0].getSemester().getId()) {
+                        fetted = false;
+                        break;
+                    }
+
+                }
+                if (daysOfFreeTime[i] && fetted) {
+                    int subtracted[] = new int[courses.length];
+                    for (int j = 0; j < courses.length; j++) {
+                        boolean a = (courses[j].getStaff().getIssymmetric()[i % 3]
+                                && courses[j].getStaff().getNumberOfFreeHoursInDays()[i] >= courses[j].getLecGroups().size()
+                                && courses[j].getStaff().getBranch().getNumberOfHostingRoomsInDay()[i] >= courses[j].getLecGroups().size()
+                                && courses[j].getSemester().getNumberOfRoomsInDay()[i] >= courses[j].getLecGroups().size()
+                                && courses[j].getStaff().getNumberOfFreeHoursInDays()[(i + 3) % 6] >= courses[j].getLecGroups().size()
+                                && courses[j].getStaff().getBranch().getNumberOfHostingRoomsInDay()[(i + 3) % 6] >= courses[j].getLecGroups().size()
                                 && courses[j].getSemester().getNumberOfRoomsInDay()[(i + 3) % 6] >= courses[j].getLecGroups().size()),
                                 b = ((!courses[j].getStaff().getIssymmetric()[i % 3]
                                 && courses[j].getStaff().getFreeTime().dayStartEnd[i].startSession != null
@@ -1692,8 +1775,8 @@ public class Timetable {
                 courses.getCourses().get(j).getStaff().getBranch().getNumberOfHostingRoomsInDay()[courses.getDay()] = (courses.getCourses().get(j).getStaff().getBranch().getNumberOfHostingRoomsInDay()[courses.getDay()] - courses.getCourses().get(j).getLecGroups().size());
                 courses.getCourses().get(j).getSemester().getNumberOfRoomsInDay()[courses.getDay()] = (courses.getCourses().get(j).getSemester().getNumberOfRoomsInDay()[courses.getDay()] - courses.getCourses().get(j).getLecGroups().size());
                 courses.getCourses().get(j).getStaff().getNumberOfFreeHoursInDays()[(courses.getDay() + 3) % 6] -= courses.getCourses().get(j).getLecGroups().size();
-                courses.getCourses().get(j).getStaff().getBranch().getNumberOfHostingRoomsInDay()[(courses.getDay() + 3) % 6] = (courses.getCourses().get(j).getStaff().getBranch().getNumberOfHostingRoomsInDay()[(courses.getDay() + 3)%6] - courses.getCourses().get(j).getLecGroups().size());
-                courses.getCourses().get(j).getSemester().getNumberOfRoomsInDay()[(courses.getDay() + 3)%6] = (courses.getCourses().get(j).getSemester().getNumberOfRoomsInDay()[(courses.getDay() + 3)%6] - courses.getCourses().get(j).getLecGroups().size());
+                courses.getCourses().get(j).getStaff().getBranch().getNumberOfHostingRoomsInDay()[(courses.getDay() + 3) % 6] = (courses.getCourses().get(j).getStaff().getBranch().getNumberOfHostingRoomsInDay()[(courses.getDay() + 3) % 6] - courses.getCourses().get(j).getLecGroups().size());
+                courses.getCourses().get(j).getSemester().getNumberOfRoomsInDay()[(courses.getDay() + 3) % 6] = (courses.getCourses().get(j).getSemester().getNumberOfRoomsInDay()[(courses.getDay() + 3) % 6] - courses.getCourses().get(j).getLecGroups().size());
             } else if (courses.getCourses().get(j).getStaff().getFreeTime().dayStartEnd[courses.getDay()].startSession != null) {
 
                 courses.getCourses().get(j).getStaff().getNumberOfFreeHoursInDays()[courses.getDay()] -= courses.getCourses().get(j).getLecGroups().size() * courses.getCourses().get(j).getLabHours();
