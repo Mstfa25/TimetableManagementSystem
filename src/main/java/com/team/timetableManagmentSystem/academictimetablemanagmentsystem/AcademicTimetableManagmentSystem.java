@@ -7,7 +7,7 @@ public class AcademicTimetableManagmentSystem {
     public static void main(String[] args) {
         Timetable t = new Timetable(0);
         /*
-        -------------
+        -------
         25
         2
         27
