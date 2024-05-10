@@ -7,11 +7,9 @@ public class AcademicTimetableManagmentSystem {
     public static void main(String[] args) {
         Timetable t = new Timetable(0);
         /*
-        -------------
         25
         2
         27
-        -----------------
         */
       t.createLectureTimetable(1,  3, 4, 5, 6, 7,
                8, 9, 10, 11, 12, 13, 14, 15,
