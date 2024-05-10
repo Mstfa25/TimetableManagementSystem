@@ -1,0 +1,37 @@
+<div mat-dialog-title>
+    <h1>Staff Data</h1>
+</div>
+<form [formGroup]="staffform" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content class="content">
+        <div class="row-n">
+            <mat-form-field appearance="outline">
+                <mat-label>Name </mat-label>
+                <input matInput type="text" placeholder="Enter your Name" formControlName="jopname">
+              </mat-form-field>
+            
+        </div>
+        <div class="row-n">
+            <mat-form-field>
+                <mat-label>Branch Name</mat-label>
+                <mat-select formControlName="bname">
+                 
+                    <mat-option *ngFor="let val of branchname" [value]="val.id"> {{val.name}} </mat-option>
+                  
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Type jop</mat-label>
+                <mat-select formControlName="tjop">
+                 
+                    <mat-option *ngFor="let val of typejop" [value]="val.id"> {{val.name}} </mat-option>
+                  
+                </mat-select>
+              </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" [mat-dialog-close]="false" >Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="staffform.invalid">{{data ? 'Update':'Save'}}</button>
+    </div>
+   
+</form>

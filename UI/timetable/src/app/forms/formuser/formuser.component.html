@@ -1,0 +1,50 @@
+<div mat-dialog-title>
+    <h1>User Data</h1>
+</div>
+<form [formGroup]="userform" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content class="content">
+        <div class="row-n">
+            <mat-form-field>
+                <mat-label>Staff Name</mat-label>
+                <mat-select formControlName="sname">
+                 
+                    <mat-option *ngFor="let val of staffname " [value]="val.id"> {{val.name}} </mat-option>
+                  
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Branch</mat-label>
+                <mat-select formControlName="branch">
+                 
+                    <mat-option *ngFor="let val of branch " [value]="val.id"> {{val.name}} </mat-option>
+                  
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="role">
+                 
+                    <mat-option *ngFor="let val of role " [value]="val.id"> {{val.roleName}} </mat-option>
+                  
+                </mat-select>
+              </mat-form-field>
+        </div>
+        <div class="row-n">
+            <mat-form-field appearance="outline">
+                <mat-label> UserName</mat-label>
+                <input matInput type="text" placeholder="Enter username" formControlName="username">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label> Password</mat-label>
+                <input matInput type="password" placeholder="Enter Password" formControlName="password">
+              </mat-form-field>
+        </div>
+      
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" [mat-dialog-close]="false" >Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="userform.invalid">{{data ? 'Update':'Save'}}</button>
+    </div>
+   
+</form>
+

@@ -1,0 +1,88 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-nav  fixed-top" id="navid">
+    <div class="container">
+      <a
+        class="navbar-brand text-white text-uppercase fs-2 fw-bolder"
+        routerLink="/"
+        >TimeTable</a
+      >
+      <button
+        class="navbar-toggler bg-light"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon bg-light"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item me-3">
+            <a
+              class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2"
+              routerLink="home"
+              routerLinkActive="active rounded-3"
+              style="width: fit-content"
+              >Home</a
+            >
+          </li>
+       
+          <li class="nav-item dropdown" ngbDropdown >
+            <a ngbDropdownToggle  class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2"  routerLinkActive="active rounded-3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+             Branches
+            </a>
+            <ul class="dropdown-menu" ngbDropdownMenu>
+              <li><a class="dropdown-item" ngbDropdownItem   routerLink="branch"
+                routerLinkActive="active rounded-3">Branch Componet</a></li>
+              <li><a class="dropdown-item" ngbDropdownItem routerLink="room"
+                routerLinkActive="active rounded-3">Room Componet</a></li>
+                <li><a class="dropdown-item" ngbDropdownItem routerLink="staff"
+                  routerLinkActive="active rounded-3">Staff Componet</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <!-- <li><a class="dropdown-item" href="#" ngbDropdownItem>Something else here</a></li> -->
+            </ul>
+          </li>
+          <li class="nav-item dropdown" ngbDropdown >
+            <a ngbDropdownToggle  class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2"  routerLinkActive="active rounded-3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Faculties
+            </a>
+            <ul class="dropdown-menu" ngbDropdownMenu>
+              <li><a class="dropdown-item" ngbDropdownItem   routerLink="faculty"
+                routerLinkActive="active rounded-3">Faculty Componet</a></li>
+              
+              <li ><a class="dropdown-item " ngbDropdownItem routerLink="studyit"
+                routerLinkActive="active rounded-3">Stady Plan</a></li>
+                <li ><a class="dropdown-item" ngbDropdownItem routerLink="semsterit"
+                  routerLinkActive="active rounded-3">Semster</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" routerLink="lecgroup"
+                routerLinkActive="active rounded-3" ngbDropdownItem>Lecture Group</a></li>
+                <li><a class="dropdown-item" routerLink="section"
+                  routerLinkActive="active rounded-3" ngbDropdownItem>Section</a></li>
+                <li><a class="dropdown-item" routerLink="course"
+                  routerLinkActive="active rounded-3" ngbDropdownItem>Courses</a></li>
+            </ul>
+          </li>
+         
+          <li class="nav-item dropdown" ngbDropdown >
+            <a ngbDropdownToggle  class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2"  routerLinkActive="active rounded-3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+             Users
+            </a>
+            <ul class="dropdown-menu" ngbDropdownMenu>
+              <li><a class="dropdown-item" ngbDropdownItem   routerLink="user"
+                routerLinkActive="active rounded-3">Add User</a></li>
+              <li><a class="dropdown-item" ngbDropdownItem routerLink="changepass"
+                routerLinkActive="active rounded-3">Change Password</a></li>
+               
+              <li><hr class="dropdown-divider"></li>
+              <!-- <li><a class="dropdown-item" href="#" ngbDropdownItem>Something else here</a></li> -->
+            </ul>
+          </li>
+          <li class="nav-item me-5 ">
+            <span  role="button" (click)="logout()" class=" btn btn-light ms-2"> SignOut </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>

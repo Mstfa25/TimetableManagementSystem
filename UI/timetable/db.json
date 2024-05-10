@@ -1,0 +1,114 @@
+{
+  "branch": [
+    {
+      "id": "b7d3",
+      "name": "faoum"
+    },
+    {
+      "id": "0271",
+      "name": "dokki"
+    },
+    {
+      "name": "dokki1",
+      "id": "93c0"
+    },
+    {
+      "id": "5271",
+      "name": "jmid"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "573b",
+      "roomname": "ng12",
+      "capacity": 15,
+      "bname": "Dokki",
+      "troom": "Lab"
+    }
+  ],
+  "saff": [
+    {
+      "id": "c86a",
+      "jopname": "mai",
+      "bname": "Tanta",
+      "tjop": "TA"
+    }
+  ],
+  "faculty": [],
+  "studyit": [
+    {
+      "id": "20c8",
+      "sname": "math",
+      "fname": "IT"
+    }
+  ],
+  "semsterit": [],
+  "user": [
+    {
+      "id": "a3f8",
+      "sname": "TA",
+      "role": "1",
+      "branch": "fayoum",
+      "username": "nooor",
+      "password": "kmijoik"
+    },
+    {
+      "id": "f198",
+      "sname": "prof",
+      "role": "2222",
+      "branch": "dokki",
+      "username": "2232;l;",
+      "password": "12345"
+    }
+  ],
+  "lecgroup": [
+    {
+      "id": "7606",
+      "name": "526"
+    }
+  ],
+  "grouplec": [
+    {
+      "id": "96ac",
+      "lecname": "l25",
+      "nameg": "k,"
+    }
+  ],
+  "secgroup": [
+    {
+      "id": "dc4a",
+      "namesec": "l,l,",
+      "lecname": "l25",
+      "grouplecname": "156",
+      "groupbranname": true
+    }
+  ],
+  "course": [],
+  "section": [
+    {
+      "id": "c89b",
+      "secname": "gg1",
+      "namese": ",m,l",
+      "task": true
+    },
+    {
+      "id": "6be6",
+      "secname": "l25",
+      "namese": ",",
+      "branch": true
+    },
+    {
+      "id": "a07b",
+      "secname": "l25",
+      "namese": "kmmk",
+      "branch": true
+    },
+    {
+      "id": "c504",
+      "secname": "l25",
+      "namese": "m k",
+      "branch": true,
+      "capacity": "7"
+    }
+  ]
+}

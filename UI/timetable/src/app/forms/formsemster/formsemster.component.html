@@ -1,0 +1,28 @@
+<div mat-dialog-title>
+    <h1>Semster Data</h1>
+</div>
+<form [formGroup]="semform" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content class="content">
+        <div class="row-n">
+            <mat-form-field appearance="outline">
+                <mat-label> Semeter</mat-label>
+                <input matInput type="number" placeholder="Enter semster number" formControlName="snumber">
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Studypaln Name</mat-label>
+                <mat-select formControlName="studyname">
+                 
+                    <mat-option *ngFor="let val of stname " [value]="val.id"> {{val.name}} </mat-option>
+                  
+                </mat-select>
+              </mat-form-field>
+        </div>
+      
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" [mat-dialog-close]="false" >Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="semform.invalid">{{data ? 'Update':'Save'}}</button>
+    </div>
+   
+</form>
+
