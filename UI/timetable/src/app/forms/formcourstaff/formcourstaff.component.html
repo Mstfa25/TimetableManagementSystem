@@ -1,0 +1,46 @@
+<div mat-dialog-title>
+    <h1>CourseStaff Data</h1>
+</div>
+<form [formGroup]="coursestform" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content class="content">
+     
+        <div class="row-n">
+            <mat-form-field>
+                <mat-label>Course</mat-label>
+                <mat-select formControlName="course">
+                 
+                    <mat-option *ngFor="let val of courses" [value]="val"> {{val}} </mat-option>
+                  
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Branch</mat-label>
+                <mat-select formControlName="branch">
+                 
+                    <mat-option *ngFor="let val of branch" [value]="val"> {{val}} </mat-option>
+                  
+                </mat-select>
+              </mat-form-field>
+           
+              <mat-form-field>
+                <mat-label>Staff</mat-label>
+                <mat-select formControlName="staff">
+                 
+                    <mat-option *ngFor="let val of staff" [value]="val"> {{val}} </mat-option>
+                  
+                </mat-select>
+              </mat-form-field>
+        
+        </div>
+      
+     
+    </div>
+ 
+  
+  
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" [mat-dialog-close]="false" >Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="coursestform.invalid">{{data ? 'Update':'Save'}}</button>
+    </div>
+   
+</form>

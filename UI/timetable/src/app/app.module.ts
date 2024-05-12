@@ -44,6 +44,15 @@ import { CourseComponent } from './component/course/course.component';
 import { FormcourseComponent } from './forms/formcourse/formcourse.component';
 import { SectionComponent } from './component/section/section.component';
 import { FormsecComponent } from './forms/formsec/formsec.component';
+import { CoursestaffComponent } from './component/coursestaff/coursestaff.component';
+
+import { FormcourstaffComponent } from './forms/formcourstaff/formcourstaff.component';
+import { FormsecstafComponent } from './forms/formsecstaf/formsecstaf.component';
+import { TablelecComponent } from './component/tablelec/tablelec.component';
+import { FormtablelecComponent } from './forms/formtablelec/formtablelec.component';
+import { FormtablesecComponent } from './forms/formtablesec/formtablesec.component';
+import { TablesecComponent } from './component/tablesec/tablesec.component';
+
 
 @NgModule({
   declarations: [
@@ -74,6 +83,13 @@ import { FormsecComponent } from './forms/formsec/formsec.component';
     FormcourseComponent,
     SectionComponent,
     FormsecComponent,
+    CoursestaffComponent,
+    FormcourstaffComponent,
+    FormsecstafComponent,
+    TablelecComponent,
+    FormtablelecComponent,
+    FormtablesecComponent,
+    TablesecComponent
   
 
   ],
