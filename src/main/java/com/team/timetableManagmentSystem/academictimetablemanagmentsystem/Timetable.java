@@ -86,17 +86,16 @@ public class Timetable {
      * @param coursesIds
      */
     public void createLectureTimetable(Integer... coursesIds) {
-
         Course[] courses = new Course[coursesIds.length];
         List<Integer> a = Arrays.asList(coursesIds);
         ArrayList<Branch> allBranchesWithHostingRooms = Branch.getAllBranchesWithHostingRooms();
         courses = getAllCoursesDataForLectuer(a, courses, allBranchesWithHostingRooms);
         ArrayList<Branch> branchsWithRooms = Branch.getAllBranchesWithAllRooms();
-        makeTheLecGroupBranchesRefrance(courses, branchsWithRooms);
+        makeTheLecGroupBranchesRefrence(courses, branchsWithRooms);
         makeTheStaffRefrance(courses);
         ArrayList<Staff> staff = getStaffFreeTime(courses);
         setHostingRoomsInDaysForStaff(staff);
-        makeHostingRoomsRefrance(courses);
+        makeHostingRoomsReference(courses);
         getRoomsFreeTime(branchsWithRooms);
         ArrayList<Semester> semesters = getSemesters(courses);
         makeBranchesForEachSemester(semesters, branchsWithRooms);
@@ -116,14 +115,15 @@ public class Timetable {
             System.out.println("not all the semesters were added");
         }
         addTheLectureCoursesToTheTimeTable(s);
-        System.out.println(timesInTimetable.size());
+    }
+
+    /*
+            System.out.println(timesInTimetable.size());
         System.out.println(courses.length);
         System.out.println("            ----------------------                  ");
 
         System.out.println("");
-
-    }
-
+     */
     boolean cheekIfallSemestersWereAddAndRemoveTheAddedSemesters(splitedSemestersWithDays s, ArrayList<Semester> semesters) {
 
         for (int i = 0; i < 6; i++) {
@@ -138,15 +138,39 @@ public class Timetable {
     }
 
     /**
-     * iterate throw branches and get the freeTime for rooms in the branch
+     * get the freeTime for rooms from the database
      *
      * @param branchs
      */
     static void getRoomsFreeTime(ArrayList<Branch> branchs) {
+        ArrayList<Room> rooms = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < branchs.size(); i++) {
             for (int j = 0; j < branchs.get(i).getRooms().size(); j++) {
-                branchs.get(i).getRooms().get(j).getTheFreeTime();
+                rooms.add(branchs.get(i).getRooms().get(j));
+                sb.append(branchs.get(i).getRooms().get(j).getId()).append(", ");
             }
+        }
+        rooms.sort((o1, o2) -> {
+            return o1.getId() - o2.getId();
+        });
+        connection conn = new connection();
+        try {
+            int j = 0;
+            ResultSet rs = conn.select("select * from freetimeforrooms where roomid in (" + sb.substring(0, sb.length() - 2) + ") order by roomId");
+            while (rs.next()) {
+                for (int i = j; i < rooms.size(); i++) {
+                    if (rooms.get(i).getId() == rs.getInt(1)) {
+                        rooms.get(i).getFreeTime().addFreeTime(rs.getInt(2), rs.getInt(3), rs.getInt(4));
+                        j = i;
+                        break;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        } finally {
+            conn.close();
         }
     }
 
@@ -170,11 +194,11 @@ public class Timetable {
         ArrayList<Branch> allBranchesWithHostingRooms = Branch.getAllBranchesWithHostingRooms();
         courses = getAllCoursesDataForLectuer(courses, allBranchesWithHostingRooms);
         ArrayList<Branch> branchsWithRooms = Branch.getAllBranchesWithAllRooms();
-        makeTheLecGroupBranchesRefrance(courses, branchsWithRooms);
+        makeTheLecGroupBranchesRefrence(courses, branchsWithRooms);
         makeTheStaffRefrance(courses);
         ArrayList<Staff> staff = getStaffFreeTime(courses);
         setHostingRoomsInDaysForStaff(staff);
-        makeHostingRoomsRefrance(courses);
+        makeHostingRoomsReference(courses);
         getRoomsFreeTime(branchsWithRooms);
         ArrayList<Semester> semesters = getSemesters(courses);
         makeBranchesForEachSemester(semesters, branchsWithRooms);
@@ -205,7 +229,7 @@ public class Timetable {
 
     /**
      * remove the hosting branches from the lecGroup as it will be in all the
-     * lecGroups
+     * lecGroups in this course
      *
      * @param courses
      */
@@ -736,23 +760,17 @@ public class Timetable {
      */
     void splitSemester(Semester semester, splitedSemestersWithDays splitedSemesters) {
         semester.setTheNumberOfRoomsInDay();
-//        semester.getCourses().sort((t, t1) -> {
-//            return t.getStaff().getFreeTime().getNumberOfDays() - t1.getStaff().getFreeTime().getNumberOfDays();
-//        });
 
         if (semester.getCourses().size() <= 3) {
             Course[] c = semester.getCourses().toArray(new Course[semester.getCourses().size()]);
 
             if (canBeInOneDay(splitedSemesters, c) != null) {
-                // System.out.println("fetted " + semester.getId() + "    " + semester.getCourses().get(0).getId());
-                //(canBeInOneDay(splitedSemesters, c));
                 addCoursesToTheLecuterTimeSplitedSemester(
                         splitedSemesters,
                         canBeInOneDay(splitedSemesters, c)
                 );
             } else if (semester.getCourses().size() == 2) {
                 if (canBeInOneDay(splitedSemesters, semester.getCourses().get(0)) != null) {
-                    //System.out.println("fetted " + semester.getId() + "    " + semester.getCourses().get(0).getId());
                     addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                             canBeInOneDay(splitedSemesters, semester.getCourses().get(0)));
                     if (canBeInOneDay(splitedSemesters, semester.getCourses().get(1)) != null) {
@@ -764,12 +782,10 @@ public class Timetable {
                     }
                 }
             } else if (semester.getCourses().size() == 3) {
-
                 if (canBeInOneDay(splitedSemesters,
                         semester.getCourses().get(0),
                         semester.getCourses().get(1)) != null
                         && canBeInOneDay(splitedSemesters, semester.getCourses().get(2)) != null) {
-                    // System.out.println("fetted " + semester.getId() + "    " + semester.getCourses().get(0).getId());
                     addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                             canBeInOneDay(splitedSemesters,
                                     semester.getCourses().get(0),
@@ -796,7 +812,6 @@ public class Timetable {
                     if (canBeInOneDay(splitedSemesters, semester.getCourses().get(1)) != null) {
                         addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                 canBeInOneDay(splitedSemesters, semester.getCourses().get(1)));
-                        //      System.out.println("fetted " + semester.getId() + "    " + semester.getCourses().get(0).getId());
                         return;
                     } else {
                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
@@ -825,7 +840,6 @@ public class Timetable {
 
                 }
                 if (canBeInOneDay(splitedSemesters, semester.getCourses().get(0)) != null) {
-                    //       System.out.println("fetted " + semester.getId() + "    " + semester.getCourses().get(0).getId());
                     addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                             canBeInOneDay(splitedSemesters, semester.getCourses().get(0)));
                     if (canBeInOneDay(splitedSemesters, semester.getCourses().get(1)) != null) {
@@ -850,7 +864,6 @@ public class Timetable {
 
             }
         } else if (semester.getCourses().size() <= 6) {
-            //
             switch (semester.getCourses().size()) {
                 case 4 -> {
                     for (int i = 0; i < semester.getCourses().size(); i++) {
@@ -920,7 +933,6 @@ public class Timetable {
                     }
                     Course[] c = semester.getCourses().toArray(new Course[semester.getCourses().size()]);
                     if (canBeInOneDay(splitedSemesters, c) != null) {
-                        // System.out.println("fetted " + semester.getId() + "    " + semester.getCourses().get(0).getId());
                         addCoursesToTheLecuterTimeSplitedSemester(
                                 splitedSemesters,
                                 canBeInOneDay(splitedSemesters, c)
@@ -1569,21 +1581,36 @@ public class Timetable {
         };
     }
 
-    void setHostingRoomsInDaysForStaff(ArrayList<Staff> staff
-    ) {
+    /**
+     * to set the number of hosting rooms for that can be in a day
+     *
+     * @param staff
+     */
+    void setHostingRoomsInDaysForStaff(ArrayList<Staff> staff) {
         for (Staff staff1 : staff) {
             staff1.getBranch().setTheNumberOfHostingRooms();
         }
     }
 
-    void assineValuesToStaffIsSymmetricAndFreeTimeInDays(ArrayList<Staff> staff
-    ) {
+    /**
+     * cheek is the staff can be in two days in the week or not and the number
+     * of free hours in each day
+     *
+     * @param staff
+     */
+    void assineValuesToStaffIsSymmetricAndFreeTimeInDays(ArrayList<Staff> staff) {
         for (int i = 0; i < staff.size(); i++) {
             staff.get(i).cheackIsSymmetric();
             staff.get(i).computeNumberOfFreeHoursInDay();
         }
     }
 
+    /**
+     * cheek if a course or more can be added in one day
+     * @param splitedSemesters
+     * @param courses
+     * @return 
+     */
     coursesWithDay canBeInOneDay(splitedSemestersWithDays splitedSemesters, Course... courses) {
         coursesWithDay c = null;
         FreeTime f = new FreeTime(1);
@@ -1740,8 +1767,7 @@ public class Timetable {
         return c;
     }
 
-    void removeCoursesToTheLecuterTimeSplitedSemester(splitedSemestersWithDays splitedSemesters, Course course
-    ) {
+    void removeCoursesToTheLecuterTimeSplitedSemester(splitedSemestersWithDays splitedSemesters, Course course) {
         for (int i = 0; i < splitedSemesters.getCourses().size(); i++) {
             if (splitedSemesters.getCourses().get(i).contains(course)) {
                 splitedSemesters.getCourses().get(i).remove(course);
@@ -1786,19 +1812,11 @@ public class Timetable {
         }
     }
 
-    Course[] getAllCoursesDataForLectuer(List<Integer> coursesIds, Course[] courses,
-            ArrayList<Branch> allBranchesWithHostingRooms
-    ) {
+    Course[] getAllCoursesDataForLectuer(List<Integer> coursesIds, Course[] courses, ArrayList<Branch> allBranchesWithHostingRooms) {
         connection conn = new connection();
         ArrayList<Course> cours = new ArrayList<>();
         try {
-            ResultSet rs = conn.select("select courses.id,"
-                    + "courses.lecHours,"
-                    + "courses.SemesterId, "
-                    + "courses.lectureGroupId,"
-                    + "coursesstaff.staffId,"
-                    + "coursesstaff.BranchId,"
-                    + "semester.number"
+            ResultSet rs = conn.select("select courses.id, courses.lecHours, courses.SemesterId,  courses.lectureGroupId, coursesstaff.staffId, coursesstaff.BranchId, semester.number"
                     + " from courses "
                     + "inner join coursesstaff on coursesstaff.courseId=courses.id "
                     + "inner join semester on SemesterId=semester.id "
@@ -2099,8 +2117,13 @@ public class Timetable {
         return sectionGroups;
     }
 
-    void makeBranchesForEachSemester(ArrayList<Semester> semesters, ArrayList<Branch> branchs
-    ) {
+    /**
+     * add the branches with all rooms to each semester
+     *
+     * @param semesters
+     * @param branchs
+     */
+    void makeBranchesForEachSemester(ArrayList<Semester> semesters, ArrayList<Branch> branchs) {
         for (Semester semester : semesters) {
             semester.setBranchs(branchs);
         }
@@ -2115,8 +2138,11 @@ public class Timetable {
         return b;
     }
 
-    ArrayList<Semester> getSemesters(Course[] courses
-    ) {
+    /**
+     * @param courses
+     * @return array list of the semesters in the courses and make the reference
+     */
+    ArrayList<Semester> getSemesters(Course[] courses) {
         ArrayList<Semester> s = new ArrayList<>();
         for (Course course : courses) {
             for (int j = 0; j <= s.size(); j++) {
@@ -2167,8 +2193,12 @@ public class Timetable {
         return s;
     }
 
-    void makeTheStaffRefrance(Course[] courses
-    ) {
+    /**
+     * make the staff reference in all the courses
+     *
+     * @param courses
+     */
+    void makeTheStaffRefrance(Course[] courses) {
         for (int i = 0; i < courses.length; i++) {
             for (int j = i + 1; j < courses.length; j++) {
                 if (courses[i].getStaff().getId() == courses[j].getStaff().getId()) {
@@ -2179,27 +2209,56 @@ public class Timetable {
         }
     }
 
-    ArrayList<Staff> getStaffFreeTime(Course[] courses
-    ) {
+    /**
+     * get the staff freeTime from the database
+     *
+     * @param courses
+     * @return array list of the staff
+     */
+    ArrayList<Staff> getStaffFreeTime(Course[] courses) {
         ArrayList<Staff> staff = new ArrayList<>();
         for (Course course : courses) {
             if (!staff.contains(course.getStaff())) {
                 Staff s = course.getStaff();
-                s.getTheFreeTime();
                 staff.add(s);
             }
         }
         staff.sort((t, t1) -> {
             return t.getId() - t1.getId();
         });
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < staff.size(); i++) {
-            staff.get(i).getTheFreeTime();
+            sb.append(staff.get(i).getId()).append(", ");
+        }
+        connection conn = new connection();
+        try {
+            int j = 0;
+            ResultSet rs = conn.select("select * from freetimeforstaff where staffid in (" + sb.substring(0, sb.length() - 2) + ")  order by staffid ");
+            while (rs.next()) {
+                for (int i = j; i < staff.size(); i++) {
+                    if (staff.get(i).getId() == rs.getInt(1)) {
+                        staff.get(i).getFreeTime().addFreeTime(rs.getInt(2), rs.getInt(3), rs.getInt(4));
+                        j = i;
+                        break;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        } finally {
+            conn.close();
         }
         return staff;
     }
 
-    void makeTheLecGroupBranchesRefrance(Course[] courses, ArrayList<Branch> branchs
-    ) {
+    /**
+     * make the branches in the lecGroups reference to make the rooms and the
+     * freetTime reference same as the branches with all rooms
+     *
+     * @param courses
+     * @param branchs
+     */
+    void makeTheLecGroupBranchesRefrence(Course[] courses, ArrayList<Branch> branchs) {
         for (int i = 0; i < branchs.size(); i++) {
             for (Course course : courses) {
                 for (int k = 0; k < course.getLecGroups().size(); k++) {
@@ -2213,8 +2272,13 @@ public class Timetable {
         }
     }
 
-    void makeHostingRoomsRefrance(Course[] courses
-    ) {
+    /**
+     * make the hosting rooms reference in rooms in the branches with
+     * hostingRooms and branches with all rooms
+     *
+     * @param courses
+     */
+    void makeHostingRoomsReference(Course[] courses) {
         for (Course course : courses) {
             for (int j = 0; j < course.getStaff().getBranch().getRooms().size(); j++) {
                 for (int k = 0; k < course.getLecGroups().size(); k++) {
