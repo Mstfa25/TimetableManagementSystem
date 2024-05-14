@@ -110,5 +110,31 @@
       "branch": true,
       "capacity": "7"
     }
-  ]
+  ],
+  "coursestaaf": [],
+  "secstaaf": [
+    {
+      "course": "l25",
+      "branch": "fayoum",
+      "staff": "TA",
+      "section": "S2",
+      "id": "1b92"
+    },
+    {
+      "id": "2acd",
+      "course": "l25",
+      "branch": "fayoum",
+      "staff": "docter",
+      "section": "S1"
+    },
+    {
+      "id": "6cff",
+      "course": "l25",
+      "branch": "fayoum",
+      "staff": "docter",
+      "section": "S1"
+    }
+  ],
+  "tablelec": [],
+  "tablesec": []
 }

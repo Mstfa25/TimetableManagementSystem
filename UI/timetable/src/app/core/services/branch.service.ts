@@ -117,7 +117,37 @@ export class BranchService {
     };
     return this._http.post(apiUrl, body, httpOptions);
   }
-  
-  
+  ///courseSttaff------------------------------------------------------------
+  addcourStaff(data: any): Observable<any> {
+    return this._http.post('http://localhost:3000/coursestaaf', data);
+  }
+
+  updatecourStaff(id: number, data: any): Observable<any> {
+    return this._http.put(`http://localhost:3000/coursestaaf/${id}`, data);
+  }
+
+  getcourStaffList(): Observable<any> {
+    return this._http.get('http://localhost:3000/coursestaaf');
+  }
+
+  deletecourStaff(id: number): Observable<any> {
+    return this._http.delete(`http://localhost:3000/coursestaaf/${id}`);
+  }
+  //SEctionStaff-------------------------------------------------------------------------------------
+  addSecStaff(data: any): Observable<any> {
+    return this._http.post('http://localhost:3000/secstaaf', data);
+  }
+
+  updateSecStaff(id: number, data: any): Observable<any> {
+    return this._http.put(`http://localhost:3000/secstaaf/${id}`, data);
+  }
+
+  getSecStaffList(): Observable<any> {
+    return this._http.get('http://localhost:3000/secstaaf');
+  }
+
+  deleteSecStaff(id: number): Observable<any> {
+    return this._http.delete(`http://localhost:3000/secstaaf/${id}`);
+  }
   
 }

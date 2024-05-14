@@ -13,6 +13,9 @@ import { UserComponent } from './component/user/user.component';
 import { LecgroupComponent } from './component/lecgroup/lecgroup.component';
 import { CourseComponent } from './component/course/course.component';
 import { SectionComponent } from './component/section/section.component';
+import { CoursestaffComponent } from './component/coursestaff/coursestaff.component';
+import { TablelecComponent } from './component/tablelec/tablelec.component';
+import { TablesecComponent } from './component/tablesec/tablesec.component';
 
 
 const routes: Routes = [
@@ -27,7 +30,10 @@ const routes: Routes = [
   { path: 'semsterit', component: SemsteritComponent},
   { path: 'section', component: SectionComponent},
   { path: 'course', component: CourseComponent},
+  { path: 'coursestaff', component: CoursestaffComponent},
   { path: 'lecgroup', component: LecgroupComponent},
+  { path: 'tablelec', component: TablelecComponent},
+  { path: 'tablesec', component: TablesecComponent},
   { path: 'user', component: UserComponent},
   { path: 'changepass', component: ChangepassComponent},
 ];
