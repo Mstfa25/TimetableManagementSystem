@@ -52,6 +52,9 @@ import { TablelecComponent } from './component/tablelec/tablelec.component';
 import { FormtablelecComponent } from './forms/formtablelec/formtablelec.component';
 import { FormtablesecComponent } from './forms/formtablesec/formtablesec.component';
 import { TablesecComponent } from './component/tablesec/tablesec.component';
+import { NavlecComponent } from './component/navlec/navlec.component';
+import { GrouplecComponent } from './component/grouplec/grouplec.component';
+import { SecgroupComponent } from './component/secgroup/secgroup.component';
 
 
 @NgModule({
@@ -89,7 +92,10 @@ import { TablesecComponent } from './component/tablesec/tablesec.component';
     TablelecComponent,
     FormtablelecComponent,
     FormtablesecComponent,
-    TablesecComponent
+    TablesecComponent,
+    NavlecComponent,
+    GrouplecComponent,
+    SecgroupComponent
   
 
   ],
