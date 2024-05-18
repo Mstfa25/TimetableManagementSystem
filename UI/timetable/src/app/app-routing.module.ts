@@ -16,6 +16,8 @@ import { SectionComponent } from './component/section/section.component';
 import { CoursestaffComponent } from './component/coursestaff/coursestaff.component';
 import { TablelecComponent } from './component/tablelec/tablelec.component';
 import { TablesecComponent } from './component/tablesec/tablesec.component';
+import { GrouplecComponent } from './component/grouplec/grouplec.component';
+import { SecgroupComponent } from './component/secgroup/secgroup.component';
 
 
 const routes: Routes = [
@@ -32,6 +34,8 @@ const routes: Routes = [
   { path: 'course', component: CourseComponent},
   { path: 'coursestaff', component: CoursestaffComponent},
   { path: 'lecgroup', component: LecgroupComponent},
+  { path: 'grouplec', component: GrouplecComponent},
+  { path: 'secgroup', component: SecgroupComponent},
   { path: 'tablelec', component: TablelecComponent},
   { path: 'tablesec', component: TablesecComponent},
   { path: 'user', component: UserComponent},
