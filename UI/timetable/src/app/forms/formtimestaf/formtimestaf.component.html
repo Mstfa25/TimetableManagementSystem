@@ -1,0 +1,38 @@
+<div mat-dialog-title>
+    <h1>FreeTime Staff Data</h1>
+</div>
+<form [formGroup]="timestafform" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content class="content">
+        <div class="row-n" >
+            <mat-form-field appearance="outline">
+                <mat-label >Name</mat-label>
+                <input matInput type="text" placeholder="Enter Name  " formControlName="name">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="dates">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="row-n">
+            <mat-form-field appearance="outline">
+                <mat-label >Strattime</mat-label>
+                <input matInput type="time" placeholder="start " formControlName="times">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label >Endtime</mat-label>
+                <input matInput type="time" placeholder="end " formControlName="timee">
+              </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions class="action" >
+        <button mat-raised-button type="button" mat-dialog-close="false">
+      Cancel
+        </button>
+        <button mat-raised-button  color="primary" type="submit" [disabled]="timestafform.invalid">
+           {{data ? 'Update': 'Save'}}
+              </button>
+    </div>
+</form>

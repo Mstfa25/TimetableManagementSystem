@@ -18,6 +18,8 @@ import { TablelecComponent } from './component/tablelec/tablelec.component';
 import { TablesecComponent } from './component/tablesec/tablesec.component';
 import { GrouplecComponent } from './component/grouplec/grouplec.component';
 import { SecgroupComponent } from './component/secgroup/secgroup.component';
+import { FreetimestafComponent } from './component/freetimestaf/freetimestaf.component';
+import { FreetimeroomComponent } from './component/freetimeroom/freetimeroom.component';
 
 
 const routes: Routes = [
@@ -38,6 +40,8 @@ const routes: Routes = [
   { path: 'secgroup', component: SecgroupComponent},
   { path: 'tablelec', component: TablelecComponent},
   { path: 'tablesec', component: TablesecComponent},
+  { path: 'freetimestaf', component: FreetimestafComponent},
+  { path: 'freetimeroom', component: FreetimeroomComponent},
   { path: 'user', component: UserComponent},
   { path: 'changepass', component: ChangepassComponent},
 ];

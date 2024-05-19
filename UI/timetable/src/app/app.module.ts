@@ -14,7 +14,7 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatSelectModule} from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-
+import {MatNativeDateModule} from '@angular/material/core';
 import { AppComponent } from './app.component';
 import { NavComponent } from './component/nav/nav.component';
 import { HomeComponent } from './component/home/home.component';
@@ -42,10 +42,12 @@ import { FormgrouplecComponent } from './forms/formgrouplec/formgrouplec.compone
 import { FormsecgroupComponent } from './forms/formsecgroup/formsecgroup.component';
 import { CourseComponent } from './component/course/course.component';
 import { FormcourseComponent } from './forms/formcourse/formcourse.component';
+import { FormtimestafComponent } from './forms/formtimestaf/formtimestaf.component';
 import { SectionComponent } from './component/section/section.component';
+import { FreetimestafComponent } from './component/freetimestaf/freetimestaf.component';
 import { FormsecComponent } from './forms/formsec/formsec.component';
 import { CoursestaffComponent } from './component/coursestaff/coursestaff.component';
-
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import { FormcourstaffComponent } from './forms/formcourstaff/formcourstaff.component';
 import { FormsecstafComponent } from './forms/formsecstaf/formsecstaf.component';
 import { TablelecComponent } from './component/tablelec/tablelec.component';
@@ -53,8 +55,11 @@ import { FormtablelecComponent } from './forms/formtablelec/formtablelec.compone
 import { FormtablesecComponent } from './forms/formtablesec/formtablesec.component';
 import { TablesecComponent } from './component/tablesec/tablesec.component';
 import { NavlecComponent } from './component/navlec/navlec.component';
+import { NavtimeComponent } from './component/navtime/navtime.component';
 import { GrouplecComponent } from './component/grouplec/grouplec.component';
 import { SecgroupComponent } from './component/secgroup/secgroup.component';
+import { FormtimeroomComponent } from './forms/formtimeroom/formtimeroom.component';
+import { FreetimeroomComponent } from './component/freetimeroom/freetimeroom.component';
 
 
 @NgModule({
@@ -95,8 +100,12 @@ import { SecgroupComponent } from './component/secgroup/secgroup.component';
     TablesecComponent,
     NavlecComponent,
     GrouplecComponent,
-    SecgroupComponent
-  
+    SecgroupComponent,
+    FormtimestafComponent ,
+    FreetimestafComponent,
+    NavtimeComponent,
+    FormtimeroomComponent,
+    FreetimeroomComponent
 
   ],
   imports: [
@@ -116,7 +125,9 @@ import { SecgroupComponent } from './component/secgroup/secgroup.component';
     MatSortModule,
     MatSelectModule,
     MatCheckboxModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]
