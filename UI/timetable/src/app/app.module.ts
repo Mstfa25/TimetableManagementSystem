@@ -60,6 +60,8 @@ import { GrouplecComponent } from './component/grouplec/grouplec.component';
 import { SecgroupComponent } from './component/secgroup/secgroup.component';
 import { FormtimeroomComponent } from './forms/formtimeroom/formtimeroom.component';
 import { FreetimeroomComponent } from './component/freetimeroom/freetimeroom.component';
+import { NavcourseComponent } from './component/navcourse/navcourse.component';
+import { CoursesecComponent } from './component/coursesec/coursesec.component';
 
 
 @NgModule({
@@ -105,7 +107,9 @@ import { FreetimeroomComponent } from './component/freetimeroom/freetimeroom.com
     FreetimestafComponent,
     NavtimeComponent,
     FormtimeroomComponent,
-    FreetimeroomComponent
+    FreetimeroomComponent,
+    NavcourseComponent,
+    CoursesecComponent
 
   ],
   imports: [
