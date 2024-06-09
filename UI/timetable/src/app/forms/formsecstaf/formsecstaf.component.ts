@@ -23,10 +23,7 @@ secstafform: FormGroup;
     'TA',
     'docter'
   ];
-  Section: string[]=[
-    'S1',
-    'S2'
-  ]
+
 
   constructor(private _fb:FormBuilder, private _secstafService: BranchService, private _dialogRef: MatDialogRef<FormsecstafComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any

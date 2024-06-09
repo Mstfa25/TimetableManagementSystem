@@ -62,6 +62,9 @@ import { FormtimeroomComponent } from './forms/formtimeroom/formtimeroom.compone
 import { FreetimeroomComponent } from './component/freetimeroom/freetimeroom.component';
 import { NavcourseComponent } from './component/navcourse/navcourse.component';
 import { CoursesecComponent } from './component/coursesec/coursesec.component';
+import { NavsecComponent } from './component/navsec/navsec.component';
+import { SectiongroupComponent } from './component/sectiongroup/sectiongroup.component';
+import { FormsecGroupComponent } from './forms/formsecstaf/formsec-group/formsec-group.component';
 
 
 @NgModule({
@@ -109,7 +112,10 @@ import { CoursesecComponent } from './component/coursesec/coursesec.component';
     FormtimeroomComponent,
     FreetimeroomComponent,
     NavcourseComponent,
-    CoursesecComponent
+    CoursesecComponent,
+    NavsecComponent,
+    SectiongroupComponent,
+    FormsecGroupComponent
 
   ],
   imports: [

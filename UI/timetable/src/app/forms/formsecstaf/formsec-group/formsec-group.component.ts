@@ -4,31 +4,39 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FacultyService } from 'src/app/core/services/faculty.service';
 
 @Component({
-  selector: 'app-formsec',
-  templateUrl: './formsec.component.html',
-  styleUrls: ['./formsec.component.scss']
+  selector: 'app-formsec-group',
+  templateUrl: './formsec-group.component.html',
+  styleUrls: ['./formsec-group.component.scss']
 })
-export class FormsecComponent {
-  secionform: FormGroup;
- 
+export class FormsecGroupComponent {
+  secname: string[] = [
+    'gg1',
+    'l25',
+   
+  ];
+  branches: string[] = [
+    'fayoum',
+   
+  ];
 
-  constructor(private _fb:FormBuilder, private _secService: FacultyService, private _dialogRef: MatDialogRef<FormsecComponent>,
+  sgForm: FormGroup;
+  constructor(private _fb: FormBuilder, private _secgroupService: FacultyService, private _dialogRef: MatDialogRef< FormsecGroupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ){
-    this.secionform = this._fb.group({
-  
-    name: ['',Validators.required],
-
+  ) {
+    this.sgForm = this._fb.group({
+      secname: ['', Validators.required],
+      branch: ['', Validators.required],
+      capacty:['', Validators.required]
+      
     });
   }
   ngOnInit(): void {
-    this.secionform.patchValue(this.data)  
-
+    this.sgForm.patchValue(this.data)
   }
   onFormSubmit(){
-    if(this.secionform.valid){
+    if(this.sgForm.valid){
       if(this.data){
-        this._secService.updatesec(this.data.id,this.secionform.value).subscribe({
+        this._secgroupService.updatsecgrop(this.data.id,this.sgForm.value).subscribe({
           next: (val: any) =>{
            alert('Update Successfuly')
            this._dialogRef.close(true);
@@ -40,7 +48,7 @@ export class FormsecComponent {
       }
       else{
         
-   this._secService.addsec(this.secionform.value).subscribe({
+   this._secgroupService.addsecgrop(this.sgForm.value).subscribe({
       next: (val: any) =>{
        alert('Added Successfuly')
        this._dialogRef.close(true);
@@ -50,6 +58,7 @@ export class FormsecComponent {
       }
      })
     }
+  }}
   }
-}
-}
+  
+

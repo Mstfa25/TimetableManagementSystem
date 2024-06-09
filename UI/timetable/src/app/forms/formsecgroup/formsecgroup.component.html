@@ -1,16 +1,20 @@
 <div mat-dialog-title>
-    <h1>SectionGroups Data</h1>
+    <h1>LecGroupBranch</h1>
 </div>
 <form [formGroup]=" secform" (ngSubmit)="onFormSubmit()">
     <div mat-dialog-content class="content">
      
         <div class="row-n">
             <mat-form-field appearance="outline">
-                <mat-label>Name</mat-label>
-                <input matInput type="text" placeholder="EnterName" formControlName="namesec">
+                <mat-label>Branch</mat-label>
+                <mat-select formControlName="lecname">
+                 
+                    <mat-option *ngFor="let val of groupbranname" [value]="val"> {{val}} </mat-option>
+                  
+                </mat-select>
               </mat-form-field>
             <mat-form-field>
-                <mat-label>LecGroup Name</mat-label>
+                <mat-label>LectureGroup</mat-label>
                 <mat-select formControlName="lecname">
                  
                     <mat-option *ngFor="let val of lecname" [value]="val"> {{val}} </mat-option>
@@ -18,7 +22,7 @@
                 </mat-select>
               </mat-form-field>
               <mat-form-field>
-                <mat-label>GroupLec Name</mat-label>
+                <mat-label>LecGroup </mat-label>
                 <mat-select formControlName="grouplecname">
                  
                     <mat-option *ngFor="let val of grouplecname" [value]="val"> {{val}} </mat-option>
@@ -28,16 +32,7 @@
             
         
         </div>
-        <div class="row-n" >
-            <mat-label>Branch Name</mat-label>
-            
-            <mat-checkbox formControlName="groupbranname"  *ngFor="let val of  groupbranname"  [value]="val" color="primary">
-                {{val}}
-            </mat-checkbox> 
-      
-             
-
-<!--                 
+        <div class="row-n" ><!--                 
            <h2 class="text-dark">Branches:</h2>
                <p class="fs-1 fw-bold"><mat-checkbox formControlName="Fayoum" color="primary">fayoum</mat-checkbox></p>
                <p class="fs-1 "><mat-checkbox formControlName="Tanta">tanta</mat-checkbox></p>
