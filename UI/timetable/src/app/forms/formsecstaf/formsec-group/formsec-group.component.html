@@ -9,7 +9,7 @@
                 <mat-label>Section Name</mat-label>
                 <mat-select formControlName="secname">
                  
-                    <mat-option *ngFor="let val of secname" [value]="val"> {{val}} </mat-option>
+                    <mat-option *ngFor="let val of secname" [value]="val"> {{val.name}} </mat-option>
                   
                 </mat-select>
               </mat-form-field>
@@ -17,7 +17,7 @@
                 <mat-label>Branch Name</mat-label>
                 <mat-select formControlName="branch">
                  
-                    <mat-option *ngFor="let val of branches" [value]="val"> {{val}} </mat-option>
+                    <mat-option *ngFor="let val of branches" [value]="val"> {{val.name}} </mat-option>
                   
                 </mat-select>
               </mat-form-field>
