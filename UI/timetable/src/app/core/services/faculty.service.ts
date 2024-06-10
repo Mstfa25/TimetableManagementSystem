@@ -175,7 +175,12 @@ export class FacultyService {
   }
 
   getcourseList(): Observable<any> {
-    return this.http.get('http://localhost:7081/api/admin/course');
+    const apiUrl = 'http://localhost:7081/api/admin/getALLCourses';
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true
+    };
+    return this.http.get(apiUrl, httpOptions);
   }
 
   deletecourse(id: number): Observable<any> {

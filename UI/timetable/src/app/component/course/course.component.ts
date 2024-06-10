@@ -1,8 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, ViewChild ,Inject,PLATFORM_ID} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FacultyService } from 'src/app/core/services/faculty.service';
 import { FormcourseComponent } from 'src/app/forms/formcourse/formcourse.component';
@@ -19,10 +22,37 @@ export class CourseComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-constructor(private _dialog:MatDialog, private _coursService: FacultyService, private auth:AuthService) {
+constructor(@Inject(PLATFORM_ID) private platformId: Object,
+private http: HttpClient,private router: Router,private _dialog:MatDialog, private _coursService: FacultyService, private auth:AuthService) {
   auth.loggedIn.next(true);
 }
+
+cheeck(): void {
+  if (isPlatformBrowser(this.platformId)) {
+    // Make the request to the backend server
+    const apiUrl = 'http://localhost:7081/api/home';
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    // Make the HTTP request with the updated headers
+    this.http.get<any>(apiUrl, { headers, withCredentials: true }).subscribe(
+      (response) => {
+        if (response[0] === 'home') {
+        } else {
+          this.router.navigate(['/login']);
+          // You can use Angular Router to navigate to the login page
+        }
+      },
+      (error) => {
+      }
+    );
+  }
+}
+
 ngOnInit(): void {
+  this.cheeck();
     this.getCourse();
 
 }
@@ -39,6 +69,7 @@ openAddEditcourse(){
 getCourse(){
   this._coursService.getcourseList().subscribe({
     next: (res) =>{
+      console.log(res);
    this.dataSource = new MatTableDataSource(res);
    this.dataSource.sort = this.sort;
    this.dataSource.paginator = this.paginator;

@@ -9,7 +9,7 @@
                 <mat-label>Course</mat-label>
                 <mat-select formControlName="course">
                  
-                    <mat-option *ngFor="let val of courses" [value]="val"> {{val}} </mat-option>
+                    <mat-option *ngFor="let val of courses" [value]="val"> {{val.name}} </mat-option>
                   
                 </mat-select>
               </mat-form-field>
@@ -17,7 +17,7 @@
                 <mat-label>Branch</mat-label>
                 <mat-select formControlName="branch">
                  
-                    <mat-option *ngFor="let val of branch" [value]="val"> {{val}} </mat-option>
+                    <mat-option *ngFor="let val of branch" [value]="val"> {{val.name}} </mat-option>
                   
                 </mat-select>
               </mat-form-field>
@@ -26,7 +26,7 @@
                 <mat-label>Staff</mat-label>
                 <mat-select formControlName="staff">
                  
-                    <mat-option *ngFor="let val of staff" [value]="val"> {{val}} </mat-option>
+                    <mat-option *ngFor="let val of staff" [value]="val"> {{val.name}} </mat-option>
                   
                 </mat-select>
               </mat-form-field>
