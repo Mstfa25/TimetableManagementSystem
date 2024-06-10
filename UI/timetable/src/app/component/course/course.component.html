@@ -47,7 +47,7 @@
           <!-- ID Column -->
           <ng-container matColumnDef="namec">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-            <td mat-cell *matCellDef="let row"> {{row.namec}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.name}} </td>
           </ng-container>
       
           <!-- Progress Column -->
@@ -58,31 +58,31 @@
   
           <ng-container matColumnDef="lechour">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>LecturHour</th>
-            <td mat-cell *matCellDef="let row"> {{row.lechour}} H</td>
+            <td mat-cell *matCellDef="let row"> {{row.lectureHours}}</td>
           </ng-container>
           <ng-container matColumnDef="sechour">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>SectionHour</th>
-            <td mat-cell *matCellDef="let row"> {{row.sechour }} H</td>
+            <td mat-cell *matCellDef="let row"> {{row.labHours}}</td>
           </ng-container>
           <ng-container matColumnDef="lecname">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>LecName</th>
-            <td mat-cell *matCellDef="let row"> {{row.lecname }}</td>
+            <td mat-cell *matCellDef="let row"> {{row.lectuerGoup.name }}</td>
           </ng-container>
           <ng-container matColumnDef="secgroup">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>SecGroup</th>
-            <td mat-cell *matCellDef="let row"> {{row.secgroup }}</td>
+            <td mat-cell *matCellDef="let row"> {{row.group.name }}</td>
           </ng-container>
           <ng-container matColumnDef="faculty">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Faculty</th>
-            <td mat-cell *matCellDef="let row"> {{row.faculty }}</td>
+            <td mat-cell *matCellDef="let row"> {{row.faculty.name }}</td>
           </ng-container>
           <ng-container matColumnDef="study">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>StudyPlan</th>
-            <td mat-cell *matCellDef="let row"> {{row.study}}</td>
+            <td mat-cell *matCellDef="let row"> {{row.studyPlan.name}}</td>
           </ng-container>
           <ng-container matColumnDef="semster">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Semster</th>
-            <td mat-cell *matCellDef="let row"> {{row.semster}}</td>
+            <td mat-cell *matCellDef="let row"> {{row.semester.number}}</td>
           </ng-container>
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Action</th>

@@ -1,6 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import { LecgroupService } from 'src/app/core/services/lecgroup.service';
 
 @Component({
@@ -10,15 +12,11 @@ import { LecgroupService } from 'src/app/core/services/lecgroup.service';
 })
 export class FormgrouplecComponent {
   groupform: FormGroup;
- lecname: string[] = [
-    'gg1',
-    'l25',
-   
-  ];
+ lecname: any[] = [];
  
 
   constructor(private _fb:FormBuilder, private _grouplecService: LecgroupService, private _dialogRef: MatDialogRef<FormgrouplecComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,private http: HttpClient
   ){
     this.groupform = this._fb.group({
       lecname: ['',Validators.required],
@@ -28,6 +26,11 @@ export class FormgrouplecComponent {
     });
   }
   ngOnInit(): void {
+
+    (this.http.get('http://localhost:7081/api/admin/getAllLectuerGroups',{withCredentials:true}) as Observable<any[]>)
+      .subscribe((data: any[]) => {
+        this.lecname = data;
+      });
     this.groupform.patchValue(this.data)  
 
   }

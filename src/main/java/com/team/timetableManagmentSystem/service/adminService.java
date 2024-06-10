@@ -1883,4 +1883,63 @@ public class adminService {
         }
         return null;
     }
+
+    public Object getCourseNames() {
+        connection conn = new connection();
+        ResultSet rs = conn.select("select id,name from courses;");
+        try {
+            ArrayList<Course> c = new ArrayList<>();
+            while (rs.next()) {
+                c.add(new Course(rs.getInt("id"), rs.getString("name")));
+
+            }
+            return c;
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            conn.close();
+        }
+        return null;
+    }
+
+    public Object getStaffNames() {
+        connection conn = new connection();
+        ResultSet rs = conn.select("select id ,name from staff;");
+        try {
+            ArrayList<Staff> staff = new ArrayList<>();
+            while (rs.next()) {
+                staff.add(new Staff(rs.getInt("id"), rs.getString("name")));
+
+            }
+            return staff;
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            conn.close();
+        }
+        return null;
+    }
+
+    public Object getAllLectuerGroupsWithLecgroups() {
+        ArrayList<LectureGroup> lec = new ArrayList<>();
+        ArrayList<LecGroup> lecs = (ArrayList<LecGroup>) getAllLecGroups();
+        if (lecs != null && lecs.size() > 0) {
+            for (int i = 0; i < lecs.size(); i++) {
+                for (int j = 0; j <= lec.size(); j++) {
+                    if (j == lec.size()) {
+                        LectureGroup l1 = new LectureGroup(lecs.get(i).getLectuerGoup().getId(), lecs.get(i).getLectuerGoup().getName());
+                        l1.setLecgroups(new ArrayList<>());
+                        l1.getLecgroups().add(new LecGroup(lecs.get(i).getId(), lecs.get(i).getName()));
+                        lec.add(l1);
+                        break;
+                    } else if (lecs.get(i).getLectuerGoup().getId() == lec.get(j).getId()) {
+                        lec.get(j).getLecgroups().add(new LecGroup(lecs.get(i).getId(), lecs.get(i).getName()));
+                        break;
+                    }
+                }
+            }
+            return lec;
+        }
+        return null;
+    }
 }

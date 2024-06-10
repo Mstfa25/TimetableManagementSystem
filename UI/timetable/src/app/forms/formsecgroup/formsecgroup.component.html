@@ -3,49 +3,47 @@
 </div>
 <form [formGroup]=" secform" (ngSubmit)="onFormSubmit()">
     <div mat-dialog-content class="content">
-     
+
         <div class="row-n">
             <mat-form-field appearance="outline">
                 <mat-label>Branch</mat-label>
                 <mat-select formControlName="lecname">
-                 
-                    <mat-option *ngFor="let val of groupbranname" [value]="val"> {{val}} </mat-option>
-                  
+
+                    <mat-option *ngFor="let val of groupbranname" [value]="val"> {{val.name}} </mat-option>
+
                 </mat-select>
-              </mat-form-field>
+            </mat-form-field>
             <mat-form-field>
                 <mat-label>LectureGroup</mat-label>
-                <mat-select formControlName="lecname">
-                 
-                    <mat-option *ngFor="let val of lecname" [value]="val"> {{val}} </mat-option>
-                  
+                <mat-select formControlName="lecname" (selectionChange)="setLecGroups($event)">
+                    <mat-option *ngFor="let val of lecname" [value]="val"> {{val.name}} </mat-option>
                 </mat-select>
-              </mat-form-field>
-              <mat-form-field>
+            </mat-form-field>
+
+            <mat-form-field>
                 <mat-label>LecGroup </mat-label>
                 <mat-select formControlName="grouplecname">
-                 
-                    <mat-option *ngFor="let val of grouplecname" [value]="val"> {{val}} </mat-option>
-                  
+
+                    <mat-option *ngFor="let val of grouplecname" [value]="val"> {{val.name}} </mat-option>
+
                 </mat-select>
-              </mat-form-field>
-            
-        
+            </mat-form-field>
+
+
         </div>
-        <div class="row-n" ><!--                 
+        <div class="row-n"><!--                 
            <h2 class="text-dark">Branches:</h2>
                <p class="fs-1 fw-bold"><mat-checkbox formControlName="Fayoum" color="primary">fayoum</mat-checkbox></p>
                <p class="fs-1 "><mat-checkbox formControlName="Tanta">tanta</mat-checkbox></p>
              -->
-              
-             
-         </div>
+
+
+        </div>
     </div>
     <div mat-dialog-actions class="action">
-        <button mat-raised-button type="button" [mat-dialog-close]="false" >Cancel</button>
-        <button mat-raised-button color="primary" type="submit" [disabled]="secform.invalid">{{data ? 'Update':'Save'}}</button>
+        <button mat-raised-button type="button" [mat-dialog-close]="false">Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="secform.invalid">{{data ?
+            'Update':'Save'}}</button>
     </div>
-   
+
 </form>
-
-

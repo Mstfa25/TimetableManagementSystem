@@ -976,11 +976,36 @@ public class adminController {
     @RequestMapping("getSectionGroupsBranches")
 
     public Object getSectionGroupsBranches(HttpSession session) {
-        if(isadmin(session)){
+        if (isadmin(session)) {
             return adminService.getSectionGroupsBranches();
         }
         return adminResponse(session);
     }
+
+    @RequestMapping("getCourseNames")
+    public Object getCourseNames(HttpSession session) {
+        if (isadmin(session)) {
+            return adminService.getCourseNames();
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("getStaffNames")
+    public Object getStaffNames(HttpSession session) {
+        if (isadmin(session)) {
+            return adminService.getStaffNames();
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("getAllLectuerGroupsWithLecgroups")
+    public Object getAllLectuerGroupsWithLecgroups(HttpSession session) {
+        if (isadmin(session)) {
+            return adminService.getAllLectuerGroupsWithLecgroups();
+        }
+        return adminResponse(session);
+    }
+
 
     boolean isadmin(HttpSession session) {
         return session.getAttribute("role") != null
