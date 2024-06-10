@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -7,37 +7,53 @@ import { Observable } from 'rxjs';
 })
 export class FreetimeService {
 
-
   constructor(private _http: HttpClient) { }
+
+  private httpOptions = { 
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }), 
+    withCredentials: true 
+  };
+
+  //---------------------------------------------timestaff
   addtimestaff(data: any): Observable<any> {
-    return this._http.post('http://localhost:3000/timestaf', data);
+    const apiUrl = 'http://localhost:7081/api/admin/addFreeTimeForStaff';
+    return this._http.post(apiUrl, data, this.httpOptions);
   }
 
-  updatetimestaff(id: number, data: any): Observable<any> {
-    return this._http.put(`http://localhost:3000/timestaf/${id}`, data);
+  updatetimestaff(data: any): Observable<any> {
+    const apiUrl = 'http://localhost:7081/api/admin/';
+    return this._http.post(apiUrl, data, this.httpOptions);
   }
 
   gettimestaffList(): Observable<any> {
-    return this._http.get('http://localhost:3000/timestaf');
+    const apiUrl = 'http://localhost:7081/api/admin/getFreeTimeForStaff';
+    return this._http.post(apiUrl, {}, this.httpOptions);
   }
 
-  deletetimestaff(id: number): Observable<any> {
-    return this._http.delete(`http://localhost:3000/timestaf/${id}`);
+  deletetimestaff(data: any): Observable<any> {
+    const apiUrl = 'http://localhost:7081/api/admin/';
+    return this._http.post(apiUrl, data, this.httpOptions);
   }
-  //---------------------------------------------freetimeroom
+
+  //---------------------------------------------timeroom
   addtimeroom(data: any): Observable<any> {
-    return this._http.post('http://localhost:3000/timeroom', data);
+    const apiUrl = 'http://localhost:7081/api/admin/';
+    return this._http.post(apiUrl, data, this.httpOptions);
   }
 
-  updatetimeroom(id: number, data: any): Observable<any> {
-    return this._http.put(`http://localhost:3000/timeroom/${id}`, data);
+  updatetimeroom(data: any): Observable<any> {
+    const apiUrl = 'http://localhost:7081/api/admin/';
+    return this._http.post(apiUrl, data, this.httpOptions);
   }
 
   gettimeroomList(): Observable<any> {
-    return this._http.get('http://localhost:3000/timeroom');
+    const apiUrl = 'http://localhost:7081/api/admin/getFreetimeForRooms';
+    return this._http.post(apiUrl, {}, this.httpOptions);
   }
 
-  deletetimeroom(id: number): Observable<any> {
-    return this._http.delete(`http://localhost:3000/timeroom/${id}`);
+  deletetimeroom(data: any): Observable<any> {
+    const apiUrl = 'http://localhost:7081/api/admin/';
+    return this._http.post(apiUrl, data, this.httpOptions);
   }
+
 }

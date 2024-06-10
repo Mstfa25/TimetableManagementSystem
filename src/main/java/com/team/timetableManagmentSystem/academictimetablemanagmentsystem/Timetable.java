@@ -1607,9 +1607,10 @@ public class Timetable {
 
     /**
      * cheek if a course or more can be added in one day
+     *
      * @param splitedSemesters
      * @param courses
-     * @return 
+     * @return
      */
     coursesWithDay canBeInOneDay(splitedSemestersWithDays splitedSemesters, Course... courses) {
         coursesWithDay c = null;
@@ -2329,6 +2330,13 @@ public class Timetable {
                 }
             }
         }
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
 }

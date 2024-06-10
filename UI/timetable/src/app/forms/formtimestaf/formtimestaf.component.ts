@@ -33,7 +33,7 @@ export class FormtimestafComponent {
   onFormSubmit(){
     if(this.timestafform.valid){
       if(this.data){
-        this._freetimeService.updatetimestaff(this.data.id,this.timestafform.value).subscribe({
+        this._freetimeService.updatetimestaff(this.data.id).subscribe({
           next: (val: any) =>{
            alert('Update Successfuly')
            this._dialogRef.close(true);

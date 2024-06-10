@@ -6,7 +6,11 @@ import com.team.timetableManagmentSystem.academictimetablemanagmentsystem.Room;
 import com.team.timetableManagmentSystem.academictimetablemanagmentsystem.TimeInTimetable;
 import com.team.timetableManagmentSystem.database.connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +19,19 @@ public class adminService {
 
     @Autowired
     private connection conn;
+
+    public boolean branchNameExist(String name) {
+        connection conn = new connection();
+        ResultSet rs = conn.select("select id from branch where name like '" + name + "'");
+        try {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return false;
+    }
 
     public void insertNewBranch(String name) {
         conn.execute("insert into branch (name) value ('" + name + "')");
@@ -551,14 +568,14 @@ public class adminService {
         }
         return null;
     }
-    
+
     public Object getAllLecGroupbranchs() {
         connection conn = new connection();
         ArrayList<lectureGroupBranchs> lecbranches = new ArrayList<>();
         try {
             ResultSet rs = conn.select("select lecgroup.id,lecgroup.name,lecturegroupId,lecturegroups.name,branchId,branch.name from lecgroupbranches inner join branch on branchId=branch.id inner join lecgroup on lecGroupId=lecgroup.id inner join  lecturegroups on lecturegroups.id=lecturegroupId;");
             while (rs.next()) {
-                lecbranches.add(new lectureGroupBranchs(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4),rs.getInt(5), rs.getString(6)));
+                lecbranches.add(new lectureGroupBranchs(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6)));
             }
             return lecbranches;
         } catch (Exception e) {
@@ -1112,12 +1129,13 @@ public class adminService {
         return null;
     }
 
-    public ArrayList<timeInTimetable> createLectureTimeTable(course[] courses) {
+    public ArrayList<timeInTimetable> createLectureTimeTable(String timetableName, course[] courses) {
         Integer[] arr = new Integer[courses.length];
         for (int i = 0; i < courses.length; i++) {
             arr[i] = courses[i].getId();
         }
-        com.team.timetableManagmentSystem.academictimetablemanagmentsystem.Timetable t = new com.team.timetableManagmentSystem.academictimetablemanagmentsystem.Timetable();
+        com.team.timetableManagmentSystem.academictimetablemanagmentsystem.Timetable t
+                = createTimeTable(timetableName);
         t.createLectureTimetable(arr);
         ArrayList<com.team.timetableManagmentSystem.academictimetablemanagmentsystem.Staff> staff = new ArrayList<>();
         ArrayList<Room> rooms = new ArrayList<>();
@@ -1599,43 +1617,40 @@ public class adminService {
                     branchs.add(new Branch(t.get(i).getBranchs().get(j).getId()));
                 }
             }
-            t1.add(new timeInTimetable(new Staff(t.get(i).getStaff().getId()),
-                    new course(t.get(i).getCourse().getId()),
-                    branchs, new Branch(t.get(i).getHostingBranch().getId()),
-                    rooms, new room(t.get(i).getHostingRoom().getId()),
-                    t.get(i).getDay(), t.get(i).getStartingTime(), t.get(i).getEndingTime(),
-                    t.get(i).getSectionGroupName(),
-                    (t.get(i).getLecGroup() != null) ? new LecGroup(t.get(i).getLecGroup().getId()) : null,
-                    new com.team.timetableManagmentSystem.DTOs.Timetable(t.get(i).getTimetable().getId())));
+            t1.add(
+                    new timeInTimetable(
+                            new Staff(t.get(i).getStaff().getId()),
+                            new course(t.get(i).getCourse().getId()),
+                            branchs,
+                            new Branch(t.get(i).getHostingBranch().getId()),
+                            rooms,
+                            new room(t.get(i).getHostingRoom().getId()),
+                            t.get(i).getDay(),
+                            t.get(i).getStartingTime(),
+                            t.get(i).getEndingTime(),
+                            t.get(i).getSectionGroupName(),
+                            (t.get(i).getLecGroup() != null) ? new LecGroup(t.get(i).getLecGroup().getId()) : null,
+                            new com.team.timetableManagmentSystem.DTOs.Timetable(t.get(i).getTimetable().getId())));
         }
         return t1;
     }
 
-    public void addFreeTimeForStaff(int staffId, freeTime freeTime) {
+    public void addFreeTimeForStaff(freeTime freeTime) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
-            if (freeTime.dayStartEnd[i] != null && freeTime.dayStartEnd[i].startSession != null) {
-                sb.append("(").append(staffId).append(",").append(i).append(",").append(freeTime.dayStartEnd[i].startSession).append(",").append(freeTime.dayStartEnd[i].endSession).append("),");
-                while (freeTime.dayStartEnd[i].next != null) {
-                    freeTime.dayStartEnd[i] = freeTime.dayStartEnd[i].next;
-                    if (freeTime.dayStartEnd[i] != null && freeTime.dayStartEnd[i].startSession != null) {
-                        sb.append("(").append(staffId).append(",").append(i).append(",").append(freeTime.dayStartEnd[i].startSession).append(",").append(freeTime.dayStartEnd[i].endSession).append("),");
-                    }
-                }
-            }
+        for (int i = 0; i < freeTime.getDayStartEnd().size(); i++) {
+            sb.append("(").append(freeTime.getId()).append(",").append(freeTime.getDayStartEnd().get(i).getDayId()).append(",").append(freeTime.getDayStartEnd().get(i).getStartSession()).append(",").append(freeTime.getDayStartEnd().get(i).getEndSession()).append("),");
         }
-        conn.execute("insert into freetimeforsatff values " + sb.substring(0, sb.length() - 1));
+        conn.execute("insert into freetimeforsatff (staffid,dayid,startingtime,enddingtime) values " + sb.substring(0, sb.length() - 1));
         conn.close();
     }
 
-    public freeTime getFreeTimeForStaff(int staffId) {
-        freeTime f = new freeTime();
+    public Object getFreeTimeForStaff() {
+        ArrayList<freetimeForStaff> f = new ArrayList<>();
         try {
             ResultSet rs;
-            rs = conn.select("select * from freetimeforstaff where StaffId =" + staffId);
+            rs = conn.select("select  staff.id as satffId,staff.name,freetimeforstaff.DayId,freetimeforstaff.startingTime,freetimeforstaff.enddingTime,freetimeforstaff.id from freetimeforstaff inner join staff on staff.id = freetimeforstaff.staffid;");
             while (rs.next()) {
-                f.addFreeTime(rs.getInt(2), rs.getInt(3), rs.getInt(4));
-            }
+                f.add(new freetimeForStaff(rs.getInt("id"), new node(rs.getInt("DayId"), rs.getInt("startingTime"), rs.getInt("enddingTime")), rs.getInt("satffId"), rs.getString("name")));            }
         } catch (Exception e) {
             System.out.println(5 + "" + e);
         } finally {
@@ -1644,9 +1659,9 @@ public class adminService {
         return f;
     }
 
-    public void updateFreeTimeForStaff(int staffId, freeTime freeTime) {
-        conn.execute("delete from freetimeforstaff where StaffId = " + staffId);
-        addFreeTimeForStaff(staffId, freeTime);
+    public void updateFreeTimeForStaff(freeTime freeTime) {
+        conn.execute("delete from freetimeforstaff where StaffId = " + freeTime.getId());
+        addFreeTimeForStaff(freeTime);
         try {
             conn.close();
         } catch (Exception e) {
@@ -1655,28 +1670,37 @@ public class adminService {
 
     public void addFreeTimeForRooms(int RoomId, freeTime freeTime) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
-            if (freeTime.dayStartEnd[i] != null && freeTime.dayStartEnd[i].startSession != null) {
-                sb.append("(").append(RoomId).append(",").append(i).append(",").append(freeTime.dayStartEnd[i].startSession).append(",").append(freeTime.dayStartEnd[i].endSession).append("),");
-                while (freeTime.dayStartEnd[i].next != null) {
-                    freeTime.dayStartEnd[i] = freeTime.dayStartEnd[i].next;
-                    if (freeTime.dayStartEnd[i] != null && freeTime.dayStartEnd[i].startSession != null) {
-                        sb.append("(").append(RoomId).append(",").append(i).append(",").append(freeTime.dayStartEnd[i].startSession).append(",").append(freeTime.dayStartEnd[i].endSession).append("),");
-                    }
-                }
-            }
+        for (int i = 0; i < freeTime.getDayStartEnd().size(); i++) {
+            sb.append("(").append(freeTime.getId()).append(",").append(freeTime.getDayStartEnd().get(i).getDayId()).append(",").append(freeTime.getDayStartEnd().get(i).getStartSession()).append(",").append(freeTime.getDayStartEnd().get(i).getEndSession()).append("),");
         }
-        conn.execute("insert into freetimeforrooms values " + sb.substring(0, sb.length() - 1));
+        conn.execute("insert into freetimeforrooms(roomid,dayid,startingtime,enddingtime) values " + sb.substring(0, sb.length() - 1));
         conn.close();
     }
 
-    public freeTime getFreeTimeForRooms(int RoomId) {
+    public Object getFreeTimeForRooms() {
+        ArrayList<FreeTimeForRooms> f = new ArrayList<>();
+        try {
+            ResultSet rs;
+            rs = conn.select("select  rooms.id as roomId,rooms.name,freetimeforrooms.DayId,freetimeforrooms.startingTime,freetimeforrooms.enddingTime,freetimeforrooms.id from freetimeforrooms inner join rooms on rooms.id = freetimeforrooms.RoomId;");
+            while (rs.next()) {
+                f.add(new FreeTimeForRooms(rs.getInt("id"), new node(rs.getInt("DayId"), rs.getInt("startingTime"), rs.getInt("enddingTime")), rs.getInt("roomId"), rs.getString("name")));
+            }
+            return f;
+        } catch (Exception e) {
+            System.out.println(5 + "" + e);
+        } finally {
+            conn.close();
+        }
+        return f;
+    }
+
+    public freeTime getFreeTimeForARoom(int RoomId) {
         freeTime f = new freeTime();
         try {
             ResultSet rs;
-            rs = conn.select("select * from freetimeforRooms where StaffId =" + RoomId);
+            rs = conn.select("select * from freetimeforRooms where RoomId =" + RoomId);
             while (rs.next()) {
-                f.addFreeTime(rs.getInt(2), rs.getInt(3), rs.getInt(4));
+                f.getDayStartEnd().add(new node(rs.getInt(2), rs.getInt(3), rs.getInt(4)));
             }
         } catch (Exception e) {
             System.out.println(5 + "" + e);
@@ -1695,4 +1719,105 @@ public class adminService {
         }
     }
 
+    public ArrayList<timeInTimetable> getATimetable(int timetableId) {
+        ArrayList<timeInTimetable> tims = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        ResultSet rs = conn.select("select timesintimetable.id,"
+                + "timesintimetable.staffId,"
+                + " staff.name,"
+                + " timesintimetable.courseId,"
+                + " courses.name,"
+                + "courses.code,"
+                + "timesintimetable.hostingBranchId,"
+                + "branch.name,"
+                + "timesintimetable.hostingRoomId,"
+                + "rooms.name,"
+                + "timesintimetable.dayid,"
+                + "timesintimetable.startingTime,"
+                + "timesintimetable.enddingTime,"
+                + "timesintimetable.lecGroupId, "
+                + "lecgroup.name "
+                + "from timesintimetable "
+                + "LEFT JOIN staff on staff.id=timesintimetable.staffId "
+                + "left join courses on courses.id=timesintimetable.courseId "
+                + "left join branch on branch.id=timesintimetable.hostingbranchId "
+                + "left join rooms on rooms.id=timesintimetable.hostingRoomId "
+                + "left join lecgroup on lecgroup.id=timesintimetable.lecgroupId "
+                + "order by timesintimetable.id");
+        try {
+            while (rs.next()) {
+                sb.append(rs.getInt(1)).append(",");
+                timeInTimetable t = new timeInTimetable(rs.getInt(1),
+                        new Staff(rs.getInt(2), rs.getString(3)),
+                        new course(rs.getInt(4), rs.getString(5), rs.getString(6), 0, 0, 0, 0, 0, null, 0, null, 0, null, 0, null),
+                        new ArrayList<Branch>(),
+                        new Branch(rs.getInt(7), rs.getString(8)),
+                        new ArrayList<room>(),
+                        new room(rs.getInt(9), rs.getString(10)),
+                        rs.getInt(11), rs.getInt(12), rs.getInt(13), null,
+                        new LecGroup(rs.getInt(14), rs.getString(15)), null);
+                tims.add(t);
+            }
+            rs = conn.select("select timeInTimetableId, branchId ,branch.name from  branchesintimeintimetable left join branch on branch.id=branchId where timeInTimetableId in (" + sb.substring(0, sb.length() - 1) + ") order by timeInTimetableId");
+            int i = 0;
+            while (rs.next()) {
+                for (int j = i; j < tims.size(); j++) {
+                    if (rs.getInt(1) == tims.get(j).getId()) {
+                        i = j;
+                        tims.get(j).getBranchs().add(new Branch(rs.getInt(2), rs.getString(3)));
+                        break;
+                    }
+                }
+            }
+
+            rs = conn.select("select timeInTimetableId, RoomId ,rooms.name,rooms.branchId from  roomsintimeintimetable left join rooms on rooms.id=roomid where timeInTimetableId in (" + sb.substring(0, sb.length() - 1) + ") order by timeInTimetableId");
+            i = 0;
+            while (rs.next()) {
+                for (int j = i; j < tims.size(); j++) {
+                    if (rs.getInt(1) == tims.get(j).getId()) {
+                        i = j;
+                        tims.get(j).getRooms().add(new room(rs.getInt(2), rs.getString(3), 0, 0, null, rs.getInt(4), null));
+                        break;
+                    }
+                }
+            }
+
+            rs = conn.select("select * from sectiongroupnamefortimeintimetable order by timeInTimetableId");
+            i = 0;
+            while (rs.next()) {
+                for (int j = i; j < tims.size(); j++) {
+                    if (rs.getInt(1) == tims.get(j).getId()) {
+                        i = j;
+                        tims.get(j).setSectionGroupName(rs.getString(2));
+                        break;
+                    }
+                }
+            }
+            return tims;
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return null;
+    }
+
+    public com.team.timetableManagmentSystem.academictimetablemanagmentsystem.Timetable createTimeTable(String timetableName) {
+        connection conn = new connection();
+        conn.makeStatement();
+        com.team.timetableManagmentSystem.academictimetablemanagmentsystem.Timetable t = new com.team.timetableManagmentSystem.academictimetablemanagmentsystem.Timetable();
+        try {
+            int affectedRows = conn.stat.executeUpdate("insert into timetable (name) values ('" + timetableName + "')", Statement.RETURN_GENERATED_KEYS);
+
+            if (affectedRows > 0) {
+                try (ResultSet rs = conn.stat.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        t.setId(rs.getInt(1));
+                    }
+                }
+            }
+            return t;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
 }

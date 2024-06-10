@@ -24,22 +24,17 @@ public class UserController {
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @PostMapping(value = "/login")
     public ResponseEntity<?> loginUser(@RequestBody user user, HttpSession session) {
-        System.out.println("\t" + user.getUsername());
-
         int userRole;
+        System.out.println(user.getUsername());
         userRole = userService.userRole(user.getUsername(), user.getPassword());
-
         if (userRole == -1) {
             ArrayList<String> s = new ArrayList<>();
             s.add("Invalid Credentials");
-
             return new ResponseEntity<>(s, HttpStatus.UNAUTHORIZED);
         }
-
         session.setAttribute("username", user.getUsername());
         session.setAttribute("role", userRole);
         if (userRole == 2) {
-
         }
         ArrayList<String> s = new ArrayList<>();
         s.add("Login Successful");
@@ -59,9 +54,8 @@ public class UserController {
     @CrossOrigin(allowCredentials = "true", originPatterns = "*", origins = "localhost:4200")
     @RequestMapping("/home")
     public ResponseEntity<?> home(HttpSession session) {
-        System.out.println("enterd");
+        System.out.println(session.getAttribute("username"));
         if (session.getAttribute("username") != null) {
-            System.out.println(session.getAttribute("username"));
             ArrayList<String> s = new ArrayList<>();
             s.add("home");
             return new ResponseEntity<>(s, HttpStatus.OK);
