@@ -16,7 +16,7 @@ export class FormtimeroomComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.timeroomform = this._fb.group({
-<<<<<<< HEAD
+
       id: ['',Validators.required],
       name: ['',Validators.required],
       
@@ -24,13 +24,8 @@ export class FormtimeroomComponent {
     times: ['',Validators.required],
     timee: ['',Validators.required],
     
-=======
-      name: ['', Validators.required],
->>>>>>> 8ab7973ee0033b3a95fe727dd42000d2ebfff7ef
 
-      dates: ['', Validators.required],
-      times: ['', Validators.required],
-      timee: ['', Validators.required],
+
     });
   }
   ngOnInit(): void {

@@ -16,7 +16,7 @@ import { FormtimeroomComponent } from 'src/app/forms/formtimeroom/formtimeroom.c
   styleUrls: ['./freetimeroom.component.scss']
 })
 export class FreetimeroomComponent {
-  displayedColumns: string[] = ['name', 'dates', 'times', 'timee', 'action'];
+  displayedColumns: string[] = ['id','name', 'dates', 'times', 'timee', 'action'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

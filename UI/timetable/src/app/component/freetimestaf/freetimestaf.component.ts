@@ -16,7 +16,7 @@ import { FormtimestafComponent } from 'src/app/forms/formtimestaf/formtimestaf.c
   styleUrls: ['./freetimestaf.component.scss']
 })
 export class FreetimestafComponent {
-  displayedColumns: string[] = ['name', 'dates', 'times', 'timee', 'action'];
+  displayedColumns: string[] = ['id','name', 'dates', 'times', 'timee', 'action'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
