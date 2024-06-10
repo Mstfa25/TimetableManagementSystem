@@ -51,7 +51,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { FormcourstaffComponent } from './forms/formcourstaff/formcourstaff.component';
 import { FormsecstafComponent } from './forms/formsecstaf/formsecstaf.component';
 import { TablelecComponent } from './component/tablelec/tablelec.component';
-import { FormtablelecComponent } from './forms/formtablelec/formtablelec.component';
+
 import { FormtablesecComponent } from './forms/formtablesec/formtablesec.component';
 import { TablesecComponent } from './component/tablesec/tablesec.component';
 import { NavlecComponent } from './component/navlec/navlec.component';
@@ -100,7 +100,7 @@ import { FormsecGroupComponent } from './forms/formsecstaf/formsec-group/formsec
     FormcourstaffComponent,
     FormsecstafComponent,
     TablelecComponent,
-    FormtablelecComponent,
+
     FormtablesecComponent,
     TablesecComponent,
     NavlecComponent,

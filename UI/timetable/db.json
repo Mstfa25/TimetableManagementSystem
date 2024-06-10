@@ -118,7 +118,14 @@
       "section": "S1"
     }
   ],
-  "tablelec": [],
+  "tablelec": [
+    {
+      "id": "decb",
+      "name": "Noran mohamed",
+      "course": "c1",
+      "semster": "s1"
+    }
+  ],
   "sec_group": [],
   "tablesec": [],
   "timestaf": [],

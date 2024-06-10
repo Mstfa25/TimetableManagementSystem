@@ -16,7 +16,6 @@ export class SectionComponent {
   displayedColumns: string[] = [ 'name'
   ,'action'];
   dataSource!: MatTableDataSource<any>;
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 constructor(private _dialog:MatDialog, private _secService: FacultyService, private auth:AuthService) {
