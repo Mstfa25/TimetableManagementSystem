@@ -10,22 +10,62 @@ package com.team.timetableManagmentSystem.DTOs;
  */
 public class node {
 
-    public node next;
-    public node privous;
-    //stratSession is always less than the endSession 
-    //  as it is the start time of free time
-    public Integer startSession, endSession;
+    private Integer startSession;
+    private Integer endSession;
+    private Integer dayId;
 
-    //value return the string value for this free time 
-    String value() {
-//        if (startSession <= 12 && endSession <= 12) {
-//            return startSession + " pm to " + endSession + " pm.";
-//        } else if (startSession <= 12 && endSession > 12) {
-//            return startSession + " pm to " + (endSession % 12) + " am.";
-//        } else {
-//            return startSession + " am to " + endSession + " am.";
-//        }
-
-        return (startSession % 12) + ((startSession / 12 == 0) ? " am to " : " pm to ") + (endSession % 12) + ((endSession / 12 == 0) ? " am." : " pm.");
+    public node() {
     }
+
+
+    public node(Integer dayId, Integer startSession, Integer endSession) {
+        this.startSession = startSession;
+        this.endSession = endSession;
+        this.dayId = dayId;
+    }
+    
+    
+
+    /**
+     * @return the startSession
+     */
+    public Integer getStartSession() {
+        return startSession;
+    }
+
+    /**
+     * @param startSession the startSession to set
+     */
+    public void setStartSession(Integer startSession) {
+        this.startSession = startSession;
+    }
+
+    /**
+     * @return the endSession
+     */
+    public Integer getEndSession() {
+        return endSession;
+    }
+
+    /**
+     * @param endSession the endSession to set
+     */
+    public void setEndSession(Integer endSession) {
+        this.endSession = endSession;
+    }
+
+    /**
+     * @return the dayId
+     */
+    public Integer getDayId() {
+        return dayId;
+    }
+
+    /**
+     * @param dayId the dayId to set
+     */
+    public void setDayId(Integer dayId) {
+        this.dayId = dayId;
+    }
+
 }

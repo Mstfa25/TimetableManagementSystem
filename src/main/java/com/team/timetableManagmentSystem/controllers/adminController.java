@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,9 +42,18 @@ public class adminController {
 
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("/addBranch")
-    public ResponseEntity<?> addBranch(@RequestBody Branch branch, HttpSession session) {
+    public Object addBranch(@RequestBody Branch branch, HttpSession session) {
         if (isadmin(session)) {
-            adminService.insertNewBranch(branch.getName());
+            if (!branch.getName().isEmpty() && !branch.getName().equals(null)) {
+                if (!adminService.branchNameExist(branch.getName())) {
+                    adminService.insertNewBranch(branch.getName());
+                } else {
+                    return new String[]{"branch Exist"};
+                }
+
+            } else {
+                return new String[]{"empty name"};
+            }
         }
         return adminResponse(session);
 
@@ -53,13 +61,29 @@ public class adminController {
 
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("/addBranches")
-    public ResponseEntity<?> addBranches(HttpSession session, @RequestBody Branch... branchs) {
+    public Object addBranches(HttpSession session, @RequestBody Branch... branchs) {
         if (isadmin(session)) {
-            StringBuilder sb = new StringBuilder();
-            for (Branch branch : branchs) {
-                sb.append("('").append(branch.getName()).append("'),");
+            if (branchs.length > 0) {
+                ArrayList<Branch> branchs1 = new ArrayList<>();
+                for (int i = 0; i < branchs.length; i++) {
+                    if (!branchs[i].getName().equals(null) && !branchs[i].getName().isEmpty() && !adminService.branchNameExist(branchs[i].getName())) {
+                        branchs1.add(branchs[i]);
+                    }
+                }
+                StringBuilder sb = new StringBuilder();
+                if (branchs1.size() > 0) {
+                    for (Branch branch : branchs) {
+                        sb.append("('").append(branch.getName()).append("'),");
+                    }
+                } else {
+                    return new String[]{"data either exist or empty"};
+                }
+
+                adminService.insertNewBranches(sb.toString().substring(0, sb.toString().length() - 1));
+            } else {
+                return new String[]{"empty branches"};
             }
-            adminService.insertNewBranches(sb.toString().substring(0, sb.toString().length() - 1));
+
         }
         return adminResponse(session);
 
@@ -454,7 +478,7 @@ public class adminController {
     public Object addUser(@RequestBody user user, HttpSession session) {
         if (isadmin(session)) {
             if (user.getUsername() != null && user.getPassword() != null && user.getRole() != 0) {
-                adminService.addUser(user.getId(),user.getUsername(), user.getPassword(), user.getRole());
+                adminService.addUser(user.getId(), user.getUsername(), user.getPassword(), user.getRole());
             } else {
                 System.out.println("username : " + user.getUsername() + "\npassword : " + user.getPassword() + "\nrole : " + user.getRole());
             }
@@ -529,12 +553,17 @@ public class adminController {
 
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("createLectuerTimetable")
-    public Object createLectureTimetable(HttpSession session, @RequestBody course... courses) {
+    public Object createLectureTimetable(HttpSession session, @RequestBody TimeTableNameORIdAndBranch_WithCourses nameWithCourses) throws InterruptedException {
         if (isadmin(session)) {
-            ArrayList<timeInTimetable> t = adminService.createLectureTimeTable(courses);
+
+            ArrayList<timeInTimetable> t = adminService.createLectureTimeTable(nameWithCourses.getName(), nameWithCourses.getCourses());
             InsertTimetable insertTimeTable = new InsertTimetable((timeInTimetable[]) t.toArray(new timeInTimetable[t.size()]));
             insertTimeTable.start();
-            return t;
+            while (insertTimeTable.isAlive()) {
+                Thread.sleep(100);
+            }
+            System.out.println((t.size() > 0) ? t.get(0).getTimetable().getId() : -1);
+            return adminService.getATimetable((t.size() > 0) ? t.get(0).getTimetable().getId() : -1);
         }
         return adminResponse(session);
     }
@@ -550,18 +579,18 @@ public class adminController {
 
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getFreeTimeForStaff")
-    public Object getFreeTimeForStaff(HttpSession session, @RequestBody Staff staff) {
+    public Object getFreeTimeForStaff(HttpSession session) {
         if (isadmin(session)) {
-            return adminService.getFreeTimeForStaff(staff.getId()).dayStartEnd;
+            return adminService.getFreeTimeForStaff();
         }
         return adminResponse(session);
     }
 
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("addFreeTimeForStaff")
-    public ResponseEntity<?> addFreeTimeForStaff(HttpSession session, @RequestBody Staff staff, freeTime freeTime) {
+    public ResponseEntity<?> addFreeTimeForStaff(HttpSession session, freeTime freeTime) {
         if (isadmin(session)) {
-            adminService.addFreeTimeForStaff(staff.getId(), freeTime);
+            adminService.addFreeTimeForStaff(freeTime);
         }
         return adminResponse(session);
     }
@@ -579,7 +608,7 @@ public class adminController {
     @RequestMapping("editFreeTimeForStaff")
     public ResponseEntity<?> editFreeTimeForStaff(HttpSession session, @RequestBody Staff staff, freeTime freeTime) {
         if (isadmin(session)) {
-            adminService.updateFreeTimeForStaff(staff.getId(), freeTime);
+            adminService.updateFreeTimeForStaff(freeTime);
         }
         return adminResponse(session);
     }
@@ -701,7 +730,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllLecGroupBranches")
     public Object getAllLecGroupBranches(HttpSession session) {
@@ -710,7 +739,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("addSectionGroup")
     public ResponseEntity<?> addSectionGroup(HttpSession session, @RequestBody SectionGroup sectionGroup) {
         if (isadmin(session)) {
@@ -930,21 +959,34 @@ public class adminController {
     }
 
     @RequestMapping("createSectionTimetable")
-    public Object createSectionTimetable(HttpSession session, @RequestBody course[] courses) {
+    public Object createSectionTimetable(HttpSession session, @RequestBody TimeTableNameORIdAndBranch_WithCourses idAndBranch_WithCourses) {
 
-        if (isadmin(session)) {
-            ArrayList<timeInTimetable> t = adminService.createSectionTimeTable(0, 1, courses);
-            InsertTimetable insertTimeTable = new InsertTimetable((timeInTimetable[]) t.toArray(new timeInTimetable[t.size()]));
-            insertTimeTable.start();
-            return t;
-        }
-        return adminResponse(session);
+//        if (isadmin(session)) {
+        ArrayList<timeInTimetable> t = adminService.createSectionTimeTable(idAndBranch_WithCourses.getId(), idAndBranch_WithCourses.getBranchId(), idAndBranch_WithCourses.getCourses());
+        InsertTimetable insertTimeTable = new InsertTimetable((timeInTimetable[]) t.toArray(new timeInTimetable[t.size()]));
+        insertTimeTable.start();
+        return t;
+        //  }
+        //  return adminResponse(session);
     }
 
     @RequestMapping("getJobTypes")
     public Object getJobTypes(HttpSession session) {
         if (isadmin(session)) {
             return adminService.getAllJobTypes();
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("getTimeTable")
+    public ArrayList<timeInTimetable> getTimetable(HttpSession session, Timetable timetable) {
+        return adminService.getATimetable(timetable.getId());
+    }
+
+    @RequestMapping("getFreetimeForRooms")
+    public Object getFreeTimeForRooms(HttpSession session) {
+        if (isadmin(session)) {
+            return adminService.getFreeTimeForRooms();
         }
         return adminResponse(session);
     }

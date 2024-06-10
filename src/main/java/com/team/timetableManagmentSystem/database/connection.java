@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class connection {
 
-    Connection con;
-    Statement stat;
+    public Connection con;
+    public Statement stat;
 
     public void makeConnection() {
 

@@ -12,10 +12,11 @@ export class FormtimeroomComponent {
   timeroomform: FormGroup;
 
 
-  constructor(private _fb:FormBuilder, private _freetimeService: FreetimeService, private _dialogRef: MatDialogRef<FormtimeroomComponent>,
+  constructor(private _fb: FormBuilder, private _freetimeService: FreetimeService, private _dialogRef: MatDialogRef<FormtimeroomComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ){
+  ) {
     this.timeroomform = this._fb.group({
+<<<<<<< HEAD
       id: ['',Validators.required],
       name: ['',Validators.required],
       
@@ -23,37 +24,44 @@ export class FormtimeroomComponent {
     times: ['',Validators.required],
     timee: ['',Validators.required],
     
+=======
+      name: ['', Validators.required],
+>>>>>>> 8ab7973ee0033b3a95fe727dd42000d2ebfff7ef
 
+      dates: ['', Validators.required],
+      times: ['', Validators.required],
+      timee: ['', Validators.required],
     });
   }
   ngOnInit(): void {
-    this.timeroomform.patchValue(this.data)  
+    this.timeroomform.patchValue(this.data)
 
   }
-  onFormSubmit(){
-    if(this.timeroomform.valid){
-      if(this.data){
-        this._freetimeService.updatetimeroom(this.data.id,this.timeroomform.value).subscribe({
-          next: (val: any) =>{
-           alert('Update Successfuly')
-           this._dialogRef.close(true);
+  onFormSubmit() {
+    if (this.timeroomform.valid) {
+      if (this.data) {
+        this._freetimeService.updatetimeroom(this.data.id).subscribe({
+          next: (val: any) => {
+            alert('Update Successfuly')
+            this._dialogRef.close(true);
           },
-          error: (err:any) =>{
+          error: (err: any) => {
             console.error(err)
           }
-         })
+        })
       }
-      else{
-        
-   this._freetimeService.addtimeroom(this.timeroomform.value).subscribe({
-      next: (val: any) =>{
-       alert('Added Successfuly')
-       this._dialogRef.close(true);
-      },
-      error: (err:any) =>{
-        console.error(err)
+      else {
+
+        this._freetimeService.addtimeroom(this.timeroomform.value).subscribe({
+          next: (val: any) => {
+            alert('Added Successfuly')
+            this._dialogRef.close(true);
+          },
+          error: (err: any) => {
+            console.error(err)
+          }
+        })
       }
-     })
     }
-  }}
+  }
 }
