@@ -125,50 +125,60 @@ export class FacultyService {
   }
   //sections-------------------------------------------------------------
   addsec(data: any): Observable<any> {
-    return this.http.post('http://localhost:3000/section', data);
+    return this.http.post('http://localhost:7081/api/admin/section', data);
   }
 
   updatesec(id: number, data: any): Observable<any> {
-    return this.http.put(`http://localhost:3000/section/${id}`, data);
+    return this.http.put(`http://localhost:7081/api/admin/section/${id}`, data);
   }
 
   getseceList(): Observable<any> {
-    return this.http.get('http://localhost:3000/section');
+    const apiUrl = 'http://localhost:7081/api/admin/getSectionGroups';
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true
+    };
+    return this.http.get(apiUrl, httpOptions);
   }
 
   deletesec(id: number): Observable<any> {
-    return this.http.delete(`http://localhost:3000/section/${id}`);
+    return this.http.delete(`http://localhost:7081/api/admin/section/${id}`);
   }
   ////secgrop
   addsecgrop(data: any): Observable<any> {
-    return this.http.post('http://localhost:3000/sec_group', data);
+    return this.http.post('http://localhost:7081/api/admin/sec_group', data);
   }
 
   updatsecgrop(id: number, data: any): Observable<any> {
-    return this.http.put(`http://localhost:3000/sec_group/${id}`, data);
+    return this.http.put(`http://localhost:7081/api/admin/sec_group/${id}`, data);
   }
 
   getsecgropList(): Observable<any> {
-    return this.http.get('http://localhost:3000/sec_group');
+    const apiUrl = 'http://localhost:7081/api/admin/getSectionGroupsBranches';
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true
+    };
+    return this.http.get(apiUrl, httpOptions);
   }
 
   deletesecgrop(id: number): Observable<any> {
-    return this.http.delete(`http://localhost:3000/sec_group/${id}`);
+    return this.http.delete(`http://localhost:7081/api/admin/sec_group/${id}`);
   }
   //courses-------------------------------------------------------------------
   addcourse(data: any): Observable<any> {
-    return this.http.post('http://localhost:3000/course', data);
+    return this.http.post('http://localhost:7081/api/admin/course', data);
   }
 
   updatecourse(id: number, data: any): Observable<any> {
-    return this.http.put(`http://localhost:3000/course/${id}`, data);
+    return this.http.put(`http://localhost:7081/api/admin/course/${id}`, data);
   }
 
   getcourseList(): Observable<any> {
-    return this.http.get('http://localhost:3000/course');
+    return this.http.get('http://localhost:7081/api/admin/course');
   }
 
   deletecourse(id: number): Observable<any> {
-    return this.http.delete(`http://localhost:3000/course/${id}`);
+    return this.http.delete(`http://localhost:7081/api/admin/course/${id}`);
   }
 }

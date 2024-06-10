@@ -655,23 +655,6 @@ public class adminService {
 
     }
 
-    public sectionGroupBranchs getSectionGroupBranchs(int sectionGroupId) {
-        try {
-            sectionGroupBranchs s = new sectionGroupBranchs();
-            s.setBranchWithNumberOfSectionGroupses(new ArrayList<>());
-            ResultSet rs = conn.select("select sectionsfgroups.branchId,branch.name,sectionsfgroups.numberOfGroups from sectionsfgroups inner join branch on branch.id=sectionsfgroups.branchId where sectionsnumberofgroupsId = " + sectionGroupId);
-            while (rs.next()) {
-                s.getBranchWithNumberOfSectionGroupses().add(new BranchWithNumberOfSectionGroups(rs.getInt(1), rs.getString(2), rs.getInt(3)));
-            }
-            return s;
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            conn.close();
-        }
-        return null;
-    }
-
     public void insertCourse(String name, String code, int lecHour, int labHours, int SemesterId, int StudyPlanId, int facultyId) {
         conn.execute("insert into courses (name,code,lecHours,labHours,semesterId,facultyId,studyplanId,lectureGroupId,sectionsnumberofgroupsId) values('" + name + "','" + code + "'," + lecHour + "," + labHours + "," + SemesterId + "," + facultyId + "," + StudyPlanId + ",0,0)");
         conn.close();
@@ -1650,7 +1633,8 @@ public class adminService {
             ResultSet rs;
             rs = conn.select("select  staff.id as satffId,staff.name,freetimeforstaff.DayId,freetimeforstaff.startingTime,freetimeforstaff.enddingTime,freetimeforstaff.id from freetimeforstaff inner join staff on staff.id = freetimeforstaff.staffid;");
             while (rs.next()) {
-                f.add(new freetimeForStaff(rs.getInt("id"), new node(rs.getInt("DayId"), rs.getInt("startingTime"), rs.getInt("enddingTime")), rs.getInt("satffId"), rs.getString("name")));            }
+                f.add(new freetimeForStaff(rs.getInt("id"), new node(rs.getInt("DayId"), rs.getInt("startingTime"), rs.getInt("enddingTime")), rs.getInt("satffId"), rs.getString("name")));
+            }
         } catch (Exception e) {
             System.out.println(5 + "" + e);
         } finally {
@@ -1817,6 +1801,85 @@ public class adminService {
             return t;
         } catch (Exception e) {
             System.out.println(e);
+        }
+        return null;
+    }
+
+    public Object getCourseStaff() {
+        ArrayList<CourseStaff> cs = new ArrayList<>();
+        connection conn = new connection();
+        ResultSet rs = conn.select("select coursesstaff.courseId ,courses.name as courseName,coursesstaff.staffId,staff.name as staffName,coursesstaff.BranchId,branch.name as branchName "
+                + "from coursesstaff "
+                + "inner join courses on courses.id=coursesstaff.courseId "
+                + "inner join staff on staff.id=coursesstaff.staffId "
+                + "inner join branch on branch.id=coursesstaff.BranchId;");
+        try {
+            while (rs.next()) {
+                cs.add(new CourseStaff(rs.getInt("courseId"), rs.getString("courseName"), rs.getInt("staffId"), rs.getString("staffName"), rs.getInt("BranchId"), rs.getString("branchName")));
+            }
+            return cs;
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            conn.close();
+        }
+        return null;
+    }
+
+    public Object getCourseSectionStaff() {
+        ArrayList<CourseSectionStaff> cs = new ArrayList<>();
+        connection conn = new connection();
+        ResultSet rs = conn.select("select sectiongroupsstaffs.courseId,courses.name as courseName,sectiongroupsstaffs.staffId,staff.name as staffName,sectiongroupsstaffs.branchId,branch.name as branchName,sectiongroupsstaffs.GroupNumber "
+                + "from sectiongroupsstaffs "
+                + "inner join courses on courses.id= sectiongroupsstaffs.courseId "
+                + "inner join staff on staff.id = sectiongroupsstaffs.staffId "
+                + "inner join branch on branch.id = sectiongroupsstaffs.branchId;");
+        try {
+            while (rs.next()) {
+                cs.add(new CourseSectionStaff(rs.getInt("courseId"), rs.getString("courseName"), rs.getInt("staffId"), rs.getString("staffName"), rs.getInt("BranchId"), rs.getString("branchName"), rs.getInt("GroupNumber")));
+            }
+            return cs;
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            conn.close();
+        }
+        return null;
+    }
+
+    public Object getSectionGroups() {
+        connection conn = new connection();
+        ResultSet rs = conn.select("SELECT id,name FROM sectionsnumberofgroups;");
+        try {
+            ArrayList<SectionGroup> sg = new ArrayList<>();
+            while (rs.next()) {
+                sg.add(new SectionGroup(rs.getInt("id"), rs.getString("name")));
+            }
+            return sg;
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            conn.close();
+        }
+        return null;
+    }
+
+    public Object getSectionGroupsBranches() {
+        connection conn = new connection();
+        ResultSet rs = conn.select("select sectionsnumberofgroupsId,sectionsnumberofgroups.name as sectionGroupName,sectionsfgroups.branchId,branch.name as branhName,sectionsfgroups.numberOfGroups "
+                + "from sectionsfgroups "
+                + "inner join branch on branch.id=sectionsfgroups.branchId "
+                + "inner join sectionsnumberofgroups on sectionsnumberofgroupsId=sectionsnumberofgroups.id;");
+        try {
+            ArrayList<sectionGroupBranchs> sgb = new ArrayList<>();
+            while (rs.next()) {
+                sgb.add(new sectionGroupBranchs(rs.getInt("numberOfGroups"), rs.getInt("branchId"), rs.getString("branhName"), rs.getInt("sectionsnumberofgroupsId"), rs.getString("sectionGroupName")));
+            }
+            return sgb;
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            conn.close();
         }
         return null;
     }

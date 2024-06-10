@@ -127,7 +127,12 @@ export class BranchService {
   }
 
   getcourStaffList(): Observable<any> {
-    return this._http.get('http://localhost:3000/coursestaaf');
+    const apiUrl = 'http://localhost:7081/api/admin/getCousreStaff';
+    const httpOptions = { 
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }), 
+      withCredentials: true 
+    };
+    return this._http.get(apiUrl, httpOptions);
   }
 
   deletecourStaff(id: number): Observable<any> {
@@ -135,19 +140,24 @@ export class BranchService {
   }
   //SEctionStaff-------------------------------------------------------------------------------------
   addSecStaff(data: any): Observable<any> {
-    return this._http.post('http://localhost:3000/secstaaf', data);
+    return this._http.post('http://localhost:7081/api/admin', data);
   }
 
   updateSecStaff(id: number, data: any): Observable<any> {
-    return this._http.put(`http://localhost:3000/secstaaf/${id}`, data);
+    return this._http.put(`http://localhost:7081/api/admin/${id}`, data);
   }
 
   getSecStaffList(): Observable<any> {
-    return this._http.get('http://localhost:3000/secstaaf');
+    const apiUrl = 'http://localhost:7081/api/admin/getCourseSectionStaff';
+    const httpOptions = { 
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }), 
+      withCredentials: true 
+    };
+    return this._http.get(apiUrl, httpOptions);
   }
 
   deleteSecStaff(id: number): Observable<any> {
-    return this._http.delete(`http://localhost:3000/secstaaf/${id}`);
+    return this._http.delete(`http://localhost:7081/api/admin/${id}`);
   }
   
 }

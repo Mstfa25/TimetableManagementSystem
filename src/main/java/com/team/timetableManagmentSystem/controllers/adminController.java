@@ -772,48 +772,6 @@ public class adminController {
         return adminResponse(session);
     }
 
-    @RequestMapping("insertBranchInSectionGroup")
-    public ResponseEntity<?> insertBranchInSectionGroup(HttpSession session, @RequestBody sectionGroupBranchs sectionGroupBranchs) {
-        if (isadmin(session)) {
-            adminService.insertBranchInSectionGroup(sectionGroupBranchs.getBranchWithNumberOfSectionGroupses().get(0).getBranch().getId(), sectionGroupBranchs.getSectionGroup().getId(), sectionGroupBranchs.getBranchWithNumberOfSectionGroupses().get(0).getNumberOfSectionGroups());
-        }
-        return adminResponse(session);
-    }
-
-    @RequestMapping("editBranchSectionGroupnumberOfGroups")
-    public ResponseEntity<?> editBranchSectionGroupnumberOfGroups(HttpSession session, @RequestBody sectionGroupBranchs sectionGroupBranchs) {
-        if (isadmin(session)) {
-            adminService.editBranchSectionGroupnumberOfGroups(sectionGroupBranchs.getBranchWithNumberOfSectionGroupses().get(0).getBranch().getId(), sectionGroupBranchs.getSectionGroup().getId(), sectionGroupBranchs.getBranchWithNumberOfSectionGroupses().get(0).getNumberOfSectionGroups());
-        }
-        return adminResponse(session);
-    }
-
-    @RequestMapping("changeBranchSectionGroup")
-    public ResponseEntity<?> changeBranchSectionGroup(HttpSession session, @RequestBody sectionGroupBranchs sectionGroupBranchs, @RequestBody sectionGroupBranchs sectionGroupBranchs1) {
-
-        if (isadmin(session)) {
-            adminService.changeBranchSectionGroup(sectionGroupBranchs.getBranchWithNumberOfSectionGroupses().get(0).getBranch().getId(), sectionGroupBranchs.getSectionGroup().getId(), sectionGroupBranchs1.getSectionGroup().getId());
-        }
-        return adminResponse(session);
-    }
-
-    @RequestMapping("removeBranchFromSectionGroup")
-    public ResponseEntity<?> removeBranchFromSectionGroup(HttpSession session, sectionGroupBranchs sectionGroupBranchs) {
-
-        if (isadmin(session)) {
-            adminService.removeBranchFromSectionGroup(sectionGroupBranchs.getBranchWithNumberOfSectionGroupses().get(0).getBranch().getId(), sectionGroupBranchs.getSectionGroup().getId());
-        }
-        return adminResponse(session);
-    }
-
-    @RequestMapping("getSectionGroupBranchs")
-    public Object getSectionGroupBranchs(HttpSession session, @RequestBody SectionGroup sectionGroup) {
-        if (isadmin(session)) {
-            return adminService.getSectionGroupBranchs(sectionGroup.getId());
-        }
-        return adminResponse(session);
-    }
-
     @RequestMapping("insertCourse")
     public ResponseEntity<?> insertCourse(HttpSession session, @RequestBody course course) {
         if (isadmin(session)) {
@@ -961,13 +919,13 @@ public class adminController {
     @RequestMapping("createSectionTimetable")
     public Object createSectionTimetable(HttpSession session, @RequestBody TimeTableNameORIdAndBranch_WithCourses idAndBranch_WithCourses) {
 
-//        if (isadmin(session)) {
-        ArrayList<timeInTimetable> t = adminService.createSectionTimeTable(idAndBranch_WithCourses.getId(), idAndBranch_WithCourses.getBranchId(), idAndBranch_WithCourses.getCourses());
-        InsertTimetable insertTimeTable = new InsertTimetable((timeInTimetable[]) t.toArray(new timeInTimetable[t.size()]));
-        insertTimeTable.start();
-        return t;
-        //  }
-        //  return adminResponse(session);
+        if (isadmin(session)) {
+            ArrayList<timeInTimetable> t = adminService.createSectionTimeTable(idAndBranch_WithCourses.getId(), idAndBranch_WithCourses.getBranchId(), idAndBranch_WithCourses.getCourses());
+            InsertTimetable insertTimeTable = new InsertTimetable((timeInTimetable[]) t.toArray(new timeInTimetable[t.size()]));
+            insertTimeTable.start();
+            return t;
+        }
+        return adminResponse(session);
     }
 
     @RequestMapping("getJobTypes")
@@ -987,6 +945,39 @@ public class adminController {
     public Object getFreeTimeForRooms(HttpSession session) {
         if (isadmin(session)) {
             return adminService.getFreeTimeForRooms();
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("getCousreStaff")
+    public Object getCousreStaff(HttpSession session) {
+        if (isadmin(session)) {
+            return adminService.getCourseStaff();
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("getCourseSectionStaff")
+    public Object getCourseSectionStaff(HttpSession session) {
+        if (isadmin(session)) {
+            return adminService.getCourseSectionStaff();
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("getSectionGroups")
+    public Object getSectionGroups(HttpSession session) {
+        if (isadmin(session)) {
+            return adminService.getSectionGroups();
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("getSectionGroupsBranches")
+
+    public Object getSectionGroupsBranches(HttpSession session) {
+        if(isadmin(session)){
+            return adminService.getSectionGroupsBranches();
         }
         return adminResponse(session);
     }
