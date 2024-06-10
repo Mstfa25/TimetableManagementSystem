@@ -16,6 +16,7 @@ export class FormtimeroomComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ){
     this.timeroomform = this._fb.group({
+      id: ['',Validators.required],
       name: ['',Validators.required],
       
     dates: ['',Validators.required],

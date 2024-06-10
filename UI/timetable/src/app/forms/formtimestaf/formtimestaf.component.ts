@@ -17,6 +17,7 @@ export class FormtimestafComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ){
     this.timestafform = this._fb.group({
+      id: ['',Validators.required],
       name: ['',Validators.required],
       
     dates: ['',Validators.required],
