@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -444,6 +446,7 @@ public class adminService {
 
     public ArrayList<Semester> getAllSemesters() {
         try {
+            connection conn = new connection();
             ArrayList<Semester> semesters = new ArrayList<>();
             ResultSet rs = conn.select("select semester.id,semester.number,semester.StudyPlanId,studyplan.name,faculty.id,faculty.name from semester inner join studyplan on studyplan.id=semester.StudyPlanId inner join faculty on studyplan.facultyId=faculty.id");
             while (rs.next()) {
@@ -1942,4 +1945,75 @@ public class adminService {
         }
         return null;
     }
+
+    public Object getAllFacultysWithThereStudyPlansAndStemesters() {
+        ArrayList<Semester> semesters = getAllSemesters();
+        Map<Integer, Faculty> facultyMap = new HashMap<>();
+        Map<Integer, StudyPlan> studyPlanMap = new HashMap<>();
+
+        if (semesters != null && !semesters.isEmpty()) {
+            for (Semester semester : semesters) {
+                StudyPlan originalStudyPlan = semester.getStudyPlan();
+                Faculty originalFaculty = originalStudyPlan.getFaculty();
+
+                Faculty faculty;
+                StudyPlan studyPlan;
+                Semester newSemester = new Semester();
+
+                // Manually copy fields from the original Semester
+                newSemester.setId(semester.getId());
+                newSemester.setNumber(semester.getNumber());
+                // Copy other necessary fields...
+
+                if (!facultyMap.containsKey(originalFaculty.getId())) {
+                    faculty = new Faculty();
+                    // Manually copy fields from the original Faculty
+                    faculty.setId(originalFaculty.getId());
+                    faculty.setName(originalFaculty.getName());
+                    // Copy other necessary fields...
+                    faculty.setStudyPlans(new ArrayList<>());
+                    facultyMap.put(faculty.getId(), faculty);
+                } else {
+                    faculty = facultyMap.get(originalFaculty.getId());
+                }
+
+                if (!studyPlanMap.containsKey(originalStudyPlan.getId())) {
+                    studyPlan = new StudyPlan();
+                    // Manually copy fields from the original StudyPlan
+                    studyPlan.setId(originalStudyPlan.getId());
+                    studyPlan.setName(originalStudyPlan.getName());
+                    // Copy other necessary fields...
+                    studyPlan.setSemesters(new ArrayList<>());
+                    studyPlanMap.put(studyPlan.getId(), studyPlan);
+                    faculty.getStudyPlans().add(studyPlan);
+                } else {
+                    studyPlan = studyPlanMap.get(originalStudyPlan.getId());
+                }
+
+                studyPlan.getSemesters().add(newSemester);
+            }
+
+            return new ArrayList<>(facultyMap.values());
+        }
+
+        return null;
+    }
+
+    public Object getTimetableNames() {
+        connection conn = new connection();
+        ResultSet rs = conn.select("select id, name from timetable");
+        try {
+            ArrayList<Timetable> timetables=new ArrayList<>();
+            while (rs.next()) {
+                timetables.add(new Timetable(rs.getInt("id"),rs.getString("name")));
+            }
+            return timetables;
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            conn.close();
+        }
+        return null;
+    }
+
 }

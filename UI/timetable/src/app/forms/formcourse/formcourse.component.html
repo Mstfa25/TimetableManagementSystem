@@ -31,7 +31,7 @@
                 <mat-label> Lecturename</mat-label>
                 <mat-select formControlName="lecname">
                  
-                    <mat-option *ngFor="let val of lecname" [value]="val"> {{val}} </mat-option>
+                    <mat-option *ngFor="let val of lecname" [value]="val"> {{val.name}} </mat-option>
                   
                 </mat-select>
               </mat-form-field>
@@ -39,7 +39,7 @@
                 <mat-label> SecGroup</mat-label>
                 <mat-select formControlName="secgroup">
                  
-                    <mat-option *ngFor="let val of secgroup" [value]="val"> {{val}} </mat-option>
+                    <mat-option *ngFor="let val of secgroup" [value]="val"> {{val.name}} </mat-option>
                   
                 </mat-select>
               </mat-form-field>
@@ -51,7 +51,7 @@
                 <mat-label>Faculty</mat-label>
                 <mat-select formControlName="faculty">
                  
-                    <mat-option *ngFor="let val of  faculty" [value]="val"> {{val}} </mat-option>
+                    <mat-option *ngFor="let val of  faculty" [value]="val"> {{val.name}} </mat-option>
                   
                 </mat-select>
               </mat-form-field>
@@ -59,7 +59,7 @@
                 <mat-label> StudyPlan</mat-label>
                 <mat-select formControlName="study">
                  
-                    <mat-option *ngFor="let val of study" [value]="val"> {{val}} </mat-option>
+                    <mat-option *ngFor="let val of study" [value]="val"> {{val.name}} </mat-option>
                   
                 </mat-select>
               </mat-form-field>
@@ -67,7 +67,7 @@
                 <mat-label> Semster</mat-label>
                 <mat-select formControlName="semster">
                  
-                    <mat-option *ngFor="let val of semster" [value]="val"> {{val}} </mat-option>
+                    <mat-option *ngFor="let val of semster" [value]="val"> {{val.name}} </mat-option>
                   
                 </mat-select>
               </mat-form-field>
