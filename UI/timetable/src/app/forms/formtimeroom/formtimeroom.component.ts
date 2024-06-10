@@ -25,7 +25,6 @@ export class FormtimeroomComponent {
     timee: ['',Validators.required],
     
 
-
     });
   }
   ngOnInit(): void {
