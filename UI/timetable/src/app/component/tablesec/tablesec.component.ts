@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { TablesService } from 'src/app/core/services/tables.service';
-import { FormtablesecComponent } from 'src/app/forms/formtablesec/formtablesec.component';
+
 
 @Component({
   selector: 'app-tablesec',
@@ -13,67 +14,48 @@ import { FormtablesecComponent } from 'src/app/forms/formtablesec/formtablesec.c
   styleUrls: ['./tablesec.component.scss']
 })
 export class TablesecComponent {
-  displayedColumns: string[] = ['table','branch',
-    'course','action'];
-    dataSource!: MatTableDataSource<any>;
-  
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
-    @ViewChild(MatSort) sort!: MatSort;
-  constructor(private _dialog:MatDialog, private _tableService: TablesService, private auth:AuthService) {
-    auth.loggedIn.next(true);
-  }
-  ngOnInit(): void {
-      this.getTablesec();
-  
-  }
-  openAddEditTablesec(){
-    const dialogRef= this._dialog.open(FormtablesecComponent );
-    dialogRef.afterClosed().subscribe({
-      next: (val) => {
-        if(val){
-          this.getTablesec();
-        }
-      }
-    })
-  }
-  getTablesec(){
-    this._tableService.gettablesecList().subscribe({
-      next: (res) =>{
-     this.dataSource = new MatTableDataSource(res);
-     this.dataSource.sort = this.sort;
-     this.dataSource.paginator = this.paginator;
-      },
-      error: console.log
-    })
-  }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-  deleteTablesec(id:number){
-  this._tableService.deletetablesec(id).subscribe({
-    next: (res) => {
-     alert(' Deleted !')
-     this.getTablesec();
-    },
-    error: console.log
+  useFrom: FormGroup;
+listdata:any;
+course: string[] = [
+  'c1',
+  'C2',
+  'C3',
+];
+branch:string[]=[
+  'b1',
+  'b2'
+]
+table:string[]=[
+  't1',
+  't2'
+]
+constructor(private fb:FormBuilder ,private auth:AuthService) 
+ 
+
+{
+  auth.loggedIn.next(true);
+  this.listdata=[]
+  this.useFrom=this.fb.group({
+    branch:['',Validators.required],
+    course:['',Validators.required],
+    table:['',Validators.required],
+
   })
+}
+ public additem():void{
+this.listdata.push(this.useFrom.value)
+this.useFrom.reset();
+ }
+
+  resetitem(){
+    this.useFrom.reset();
   }
-  openEditTablesec(data: any){
-  const dialogRef = this._dialog.open(FormtablesecComponent , {
-      data,
-     });
-     dialogRef.afterClosed().subscribe({
-      next: (val) => {
-        if(val){
-          this.getTablesec();
-        }
-      }
-    })
-   
+
+  removeitem(element:any){
+this.listdata.forEach((value:any,index:any)=>{
+  if(value== element)
+    this.listdata.splice(index,1)
+
+})
   }
 }

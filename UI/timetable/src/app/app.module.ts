@@ -51,8 +51,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { FormcourstaffComponent } from './forms/formcourstaff/formcourstaff.component';
 import { FormsecstafComponent } from './forms/formsecstaf/formsecstaf.component';
 import { TablelecComponent } from './component/tablelec/tablelec.component';
+import {TimetableModule} from './component/timetable/timetable.module';
 
-import { FormtablesecComponent } from './forms/formtablesec/formtablesec.component';
 import { TablesecComponent } from './component/tablesec/tablesec.component';
 import { NavlecComponent } from './component/navlec/navlec.component';
 import { NavtimeComponent } from './component/navtime/navtime.component';
@@ -101,7 +101,7 @@ import { FormsecGroupComponent } from './forms/formsecstaf/formsec-group/formsec
     FormsecstafComponent,
     TablelecComponent,
 
-    FormtablesecComponent,
+   
     TablesecComponent,
     NavlecComponent,
     GrouplecComponent,
@@ -137,7 +137,8 @@ import { FormsecGroupComponent } from './forms/formsecstaf/formsec-group/formsec
     MatCheckboxModule,
     BrowserAnimationsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    TimetableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

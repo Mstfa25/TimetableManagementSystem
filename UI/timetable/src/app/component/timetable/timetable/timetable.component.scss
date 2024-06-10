@@ -1,0 +1,46 @@
+.history-item {
+	margin-bottom: 30px;
+  }
+  
+  .history-item span {
+	background-color: #555555;
+	color: #ffffff;
+	border-radius: 25px;
+	padding: 5px 10px;
+  }
+  
+  .highlighted {
+	position: relative;
+  }
+  
+  .highlighted::before {
+	content: "position";
+	position: absolute;
+	width: 60px;
+	height: 1px;
+	top: -20px;
+	/*top: 0px;*/
+	border-top: 2px solid #38761d;
+	color: #38761d;
+	font-size: 8px;
+  }
+  
+  button {
+	display: inline-block;
+	text-align: center;
+	background-color: #3c78d8;
+	border: 1px solid #1155cc;
+	color: #fff;
+	padding: 6px 20px;
+	border-radius: 2px;
+	cursor: pointer;
+	margin-right: 5px;
+	text-decoration: none;
+  }
+  
+  button:disabled {
+	background-color: #666;
+	border-color: #333;
+	color: #ccc;
+  }
+  
