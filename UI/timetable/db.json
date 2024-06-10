@@ -86,29 +86,12 @@
   "course": [],
   "section": [
     {
-      "id": "c89b",
-      "secname": "gg1",
-      "namese": ",m,l",
-      "task": true
+      "id": "acda",
+      "name": "bbb"
     },
     {
-      "id": "6be6",
-      "secname": "l25",
-      "namese": ",",
-      "branch": true
-    },
-    {
-      "id": "a07b",
-      "secname": "l25",
-      "namese": "kmmk",
-      "branch": true
-    },
-    {
-      "id": "c504",
-      "secname": "l25",
-      "namese": "m k",
-      "branch": true,
-      "capacity": "7"
+      "id": "2854",
+      "name": "rree"
     }
   ],
   "coursestaaf": [],
@@ -135,7 +118,15 @@
       "section": "S1"
     }
   ],
-  "tablelec": [],
+  "tablelec": [
+    {
+      "id": "decb",
+      "name": "Noran mohamed",
+      "course": "c1",
+      "semster": "s1"
+    }
+  ],
+  "sec_group": [],
   "tablesec": [],
   "timestaf": [],
   "timeroom": []

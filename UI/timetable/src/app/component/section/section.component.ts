@@ -13,10 +13,9 @@ import { FormsecComponent } from 'src/app/forms/formsec/formsec.component';
   styleUrls: ['./section.component.scss']
 })
 export class SectionComponent {
-  displayedColumns: string[] = [ 'namese','secname','branch'
-  ,'capacity','action'];
+  displayedColumns: string[] = [ 'name'
+  ,'action'];
   dataSource!: MatTableDataSource<any>;
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 constructor(private _dialog:MatDialog, private _secService: FacultyService, private auth:AuthService) {
@@ -55,7 +54,7 @@ applyFilter(event: Event) {
   }
 }
 deletesec(id:number){
-this._secService.deletecourse(id).subscribe({
+this._secService.deletesec(id).subscribe({
   next: (res) => {
    alert(' Deleted !')
    this.getSec();

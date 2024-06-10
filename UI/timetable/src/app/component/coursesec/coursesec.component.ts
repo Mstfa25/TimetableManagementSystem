@@ -5,49 +5,35 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { BranchService } from 'src/app/core/services/branch.service';
-import { FormcourstaffComponent } from 'src/app/forms/formcourstaff/formcourstaff.component';
 import { FormsecstafComponent } from 'src/app/forms/formsecstaf/formsecstaf.component';
 
 @Component({
-  selector: 'app-coursestaff',
-  templateUrl: './coursestaff.component.html',
-  styleUrls: ['./coursestaff.component.scss']
+  selector: 'app-coursesec',
+  templateUrl: './coursesec.component.html',
+  styleUrls: ['./coursesec.component.scss']
 })
-export class CoursestaffComponent {
-  displayedColumns: string[] = [ 'course','branch','staff'
-  ,'action'];
+export class CoursesecComponent {
+  displayedColumns: string[] = ['course','branch','staff','section', 'action'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  
-
 
 constructor(private _dialog:MatDialog, private _corStaService: BranchService, private auth:AuthService) {
   auth.loggedIn.next(true);
 }
 ngOnInit(): void {
-    this.getCostaf();
+    this.getSecStaf();
 
 }
-openAddEditCorstaf(){
-  const dialogRef= this._dialog.open(FormcourstaffComponent );
+openAddEditSecStaf() {
+  const dialogRef = this._dialog.open(FormsecstafComponent);
   dialogRef.afterClosed().subscribe({
     next: (val) => {
-      if(val){
-        this.getCostaf();
+      if (val) {
+        this.getSecStaf();
       }
     }
-  })
-}
-getCostaf(){
-  this._corStaService.getcourStaffList().subscribe({
-    next: (res) =>{
-   this.dataSource = new MatTableDataSource(res);
-   this.dataSource.sort = this.sort;
-   this.dataSource.paginator = this.paginator;
-    },
-    error: console.log
   })
 }
 applyFilter(event: Event) {
@@ -58,27 +44,36 @@ applyFilter(event: Event) {
     this.dataSource.paginator.firstPage();
   }
 }
-deleteCostaf(id:number){
-this._corStaService.deletecourStaff(id).subscribe({
-  next: (res) => {
-   alert(' Deleted !')
-   this.getCostaf();
-  },
-  error: console.log
-})
-}
-openEditcostaf(data: any){
-const dialogRef = this._dialog.open(FormcourstaffComponent  , {
-    data,
-   });
-   dialogRef.afterClosed().subscribe({
-    next: (val) => {
-      if(val){
-        this.getCostaf();
-      }
-    }
+getSecStaf(){
+  this._corStaService.getSecStaffList().subscribe({
+    next: (res) =>{
+   this.dataSource = new MatTableDataSource(res);
+   this.dataSource.sort = this.sort;
+   this.dataSource.paginator = this.paginator;
+    },
+    error: console.log
   })
- 
 }
-
+deleteSecstaf(id:number){
+  this._corStaService.deletecourStaff(id).subscribe({
+    next: (res) => {
+     alert(' Deleted !')
+     this.getSecStaf();
+    },
+    error: console.log
+  })
+  }
+  openEditSecStaf(data: any){
+  const dialogRef = this._dialog.open(FormsecstafComponent  , {
+      data,
+     });
+     dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if(val){
+          this.getSecStaf();
+        }
+      }
+    })
+   
+  }
 }

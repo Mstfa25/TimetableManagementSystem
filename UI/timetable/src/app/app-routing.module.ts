@@ -20,6 +20,8 @@ import { GrouplecComponent } from './component/grouplec/grouplec.component';
 import { SecgroupComponent } from './component/secgroup/secgroup.component';
 import { FreetimestafComponent } from './component/freetimestaf/freetimestaf.component';
 import { FreetimeroomComponent } from './component/freetimeroom/freetimeroom.component';
+import { CoursesecComponent } from './component/coursesec/coursesec.component';
+import { SectiongroupComponent } from './component/sectiongroup/sectiongroup.component';
 
 
 const routes: Routes = [
@@ -35,9 +37,11 @@ const routes: Routes = [
   { path: 'section', component: SectionComponent},
   { path: 'course', component: CourseComponent},
   { path: 'coursestaff', component: CoursestaffComponent},
+  { path: 'coursesec', component: CoursesecComponent},
   { path: 'lecgroup', component: LecgroupComponent},
   { path: 'grouplec', component: GrouplecComponent},
   { path: 'secgroup', component: SecgroupComponent},
+  { path: 'sectiongroup', component: SectiongroupComponent},
   { path: 'tablelec', component: TablelecComponent},
   { path: 'tablesec', component: TablesecComponent},
   { path: 'freetimestaf', component: FreetimestafComponent},

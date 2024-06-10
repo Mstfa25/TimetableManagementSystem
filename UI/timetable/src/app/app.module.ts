@@ -51,7 +51,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { FormcourstaffComponent } from './forms/formcourstaff/formcourstaff.component';
 import { FormsecstafComponent } from './forms/formsecstaf/formsecstaf.component';
 import { TablelecComponent } from './component/tablelec/tablelec.component';
-import { FormtablelecComponent } from './forms/formtablelec/formtablelec.component';
+
 import { FormtablesecComponent } from './forms/formtablesec/formtablesec.component';
 import { TablesecComponent } from './component/tablesec/tablesec.component';
 import { NavlecComponent } from './component/navlec/navlec.component';
@@ -60,6 +60,11 @@ import { GrouplecComponent } from './component/grouplec/grouplec.component';
 import { SecgroupComponent } from './component/secgroup/secgroup.component';
 import { FormtimeroomComponent } from './forms/formtimeroom/formtimeroom.component';
 import { FreetimeroomComponent } from './component/freetimeroom/freetimeroom.component';
+import { NavcourseComponent } from './component/navcourse/navcourse.component';
+import { CoursesecComponent } from './component/coursesec/coursesec.component';
+import { NavsecComponent } from './component/navsec/navsec.component';
+import { SectiongroupComponent } from './component/sectiongroup/sectiongroup.component';
+import { FormsecGroupComponent } from './forms/formsecstaf/formsec-group/formsec-group.component';
 
 
 @NgModule({
@@ -95,7 +100,7 @@ import { FreetimeroomComponent } from './component/freetimeroom/freetimeroom.com
     FormcourstaffComponent,
     FormsecstafComponent,
     TablelecComponent,
-    FormtablelecComponent,
+
     FormtablesecComponent,
     TablesecComponent,
     NavlecComponent,
@@ -105,7 +110,12 @@ import { FreetimeroomComponent } from './component/freetimeroom/freetimeroom.com
     FreetimestafComponent,
     NavtimeComponent,
     FormtimeroomComponent,
-    FreetimeroomComponent
+    FreetimeroomComponent,
+    NavcourseComponent,
+    CoursesecComponent,
+    NavsecComponent,
+    SectiongroupComponent,
+    FormsecGroupComponent
 
   ],
   imports: [

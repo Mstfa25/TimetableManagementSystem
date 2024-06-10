@@ -33,11 +33,7 @@
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Section</mat-label>
-                <mat-select formControlName="section">
-                 
-                    <mat-option *ngFor="let val of Section" [value]="val"> {{val}} </mat-option>
-                  
-                </mat-select>
+                <input matInput type="number" placeholder="Enternumber" formControlName="section" max="100" min="0">
               </mat-form-field>
             </div>
       

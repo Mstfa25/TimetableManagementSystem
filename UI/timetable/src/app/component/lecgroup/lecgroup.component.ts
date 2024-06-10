@@ -20,10 +20,7 @@ export class LecgroupComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  //------------------groplec
- 
-  ///secgroup
-  
+
   constructor(private _dialog: MatDialog, private _lecService: LecgroupService, private auth: AuthService) {
     auth.loggedIn.next(true);
   }
@@ -84,9 +81,5 @@ export class LecgroupComponent {
     })
 
   }
-  //---------------------------------------grouplec-------------------
-
- 
-  //---------------------secgroup//////////////
  
 }

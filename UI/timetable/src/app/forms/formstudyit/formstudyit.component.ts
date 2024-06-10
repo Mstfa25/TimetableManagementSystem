@@ -25,26 +25,22 @@ export class FormstudyitComponent implements OnInit {
       fname: ['', Validators.required],
       sId: [''],
       fId: ['']
-    });
-  }
+    })}
   ngOnInit(): void {
     (this.http.get('http://localhost:7081/api/admin/getFacultys', { withCredentials: true }) as Observable<any[]>)
       .subscribe((data: any[]) => {
         this.faname = data;
       });
-    this.studyform.patchValue(this.data);
-
-  }
-  onFormSubmit() {
-    if (this.studyform.valid) {
+    this.studyform.patchValue(this.data);}
+     onFormSubmit() {
+      if (this.studyform.valid) {
       if (this.data) {
         const data = {
           id: this.studyform.get("sId")?.value,
           name: this.studyform.get("sname")?.value,
           faculty: {
             id: this.studyform.get("fname")?.value,
-          }
-        }
+          }}
         this._studtService.updateStudyit(data).subscribe({
           next: (val: any) => {
             console.log(val);
@@ -53,16 +49,13 @@ export class FormstudyitComponent implements OnInit {
           },
           error: (err: any) => {
             console.error(err)
-          }
-        })
-      }
+          }})}
       else {
         const data = {
           name: this.studyform.get("sname")?.value,
           faculty: {
             id: this.studyform.get("fname")?.value,
-          }
-        }
+          }}
         console.log(this.studyform.get("fname")?.value);
         console.log(data);
         this._studtService.addStudyit(data).subscribe({
@@ -71,11 +64,4 @@ export class FormstudyitComponent implements OnInit {
             this._dialogRef.close(true);
           },
           error: (err: any) => {
-            console.error(err)
-          }
-        })
-      }
-    }
-  }
-
-}
+            console.error(err)}})}}}}

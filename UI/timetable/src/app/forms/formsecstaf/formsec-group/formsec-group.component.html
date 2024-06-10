@@ -1,0 +1,42 @@
+<div mat-dialog-title>
+    <h1>Sectiongroup branch Data</h1>
+</div>
+<form [formGroup]=" sgForm" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content class="content">
+     
+        <div class="row-n">
+            <mat-form-field>
+                <mat-label>Section Name</mat-label>
+                <mat-select formControlName="secname">
+                 
+                    <mat-option *ngFor="let val of secname" [value]="val"> {{val}} </mat-option>
+                  
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Branch Name</mat-label>
+                <mat-select formControlName="branch">
+                 
+                    <mat-option *ngFor="let val of branches" [value]="val"> {{val}} </mat-option>
+                  
+                </mat-select>
+              </mat-form-field>
+           
+              <mat-form-field appearance="outline">
+                <mat-label>Capactiy</mat-label>
+                <input matInput type="number" placeholder="Enternum" formControlName="capacty" max="100" min="1">
+              </mat-form-field>
+        
+        </div>
+      
+     
+    </div>
+ 
+  
+  
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" [mat-dialog-close]="false" >Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="sgForm.invalid">{{data ? 'Update':'Save'}}</button>
+    </div>
+   
+</form>

@@ -2,13 +2,12 @@
     <div class="px-5 pt-5">
         <nav class="navbar color ">
         <div class="container-fluid">
-      <app-navcourse></app-navcourse>
-        
+         
+        <app-navsec></app-navsec>
         <div class=" d-flex">
-                    <button class="btn btn-lg  ms-2" mat-raised-button color="primary" (click)="openAddEditCorstaf()">
-                        AddCourseStaff
+                    <button class="btn btn-lg  ms-2" mat-raised-button color="primary" (click)="openAddEditsecgroup()">
+                        AddSecgroupbranch
                        </button>
-                    
                       
         </div>
     </div>
@@ -24,7 +23,7 @@
     <div
     class="container d-flex justify-content-center align-items-center flex-column"
   >
-    <h2 class="my-5 fs-1">Add CourseStaff </h2>
+    <h2 class="my-5 fs-1">Add SectionGroupBranch </h2>
     <div class="input-container w-100 ">
       <h2 class="fw-lighter text-center mb-5 fs-2">
         <i class="fa-solid fa-bookmark fs-3"></i>It allowed to enter more than one 
@@ -46,32 +45,27 @@
         <table mat-table [dataSource]="dataSource" matSort class="table">
       
           <!-- ID Column -->
-          <ng-container matColumnDef="course">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Course </th>
-            <td mat-cell *matCellDef="let row"> {{row.course}} </td>
+          <ng-container matColumnDef="secname">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> SecName </th>
+            <td mat-cell *matCellDef="let row"> {{row.secname}} </td>
           </ng-container>
-      
-          <!-- Progress Column -->
           <ng-container matColumnDef="branch">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Branch</th>
-            <td mat-cell *matCellDef="let row"> {{row.branch}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Branch Name </th>
+            <td mat-cell *matCellDef="let row"> {{row.branch }} </td>
           </ng-container>
-  
-          <ng-container matColumnDef="staff">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Staff</th>
-            <td mat-cell *matCellDef="let row"> {{row.staff}} </td>
+          <ng-container matColumnDef="capacty">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Capacity</th>
+            <td mat-cell *matCellDef="let row"> {{row.capacty}} </td>
           </ng-container>
         
-     
-    
       
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Action</th>
             <td mat-cell *matCellDef="let row">
-            <button mat-icon-button color="primary" (click)="openEditcostaf(row)">
+            <button mat-icon-button color="primary" (click)="openEditsecgrop(row)">
                 <mat-icon class="">edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" (click)="deleteCostaf(row.id)">
+            <button mat-icon-button color="warn" (click)="deletesecgrp(row.id)">
                 <mat-icon class="" >delete</mat-icon>
             </button>
             </td>
@@ -90,4 +84,3 @@
       </div>
       
 </section>
-<!-- Section Staff -->
