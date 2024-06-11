@@ -18,8 +18,8 @@ export class TimetableComponent implements AfterViewInit {
     viewType: "Week",
     headerDateFormat:"dddd",
     timeRangeSelectedHandling: "Enabled",
-    businessBeginsHour: 9, 
-    businessEndsHour: 17,
+    businessBeginsHour: 8, 
+    businessEndsHour: 18,
    
     durationBarVisible: false,
 
