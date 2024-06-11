@@ -1652,9 +1652,30 @@ var evts = [{
     "startingTime": 8,
     "endingTime": 9,
     "sectionGroupName": null,
-    "timetable": null
-}];
-this.events = evts.map(function(item){return  {id:item.id,text:item.course.name + " - "+item.staff.name,day:DayPilot.Date.today().addDays(item.day),start:DayPilot.Date.today().addDays(item.day).addHours(item.startingTime),end:DayPilot.Date.today().addDays(item.day).addHours(item.endingTime)}});
+    "timetable": null
+}]
+;
+this.events = evts.map(function(item){
+    var today = DayPilot.Date.today();
+    var dayOfWeek = today.getDayOfWeek();
+    var daysSinceLastSaturday = (dayOfWeek + 1) % 7;
+    var lastSaturday = today.addDays(-daysSinceLastSaturday);
+    var eventDay = lastSaturday.addDays(item.day);
+
+    // Check if item.day is 6 (Saturday) and add 7 days to include the following Saturday
+    if (item.day === 6) {
+        eventDay = eventDay.addDays(7);
+    }
+
+    return {
+        id: item.id,
+        text: item.course.name + " - " + item.staff.name,
+        day: eventDay,
+        start: eventDay.addHours(item.startingTime),
+        end: eventDay.addHours(item.endingTime)
+    };
+});
+
     // simulating an HTTP request
     return new Observable(observer => {
       setTimeout(() => {
