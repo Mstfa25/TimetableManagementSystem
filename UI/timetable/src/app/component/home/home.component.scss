@@ -1,0 +1,169 @@
+header {
+    height: 100vh;
+    background-image: url(../../../assets/imgs/2022-01-04.jpg);
+    background-size: cover;
+}
+
+.bg-opacity-65 {
+    --bs-bg-opacity: 0.65;
+}
+
+.home-content h1,
+.home-content p {
+    color: #fff;
+}
+h1 {
+    font-size: 50px;
+    font-weight: 800;
+}
+
+.home-content .caption {
+    font-weight: 200;
+    font-size: 38px;
+}
+
+/* ICONS */
+.home-content .icon i {
+    width: 35px;
+    height: 35px;
+}
+
+.home-content span::after {
+    content: "";
+    animation: typing 7s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+}
+@keyframes typing {
+    0% {
+        content: " |";
+    }
+    2% {
+        content: " W|";
+    }
+    4% {
+        content: " WE|";
+    }
+    6% {
+        content: " WELC|";
+    }
+    8% {
+        content: "WELCO|";
+    }
+    10% {
+        content: " WELCOM|";
+    }
+    12% {
+        content: " WELCOME |";
+    }
+    14% {
+        content: " WELCOME T|";
+    }
+    16% {
+        content: " WELCOME TO|";
+    }
+    18% {
+        content: " WELCOME TO E|";
+    }
+    20% {
+        content: "  WELCOME TO EE|";
+    }
+    22% {
+        content: " WELCOME TO EEL|";
+    }
+    24% {
+        content: "  WELCOME TO EELU|";
+    }
+    26% {
+        content: " WELCOME TO EELU|";
+    }
+    32% {
+        content: "  W|";
+    }
+    33% {
+        content: " WE|";
+    }
+    34% {
+        content: " WELC|";
+    }
+    35% {
+        content: "WELCO|";
+    }
+    36% {
+        content: " WELCOM|";
+    }
+    37% {
+        content: "  WELCOME|";
+    }
+    38% {
+        content: " WELCOME T|";
+    }
+    39% {
+        content: " WELCOME TO |";
+    }
+    40% {
+        content: " WELCOME TO E|";
+    }
+    41% {
+        content: "  WELCOME TO EE|";
+    }
+    42% {
+        content: " WELCOME TO EEL|";
+    }
+    43% {
+        content: "  WELCOME TO EELU|";
+    }
+    44% {
+        content: "  WELCOME|";
+    }
+    45% {
+        content: "WELCOME To |";
+    }
+    47% {
+        content: "WELCOME To EELU |";
+    }
+    49% {
+        content: " WELCOME To EELU|";
+    }
+    51% {
+        content: " WELCOME To EELU|";
+    }
+    53% {
+        content: "WELCOME|";
+    }
+    55% {
+        content: " WELCOME To EELU|";
+    }
+    57% {
+        content: " WELCOME To EELU|";
+    }
+    59% {
+        content: "  WELCOME To EELU";
+    }
+    61% {
+        content: "  WELCOME To EELU|";
+    }
+    63% {
+        content: "WELCOME To EELU TIME|";
+    }
+    65% {
+        content: "WELCOME To EELU TIMETABLE|";
+    }
+    70% {
+        content: "WELCOME To EELU TIMETABLE MANAGMENT|";
+    }
+    71% {
+        content: " WELCOME To EELU TIMETABLE MANAGMENT SYSTEM|";
+    }
+    72% {
+        content: " WELCOME To EELU|";
+    }
+    75% {
+        content: " WELCOME To EELU TIMETABLE MANAGMENT SYSTEM|";
+    }
+    80% {
+        content: " WELCOME To EELU TIMETABLE MANAGMENT SYSTEM|";
+    }
+   
+    100% {
+        content: " |";
+    }
+}
