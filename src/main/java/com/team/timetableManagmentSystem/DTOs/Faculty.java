@@ -1,5 +1,7 @@
 package com.team.timetableManagmentSystem.DTOs;
 
+import java.util.ArrayList;
+
 public class Faculty {
 
     public Faculty(int id, String name) {
@@ -10,10 +12,9 @@ public class Faculty {
     public Faculty() {
     }
 
-    
-    
     private int id;
     private String name;
+    private ArrayList<StudyPlan> studyPlans;
 
     /**
      * @return the id
@@ -41,5 +42,19 @@ public class Faculty {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @return the studyPlans
+     */
+    public ArrayList<StudyPlan> getStudyPlans() {
+        return studyPlans;
+    }
+
+    /**
+     * @param studyPlans the studyPlans to set
+     */
+    public void setStudyPlans(ArrayList<StudyPlan> studyPlans) {
+        this.studyPlans = studyPlans;
     }
 }

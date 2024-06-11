@@ -36,7 +36,7 @@
                     <mat-label>Course</mat-label>
                     <mat-select formControlName="course">
                      
-                        <mat-option *ngFor="let val of course" [value]="val"> {{val}} </mat-option>
+                        <mat-option *ngFor="let val of course" [value]="val"> {{val.name}} </mat-option>
                       
                     </mat-select>
                   </mat-form-field>
@@ -63,16 +63,12 @@
                 <div class="col-md-8 mt-4 mb-4 mx-4">
                  <table class="table table-bordered">
                     <thead>
-                      <th>Name</th>
                       <th>Course</th>
-                      <th>Semester</th>
                       <th>Action</th>
                     </thead>
                     <tbody>
                       <tr *ngFor="let item of listdata">
-                         <td><span>{{item.name}}</span></td>
-                         <td><span>{{item.course}}</span></td>
-                         <td><span>{{item.semster}}</span></td>
+                         <td><span>{{item.course.name}}</span></td>
                          <td><button type="button" class="btn btn-primary"(click)="removeitem(item)">Remove</button></td>
                       </tr>
                     </tbody>
