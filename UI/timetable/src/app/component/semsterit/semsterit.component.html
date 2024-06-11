@@ -2,11 +2,11 @@
     <div class="px-5 pt-5">
         <nav class="navbar color ">
         <div class="container-fluid">
-         <h3 class="fw-bold fs-1 h1">Semster</h3>
+         <h3 class="fw-bold fs-1 h1">Semester</h3>
         
         <div class=" d-flex">
                     <button class="btn btn-lg  ms-2" mat-raised-button color="primary" (click)="openAddEditSemster()" >
-                        AddSemster
+                        AddSemester
                        </button>
         </div>
     </div>
@@ -18,15 +18,8 @@
     <div
     class="container d-flex justify-content-center align-items-center flex-column"
   >
-    <h2 class="my-5 fs-1">Add Semster</h2>
-    <div class="input-container w-100 ">
-      <h2 class="fw-lighter text-center mb-5 fs-2">
-        <i class="fa-solid fa-bookmark fs-3"></i>It allowed to enter more than one 
-        <i class="fa-solid fa-bookmark fs-3"></i>
-      </h2>
-
-   
-   </div>
+    <h2 class="my-5 fs-1">Add Semester</h2>
+  
   </div>
 </section>
 <section class="py-4 shadow px-4">
@@ -47,16 +40,16 @@
       
           <!-- Progress Column -->
           <ng-container matColumnDef="snumber">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Semster Number</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Semester Number</th>
             <td mat-cell *matCellDef="let row"> {{row.snumber}} </td>
           </ng-container>
           
           <ng-container matColumnDef="sId">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Semster Number</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Semester Number</th>
             <td mat-cell *matCellDef="let row"> {{row.sId}} </td>
           </ng-container>
           <ng-container matColumnDef="ssId">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Semster Number</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Semester Number</th>
             <td mat-cell *matCellDef="let row"> {{row.ssId}} </td>
           </ng-container>
       

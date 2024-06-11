@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./timetable.component.scss']
 })
 export class TimetableComponent implements AfterViewInit {
+
   @ViewChild("calendar")
   calendar!: DayPilotCalendarComponent;
 
