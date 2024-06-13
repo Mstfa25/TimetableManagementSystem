@@ -21,7 +21,7 @@ export class FormcourseComponent {
 
 
   constructor(private _fb: FormBuilder, private _courseService: FacultyService, private _dialogRef: MatDialogRef<FormcourseComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,private http: HttpClient
+    @Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient
   ) {
     this.courseform = this._fb.group({
       namec: ['', Validators.required],
@@ -37,15 +37,15 @@ export class FormcourseComponent {
     });
   }
   ngOnInit(): void {
-    (this.http.get('http://localhost:7081/api/admin/getAllLectuerGroups',{withCredentials:true}) as Observable<any[]>)
+    (this.http.get('http://localhost:7081/api/admin/getAllLectuerGroups', { withCredentials: true }) as Observable<any[]>)
       .subscribe((data: any[]) => {
         this.lecname = data;
       });
-      (this.http.get('http://localhost:7081/api/admin/getSectionGroups',{withCredentials:true}) as Observable<any[]>)
+    (this.http.get('http://localhost:7081/api/admin/getSectionGroups', { withCredentials: true }) as Observable<any[]>)
       .subscribe((data: any[]) => {
         this.secgroup = data;
       });
-      (this.http.get('http://localhost:7081/api/admin/getAllFacultysWithThereStudyPlansAndStemesters',{withCredentials:true}) as Observable<any[]>)
+    (this.http.get('http://localhost:7081/api/admin/getAllFacultysWithThereStudyPlansAndStemesters', { withCredentials: true }) as Observable<any[]>)
       .subscribe((data: any[]) => {
         this.faculty = data;
       });
@@ -79,4 +79,16 @@ export class FormcourseComponent {
       }
     }
   }
+
+  onFacultySelect(event: any) {
+    const selectedFaculty = event.value;
+    this.study=event.value.studyPlans;
+    console.log('Selected Faculty:', event.value.studyPlans);
+  }
+
+  onStudyPlanSelect(event: any) {
+    this.semster=event.value.semesters;
+    console.log('Selected Faculty:', event.value.semesters);
+  }
+
 }

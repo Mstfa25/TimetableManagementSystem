@@ -35,6 +35,7 @@ public class UserController {
         session.setAttribute("username", user.getUsername());
         session.setAttribute("role", userRole);
         if (userRole == 2) {
+            
         }
         ArrayList<String> s = new ArrayList<>();
         s.add("Login Successful");
@@ -46,6 +47,7 @@ public class UserController {
     public ResponseEntity<?> logoutUser(HttpSession session) {
         // Remove user information from the session
         session.removeAttribute("username");
+        session.removeAttribute("role");
         ArrayList<String> s = new ArrayList<>();
         s.add("Logout Successful");
         return new ResponseEntity<>(s, HttpStatus.OK);
@@ -56,6 +58,7 @@ public class UserController {
     public ResponseEntity<?> home(HttpSession session) {
         System.out.println(session.getAttribute("username"));
         if (session.getAttribute("username") != null) {
+            
             ArrayList<String> s = new ArrayList<>();
             s.add("home");
             return new ResponseEntity<>(s, HttpStatus.OK);

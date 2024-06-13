@@ -13,9 +13,11 @@ public class StudyPlan {
         this.id = id;
         this.name = name;
         this.faculty = new Faculty(facultyId, facultyName);
+        semesters=new ArrayList<>();
     }
 
     public StudyPlan() {
+        semesters=new ArrayList<>();
     }
 
     /**

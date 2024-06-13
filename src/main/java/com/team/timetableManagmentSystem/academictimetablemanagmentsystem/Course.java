@@ -43,6 +43,8 @@ public class Course {
     public Course(int id) {
         this.id = id;
         otherSemster=new ArrayList<>();
+        roomsTypesForSection=new ArrayList<>();
+        roomsTypesForSection.add(2);
     }
 
     public Course(int id,
@@ -82,6 +84,8 @@ public class Course {
         this.studyPlan = semester.getStudyPlan();
         this.faculty = studyPlan.getFaculty();
         otherSemster=new ArrayList<>();
+        roomsTypesForSection=new ArrayList<>();
+        roomsTypesForSection.add(2);
     }
 
     public Course(int id,
@@ -89,6 +93,8 @@ public class Course {
         this.id = id;
         this.name = name;
         otherSemster=new ArrayList<>();
+        roomsTypesForSection=new ArrayList<>();
+        roomsTypesForSection.add(2);
     }
 
     public Course(int id,
@@ -96,6 +102,8 @@ public class Course {
         this.id = id;
         this.staff = staff;
         otherSemster=new ArrayList<>();
+        roomsTypesForSection=new ArrayList<>();
+        roomsTypesForSection.add(2);
     }
 
     public Course(int id,
@@ -105,6 +113,8 @@ public class Course {
         this.name = name;
         semester = new Semester(semesterId);
         otherSemster=new ArrayList<>();
+        roomsTypesForSection=new ArrayList<>();
+        roomsTypesForSection.add(2);
     }
 
     /**

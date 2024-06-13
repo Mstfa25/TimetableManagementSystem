@@ -2003,9 +2003,9 @@ public class adminService {
         connection conn = new connection();
         ResultSet rs = conn.select("select id, name from timetable");
         try {
-            ArrayList<Timetable> timetables=new ArrayList<>();
+            ArrayList<Timetable> timetables = new ArrayList<>();
             while (rs.next()) {
-                timetables.add(new Timetable(rs.getInt("id"),rs.getString("name")));
+                timetables.add(new Timetable(rs.getInt("id"), rs.getString("name")));
             }
             return timetables;
         } catch (Exception e) {
@@ -2014,6 +2014,36 @@ public class adminService {
             conn.close();
         }
         return null;
+    }
+
+    public Object getFacutlysWithStudyPlansWithSemesters() {
+        ArrayList<Semester> semesters = getAllSemesters();
+        HashMap<Integer, Faculty> facultyMap = new HashMap<>();
+        HashMap<Integer, StudyPlan> studyPlanMap = new HashMap<>();
+
+        if (semesters != null && !semesters.isEmpty()) {
+            for (Semester semester : semesters) {
+                int facultyId = semester.getStudyPlan().getFaculty().getId();
+                int studyPlanId = semester.getStudyPlan().getId();
+
+                Faculty faculty = facultyMap.getOrDefault(facultyId,
+                        new Faculty(facultyId, semester.getStudyPlan().getFaculty().getName()));
+                StudyPlan studyPlan = studyPlanMap.getOrDefault(studyPlanId,
+                        new StudyPlan(studyPlanId, semester.getStudyPlan().getName(), 0, null));
+
+                Semester s = new Semester(semester.getId(), semester.getNumber(), 0, null, 0, null);
+                studyPlan.getSemesters().add(s);
+
+                if (!faculty.getStudyPlans().contains(studyPlan)) {
+                    faculty.getStudyPlans().add(studyPlan);
+                }
+
+                facultyMap.put(facultyId, faculty);
+                studyPlanMap.put(studyPlanId, studyPlan);
+            }
+        }
+
+        return new ArrayList<>(facultyMap.values());
     }
 
 }

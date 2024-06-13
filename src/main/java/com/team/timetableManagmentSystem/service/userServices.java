@@ -27,10 +27,11 @@ public class userServices {
 
     public int userRole(String username, String password) {
         try {
-            ResultSet rs = conn.select("select username,"
-                    + "role"
-                    + " from login "
-                    + "where username like '" + username + "' and password like '" + password + "'");
+            ResultSet rs = conn.select(
+            "SELECT username, role "
+                    + "FROM login "
+                    + "WHERE BINARY username = \"" + username + "\" AND BINARY password = \"" + password + "\""
+            );
             if (rs.next()) {
                 return rs.getInt(2);
             }

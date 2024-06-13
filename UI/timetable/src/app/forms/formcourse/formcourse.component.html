@@ -47,17 +47,16 @@
         </div>
         
         <div class="row-n" >
-            <mat-form-field>
-                <mat-label>Faculty</mat-label>
-                <mat-select formControlName="faculty">
-                 
-                    <mat-option *ngFor="let val of  faculty" [value]="val"> {{val.name}} </mat-option>
-                  
-                </mat-select>
-              </mat-form-field>
+          <mat-form-field>
+            <mat-label>Faculty</mat-label>
+            <mat-select formControlName="faculty" (selectionChange)="onFacultySelect($event)">
+              <mat-option *ngFor="let val of faculty" [value]="val">{{val.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          
               <mat-form-field>
                 <mat-label> StudyPlan</mat-label>
-                <mat-select formControlName="study">
+                <mat-select formControlName="study" (selectionChange)="onStudyPlanSelect($event)">
                  
                     <mat-option *ngFor="let val of study" [value]="val"> {{val.name}} </mat-option>
                   
@@ -67,7 +66,7 @@
                 <mat-label> Semester</mat-label>
                 <mat-select formControlName="semster">
                  
-                    <mat-option *ngFor="let val of semster" [value]="val"> {{val.name}} </mat-option>
+                    <mat-option *ngFor="let val of semster" [value]="val"> {{val.number}} </mat-option>
                   
                 </mat-select>
               </mat-form-field>

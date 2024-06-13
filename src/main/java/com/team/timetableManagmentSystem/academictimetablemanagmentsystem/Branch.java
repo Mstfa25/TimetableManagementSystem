@@ -162,11 +162,11 @@ public class Branch {
                     sb.append("--" + rs.getInt(1) + "--");
                     b1 = new Branch(rs.getInt(1));
                     branchs.add(b1);
-                    b1.getRooms() .add(new Room(rs.getInt(2),rs.getInt(3)));
+                    b1.getRooms().add(new Room(rs.getInt(2), rs.getInt(3)));
                 } else {
-                    for (int i = 0;i < branchs.size(); i++) {
+                    for (int i = 0; i < branchs.size(); i++) {
                         if (branchs.get(i).getId() == rs.getInt(1)) {
-                            branchs.get(i).getRooms().add(new Room(rs.getInt(2),rs.getInt(3)));
+                            branchs.get(i).getRooms().add(new Room(rs.getInt(2), rs.getInt(3)));
                         }
                     }
                 }
@@ -185,6 +185,7 @@ public class Branch {
     /**
      * get all the branches with the hosting rooms in them as hosting rooms type
      * id is 3
+     *
      * @return array list of branches with the hosting rooms in each branch
      */
     static ArrayList<Branch> getAllBranchesWithHostingRooms() {
@@ -362,14 +363,9 @@ public class Branch {
      */
     Room getARoomWithATypeFreeAt(int day, int hour, int... types) {
         for (Room room : rooms) {
-            for (int i = 0;
-                    i < types.length;
-                    i++) {
-
-                if (room.getRoomtype()
-                        .getId() == types[i]
-                        && room.getFreeTime()
-                                .isFreeAt(day, hour)) {
+            for (int i = 0;i < types.length;i++) {
+                if (room.getRoomtype().getId() == types[i]
+                        && room.getFreeTime().isFreeAt(day, hour)) {
                     return room;
                 }
             }
