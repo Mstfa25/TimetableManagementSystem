@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class AcademicTimetableManagmentSystem {
 
     public static void main(String[] args) {
-        Timetable t = new Timetable(0);
+        Timetable t = new Timetable(7);
         /*
         
         25
@@ -13,12 +13,12 @@ public class AcademicTimetableManagmentSystem {
         27
         -----------------
          */
-        t.createLectureTimetable(1, 3, 4, 5, 6, 7,
-                8, 9, 10, 11, 12, 13, 14, 15,
-                16, 17, 18, 19, 20, 21, 22, 23,
-                24, 26, 28, 29, 30, 31,
-                32, 33, 34, 35, 36, 37, 38, 39);
-        t.createSectionTimetable(t, 4, 1, 2, 3, 4);
+//        t.createLectureTimetable(1, 3, 4, 5, 6, 7,
+//                8, 9, 10, 11, 12, 13, 14, 15,
+//                16, 17, 18, 19, 20, 21, 22, 23,
+//                24, 26, 28, 29, 30, 31,
+//                32, 33, 34, 35, 36, 37, 38, 39);
+        t.createSectionTimetable(t, 5,1);
 
 //        t.createSectionTimetable(t, 1, 2001, 2002,
 //                2003, 2004, 2005, 2007, 2008,

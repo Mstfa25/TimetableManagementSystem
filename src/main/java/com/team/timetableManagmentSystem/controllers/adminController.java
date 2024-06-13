@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
 @RequestMapping("/api/admin")
 public class adminController {
-    
+
     @Autowired
     private adminService adminService;
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     public ResponseEntity<?> adminResponse(HttpSession session) {
         ArrayList<String> s = new ArrayList<>();
@@ -39,7 +39,7 @@ public class adminController {
             return new ResponseEntity<>(s, HttpStatus.OK);
         }
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("/addBranch")
     public Object addBranch(@RequestBody Branch branch, HttpSession session) {
@@ -50,15 +50,15 @@ public class adminController {
                 } else {
                     return new String[]{"branch Exist"};
                 }
-                
+
             } else {
                 return new String[]{"empty name"};
             }
         }
         return adminResponse(session);
-        
+
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("/addBranches")
     public Object addBranches(HttpSession session, @RequestBody Branch... branchs) {
@@ -78,17 +78,17 @@ public class adminController {
                 } else {
                     return new String[]{"data either exist or empty"};
                 }
-                
+
                 adminService.insertNewBranches(sb.toString().substring(0, sb.toString().length() - 1));
             } else {
                 return new String[]{"empty branches"};
             }
-            
+
         }
         return adminResponse(session);
-        
+
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllBranches")
     public Object getAllBranches(HttpSession session) {
@@ -98,7 +98,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editBranchName")
     public ResponseEntity<?> editBranchName(@RequestBody Branch branch, HttpSession session) {
@@ -107,7 +107,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("removeBranch")
     public ResponseEntity<?> RemoveBranch(@RequestBody Branch branch, HttpSession session) {
@@ -116,7 +116,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @GetMapping("getAllRoomsInAllBranches")
     public Object GetallRoomsInAllBranches(HttpSession session) {
@@ -125,7 +125,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllRoomsInOneBranch")
     public Object GetallRoomsInOneBranch(HttpSession session, @RequestBody Branch branch) {
@@ -134,7 +134,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("DeleteRoom")
     public ResponseEntity<?> DeleteRoom(HttpSession session, @RequestBody room room) {
@@ -143,7 +143,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("addRoom")
     public ResponseEntity<?> addRoom(HttpSession session, @RequestBody room room) {
@@ -152,7 +152,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("updateRoom")
     public Object updateRoom(HttpSession session, @RequestBody room room) {
@@ -161,7 +161,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllRoomType")
     public Object getAllroomType(HttpSession session) {
@@ -170,7 +170,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("addRooms")
     public ResponseEntity<?> addRooms(HttpSession session, @RequestBody room... rooms) {
@@ -183,7 +183,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("addStaff")
     public ResponseEntity<?> addStaff(HttpSession session, @RequestBody Staff staff) {
@@ -192,7 +192,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("addStaffs")
     public ResponseEntity<?> addStaff(HttpSession session, @RequestBody Staff... staffs) {
@@ -205,7 +205,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllStaff")
     public Object getAllStaffInAllBranches(HttpSession session) {
@@ -215,7 +215,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllUserRoles")
     public Object getAllUserRoles(HttpSession session) {
@@ -224,7 +224,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllStaffInOneBranch")
     public Object getAllStaffInOneBranch(HttpSession session, @RequestBody Branch branch) {
@@ -233,7 +233,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllStaffWithType")
     public Object getAllStaffWithType(HttpSession session, @RequestBody Staff staff) {
@@ -242,7 +242,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllStaffWithTypeInOneBranch")
     public Object getAllStaffWithTypeInOneBranch(HttpSession session, @RequestBody Staff staff) {
@@ -251,7 +251,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("updateStaff")
     public ResponseEntity<?> editStaffName(HttpSession session, @RequestBody Staff staff) {
@@ -268,13 +268,13 @@ public class adminController {
             if (staff.getType() == null) {
                 System.out.println("notype");
             }
-            
+
             System.out.println(staff.getId() + "\t" + staff.getName() + "\t" + staff.getBranch().getId() + "\t" + staff.getType().getId());
             adminService.updateStaff(staff.getId(), staff.getName(), staff.getBranch().getId(), staff.getType().getId());
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editStaffType")
     public ResponseEntity<?> editStaffType(HttpSession session, @RequestBody Staff staff) {
@@ -283,7 +283,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editStaffBranch")
     public ResponseEntity<?> editStaffBranch(HttpSession session, @RequestBody Staff staff) {
@@ -292,7 +292,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("removeStaff")
     public ResponseEntity<?> removeStaff(HttpSession session, @RequestBody Staff staff) {
@@ -301,7 +301,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("addFaculty")
     public ResponseEntity<?> addFaculty(@RequestBody Faculty faculty, HttpSession session) {
@@ -310,7 +310,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getFacultys")
     public Object getFacultys(HttpSession session) {
@@ -319,7 +319,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("deleteFaculty")
     public ResponseEntity<?> deleteFaculty(@RequestBody Faculty faculty, HttpSession session) {
@@ -328,7 +328,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editFacultyName")
     public ResponseEntity<?> editFacultyName(HttpSession session, @RequestBody Faculty faculty) {
@@ -337,7 +337,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("addStudyPlan")
     public ResponseEntity<?> addStudyPlan(HttpSession session, @RequestBody StudyPlan studyPlan) {
@@ -346,7 +346,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editStudyPlanName")
     public ResponseEntity<?> editStudyPlanName(HttpSession session, @RequestBody StudyPlan studyPlan) {
@@ -355,7 +355,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editStudyPlan")
     public Object editStudyPlan(HttpSession session, @RequestBody StudyPlan studyPlan) {
@@ -364,7 +364,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editStudyPlanFaculty")
     public ResponseEntity<?> editStudyPlanFaculty(@RequestBody StudyPlan studyPlan, HttpSession session) {
@@ -373,7 +373,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("removeStudyPlan")
     public ResponseEntity<?> removeStudyPlan(@RequestBody StudyPlan studyPlan, HttpSession session) {
@@ -382,7 +382,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllStudyPlans")
     public Object getAllStudyPlans(HttpSession session) {
@@ -391,7 +391,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getStudyPlansInFaculty")
     public Object getStudyPlansInFaculty(HttpSession session, @RequestBody Faculty faculty) {
@@ -400,7 +400,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("addSemester")
     public ResponseEntity<?> addSemester(HttpSession session, @RequestBody Semester semester) {
@@ -409,7 +409,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editSemester")
     public Object editSemester(HttpSession session, @RequestBody Semester semester) {
@@ -418,7 +418,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editSemesterNumber")
     public ResponseEntity<?> editSemesterNumber(HttpSession session, @RequestBody Semester semester) {
@@ -427,7 +427,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editSemesterStudyPlan")
     public ResponseEntity<?> editSemesterStudyPlan(HttpSession session, @RequestBody Semester semester) {
@@ -436,7 +436,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("removeSemester")
     public ResponseEntity<?> removeSemester(HttpSession session, @RequestBody Semester semester) {
@@ -445,7 +445,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllSemesters")
     public Object getAllSemesters(HttpSession session) {
@@ -454,7 +454,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getSemestersInStudyPlan")
     public Object getSemestersInStudyPlan(HttpSession session, @RequestBody StudyPlan studyPlan) {
@@ -463,7 +463,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getSemestersInFaculty")
     public Object getSemestersInfaculty(HttpSession session, @RequestBody Faculty faculty) {
@@ -472,7 +472,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("addUser")
     public Object addUser(@RequestBody user user, HttpSession session) {
@@ -485,7 +485,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("changeUserRole")
     public Object changRole(@RequestBody user user, HttpSession session) {
@@ -496,7 +496,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllUsers")
     public Object getAllUsers(HttpSession session) {
@@ -505,7 +505,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllStaffWithoutExistingUsers")
     public Object getAllStaffWithoutExistingUsers(HttpSession session) {
@@ -514,7 +514,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editUserPassword")
     public Object editUserPassword(@RequestBody user user, HttpSession session) {
@@ -523,7 +523,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editUser")
     public Object editUser(@RequestBody user user, HttpSession session) {
@@ -532,7 +532,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("updateUser")
     public Object updateUser(HttpSession session, @RequestBody user user) {
@@ -541,7 +541,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("deleteUser")
     public Object deleteUser(HttpSession session, @RequestBody user user) {
@@ -550,12 +550,12 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("createLectuerTimetable")
     public Object createLectureTimetable(HttpSession session, @RequestBody TimeTableNameORIdAndBranch_WithCourses nameWithCourses) throws InterruptedException {
         if (isadmin(session)) {
-            
+
             ArrayList<timeInTimetable> t = adminService.createLectureTimeTable(nameWithCourses.getName(), nameWithCourses.getCourses());
             InsertTimetable insertTimeTable = new InsertTimetable((timeInTimetable[]) t.toArray(new timeInTimetable[t.size()]));
             insertTimeTable.start();
@@ -567,7 +567,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("viewTimetable")
     public Object viewTimetable(HttpSession session, @RequestBody Timetable timetable) {
@@ -576,7 +576,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getFreeTimeForStaff")
     public Object getFreeTimeForStaff(HttpSession session) {
@@ -585,7 +585,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("addFreeTimeForStaff")
     public ResponseEntity<?> addFreeTimeForStaff(HttpSession session, freeTime freeTime) {
@@ -594,7 +594,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("addFreeTimeForRoom")
     public ResponseEntity<?> addFreeTimeForRoom(HttpSession session, @RequestBody room room, freeTime freeTime) {
@@ -603,7 +603,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editFreeTimeForStaff")
     public ResponseEntity<?> editFreeTimeForStaff(HttpSession session, @RequestBody Staff staff, freeTime freeTime) {
@@ -612,7 +612,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editFreeTimeForRoom")
     public ResponseEntity<?> editFreeTimeForRoom(HttpSession session, @RequestBody room room, freeTime freeTime) {
@@ -621,7 +621,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("addLectureGroup")
     public ResponseEntity<?> addLectureGroup(HttpSession session, @RequestBody LectureGroup lectuerGoup) {
@@ -630,7 +630,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editLectuerGroupName")
     public ResponseEntity<?> editLectuerGroupName(HttpSession session, @RequestBody LectureGroup lectuerGroup) {
@@ -639,7 +639,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("removeLectuerGroup")
     public ResponseEntity<?> removeLectuerGroup(HttpSession session, @RequestBody LectureGroup lectureGroup) {
@@ -648,7 +648,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllLectuerGroups")
     public Object getAllLectuerGroups(HttpSession session) {
@@ -657,7 +657,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("addLecGroupInALectuerGroup")
     public ResponseEntity<?> addLecGroupInALectuerGroup(HttpSession session, @RequestBody LecGroup lecGroup) {
@@ -666,7 +666,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editLecGroupInALectuerGroupName")
     public ResponseEntity<?> editLecGroupInALectuerGroupName(HttpSession session, @RequestBody LecGroup lecGroup) {
@@ -675,7 +675,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("editLecGroupInALectuerGroupLectuerGroup")
     public ResponseEntity<?> editLecGroupInALectuerGroupLectuerGroup(HttpSession session, @RequestBody LecGroup lecGroup) {
@@ -684,7 +684,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("removeLecGroupInALectuerGroupLectuerGroup")
     public ResponseEntity<?> removeLecGroupInALectuerGroupLectuerGroup(HttpSession session, LecGroup lecGroup) {
@@ -693,7 +693,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("addBranchInALecGroup")
     public ResponseEntity<?> addBranchInALecGroup(HttpSession session, @RequestBody LecGroup lecGroup) {
@@ -701,9 +701,9 @@ public class adminController {
             adminService.addBranchInALecGroup(lecGroup.getBranchs().get(0).getId(), lecGroup.getId());
         }
         return adminResponse(session);
-        
+
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("removeBranchFromLecGroup")
     public ResponseEntity<?> removeBranchFromLecGroup(HttpSession session, @RequestBody LecGroup lecGroup) {
@@ -712,7 +712,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllBranchesInLecGroup")
     public Object getAllBranchesInLecGroup(HttpSession session, @RequestBody LecGroup lecGroup) {
@@ -721,7 +721,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllLecGroups")
     public Object getAllLecGroups(HttpSession session) {
@@ -730,7 +730,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @RequestMapping("getAllLecGroupBranches")
     public Object getAllLecGroupBranches(HttpSession session) {
@@ -739,7 +739,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("addSectionGroup")
     public ResponseEntity<?> addSectionGroup(HttpSession session, @RequestBody SectionGroup sectionGroup) {
         if (isadmin(session)) {
@@ -747,7 +747,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("editSectionGroupName")
     public ResponseEntity<?> editSectionGroupName(HttpSession session, @RequestBody SectionGroup sectionGroup) {
         if (isadmin(session)) {
@@ -755,7 +755,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("removeSectionGroup")
     public ResponseEntity<?> removeSectionGroup(HttpSession session, @RequestBody SectionGroup sectionGroup) {
         if (isadmin(session)) {
@@ -763,7 +763,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getAllSectionGroups")
     public Object getAllSectionGroups(HttpSession session) {
         if (isadmin(session)) {
@@ -771,7 +771,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("insertCourse")
     public ResponseEntity<?> insertCourse(HttpSession session, @RequestBody course course) {
         if (isadmin(session)) {
@@ -779,7 +779,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("setLecGroupIdForCourse")
     public ResponseEntity<?> setLecGroupIdForCourse(HttpSession session, @RequestBody course course) {
         if (isadmin(session)) {
@@ -787,7 +787,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("setSectionGroupIdForCourse")
     public ResponseEntity<?> setSectionGroupIdForCourse(HttpSession session, course course) {
         if (isadmin(session)) {
@@ -795,7 +795,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getALLCourses")
     public Object getALLCourses(HttpSession session) {
         if (isadmin(session)) {
@@ -803,7 +803,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getALLCoursesInSemester")
     public Object getALLCoursesInSemester(HttpSession session, @RequestBody Semester semester) {
         if (isadmin(session)) {
@@ -811,7 +811,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getALLCoursesInFaculty")
     public Object getALLCoursesInFaculty(HttpSession session, @RequestBody Faculty faculty) {
         if (isadmin(session)) {
@@ -819,7 +819,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getALLCoursesInStudyPlan")
     public Object getALLCoursesInStudyPlan(HttpSession session, @RequestBody StudyPlan studyPlan) {
         if (isadmin(session)) {
@@ -827,7 +827,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("insertCourseStaff")
     public ResponseEntity<?> insertCourseStaff(HttpSession session, @RequestBody CourseStaff courseStaff) {
         if (isadmin(session)) {
@@ -835,7 +835,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("deleteCourseStaff")
     public ResponseEntity<?> deleteCourseStaff(HttpSession session, @RequestBody CourseStaff courseStaff) {
         if (isadmin(session)) {
@@ -843,7 +843,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("editCourseForCourseStaffInABranch")
     public ResponseEntity<?> editCourseForCourseStaffInABranch(HttpSession session, @RequestBody CourseStaff courseStaff) {
         if (isadmin(session)) {
@@ -851,7 +851,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("editBranchForCourseStaffInCourse")
     public ResponseEntity<?> editBranchForCourseStaffInCourse(HttpSession session, @RequestBody CourseStaff courseStaff) {
         if (isadmin(session)) {
@@ -859,7 +859,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("editCourseStaffInCourseForABranch")
     public ResponseEntity<?> editCourseStaffInCourseForABranch(HttpSession session, @RequestBody CourseStaff courseStaff) {
         if (isadmin(session)) {
@@ -867,7 +867,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getAllCourseStaff")
     public Object getAllCourseStaff(HttpSession session) {
         if (isadmin(session)) {
@@ -875,7 +875,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getAllCourseStaffForACourse")
     public Object getAllCourseStaffForACourse(HttpSession session, @RequestBody course course) {
         if (isadmin(session)) {
@@ -883,7 +883,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getAllCourseStaffInSemester")
     public Object getAllCourseStaffInSemester(HttpSession session, @RequestBody Semester semester) {
         if (isadmin(session)) {
@@ -891,7 +891,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getAllCourseStaffInStudyPlan")
     public Object getAllCourseStaffInStudyPlan(HttpSession session, StudyPlan studyPlan) {
         if (isadmin(session)) {
@@ -899,7 +899,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getAllCourseStaffInBranch")
     public Object getAllCourseStaffInBranch(HttpSession session, @RequestBody Branch branch) {
         if (isadmin(session)) {
@@ -907,7 +907,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getAllStaffTypeInCourseStaffInBranch")
     public Object getAllStaffTypeInCourseStaffInBranch(HttpSession session, @RequestBody Staff staff) {
         if (isadmin(session)) {
@@ -915,10 +915,10 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("createSectionTimetable")
     public Object createSectionTimetable(HttpSession session, @RequestBody TimeTableNameORIdAndBranch_WithCourses idAndBranch_WithCourses) {
-        
+
         if (isadmin(session)) {
             ArrayList<timeInTimetable> t = adminService.createSectionTimeTable(idAndBranch_WithCourses.getId(), idAndBranch_WithCourses.getBranchId(), idAndBranch_WithCourses.getCourses());
             InsertTimetable insertTimeTable = new InsertTimetable((timeInTimetable[]) t.toArray(new timeInTimetable[t.size()]));
@@ -927,7 +927,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getJobTypes")
     public Object getJobTypes(HttpSession session) {
         if (isadmin(session)) {
@@ -935,12 +935,16 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getTimeTable")
-    public ArrayList<timeInTimetable> getTimetable(HttpSession session, Timetable timetable) {
-        return adminService.getATimetable(timetable.getId());
+    public Object getTimetable(HttpSession session, Timetable timetable) {
+        if (isadmin(session)) {
+            return adminService.getATimetable(timetable.getId());
+        }
+        
+        return adminResponse(session);
     }
-    
+
     @RequestMapping("getFreetimeForRooms")
     public Object getFreeTimeForRooms(HttpSession session) {
         if (isadmin(session)) {
@@ -948,7 +952,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getCousreStaff")
     public Object getCousreStaff(HttpSession session) {
         if (isadmin(session)) {
@@ -956,7 +960,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getCourseSectionStaff")
     public Object getCourseSectionStaff(HttpSession session) {
         if (isadmin(session)) {
@@ -964,7 +968,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getSectionGroups")
     public Object getSectionGroups(HttpSession session) {
         if (isadmin(session)) {
@@ -972,16 +976,16 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getSectionGroupsBranches")
-    
+
     public Object getSectionGroupsBranches(HttpSession session) {
         if (isadmin(session)) {
             return adminService.getSectionGroupsBranches();
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getCourseNames")
     public Object getCourseNames(HttpSession session) {
         if (isadmin(session)) {
@@ -989,7 +993,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getStaffNames")
     public Object getStaffNames(HttpSession session) {
         if (isadmin(session)) {
@@ -997,7 +1001,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getAllLectuerGroupsWithLecgroups")
     public Object getAllLectuerGroupsWithLecgroups(HttpSession session) {
         if (isadmin(session)) {
@@ -1005,7 +1009,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getAllFacultysWithThereStudyPlansAndStemesters")
     public Object getAllFacultysWithThereStudyPlansAndStemesters(HttpSession session) {
         if (isadmin(session)) {
@@ -1013,7 +1017,7 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     @RequestMapping("getTimetableNames")
     public Object getTimetableNames(HttpSession session) {
         if (isadmin(session)) {
@@ -1021,10 +1025,10 @@ public class adminController {
         }
         return adminResponse(session);
     }
-    
+
     boolean isadmin(HttpSession session) {
         return session.getAttribute("role") != null
                 && session.getAttribute("role").equals(1);
     }
-    
+
 }
