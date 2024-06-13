@@ -65,6 +65,7 @@ import { CoursesecComponent } from './component/coursesec/coursesec.component';
 import { NavsecComponent } from './component/navsec/navsec.component';
 import { SectiongroupComponent } from './component/sectiongroup/sectiongroup.component';
 import { FormsecGroupComponent } from './forms/formsecstaf/formsec-group/formsec-group.component';
+import { TableComponent } from './component/table/table.component';
 
 
 @NgModule({
@@ -115,7 +116,8 @@ import { FormsecGroupComponent } from './forms/formsecstaf/formsec-group/formsec
     CoursesecComponent,
     NavsecComponent,
     SectiongroupComponent,
-    FormsecGroupComponent
+    FormsecGroupComponent,
+    TableComponent
 
   ],
   imports: [
