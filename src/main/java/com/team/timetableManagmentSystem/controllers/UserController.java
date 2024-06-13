@@ -47,6 +47,7 @@ public class UserController {
     public ResponseEntity<?> logoutUser(HttpSession session) {
         // Remove user information from the session
         session.removeAttribute("username");
+        session.removeAttribute("role");
         ArrayList<String> s = new ArrayList<>();
         s.add("Logout Successful");
         return new ResponseEntity<>(s, HttpStatus.OK);
