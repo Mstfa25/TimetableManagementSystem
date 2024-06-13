@@ -7,9 +7,11 @@ public class Faculty {
     public Faculty(int id, String name) {
         this.id = id;
         this.name = name;
+        studyPlans=new ArrayList<>();
     }
 
     public Faculty() {
+        studyPlans=new ArrayList<>();
     }
 
     private int id;

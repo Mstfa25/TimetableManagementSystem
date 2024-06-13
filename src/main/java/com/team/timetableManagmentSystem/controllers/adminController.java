@@ -941,7 +941,7 @@ public class adminController {
         if (isadmin(session)) {
             return adminService.getATimetable(timetable.getId());
         }
-        
+
         return adminResponse(session);
     }
 
@@ -1024,6 +1024,13 @@ public class adminController {
             return adminService.getTimetableNames();
         }
         return adminResponse(session);
+    }
+
+    @RequestMapping("getFacutlysWithStudyPlansWithSemesters")
+    public Object getFacutlysWithStudyPlansWithSemesters(HttpSession session) {
+        if(isadmin(session)){
+            return adminService.getFacutlysWithStudyPlansWithSemesters();
+        }return adminResponse(session);
     }
 
     boolean isadmin(HttpSession session) {

@@ -27,9 +27,11 @@ public class userServices {
 
     public int userRole(String username, String password) {
         try {
-            ResultSet rs = conn.select("SELECT username, role\n" +
-"FROM login\n" +
-"WHERE BINARY username = \\\"\" + username + \"\\\" AND BINARY password = \\\"\" + password + \"\\\"");
+            ResultSet rs = conn.select(
+            "SELECT username, role "
+                    + "FROM login "
+                    + "WHERE BINARY username = \"" + username + "\" AND BINARY password = \"" + password + "\""
+            );
             if (rs.next()) {
                 return rs.getInt(2);
             }

@@ -60,6 +60,7 @@ cheeck():void{
     this.http.get<any>(apiUrl, { headers, withCredentials: true }).subscribe(
       (response) => {
         if (response[0] === 'home') {
+
         } else {
           this.router.navigate(['/login']);
           // You can use Angular Router to navigate to the login page
