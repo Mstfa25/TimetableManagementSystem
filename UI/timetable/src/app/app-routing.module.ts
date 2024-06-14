@@ -23,6 +23,7 @@ import { FreetimeroomComponent } from './component/freetimeroom/freetimeroom.com
 import { CoursesecComponent } from './component/coursesec/coursesec.component';
 import { SectiongroupComponent } from './component/sectiongroup/sectiongroup.component';
 import { TimetableComponent } from './component/timetable/timetable/timetable.component';
+import { TableComponent } from './component/table/table.component';
 
 
 const routes: Routes = [
@@ -45,7 +46,7 @@ const routes: Routes = [
   { path: 'sectiongroup', component: SectiongroupComponent},
   { path: 'tablelec', component: TablelecComponent},
   { path: 'tablesec', component: TablesecComponent},
-  { path: 'timetable', component: TimetableComponent},
+  { path: 'table', component: TableComponent},
   { path: 'freetimestaf', component: FreetimestafComponent},
   { path: 'freetimeroom', component: FreetimeroomComponent},
   { path: 'user', component: UserComponent},

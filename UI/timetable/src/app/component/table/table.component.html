@@ -1,0 +1,23 @@
+<section class="py-4 pt-4">
+    <div class="pt-5  d-flex  ">
+    <div class="ps-5">
+       <mat-label class="fs-4">Branch </mat-label>
+       <mat-select class="fs-4" >
+        
+           <mat-option *ngFor="let val of branchname" [value]="val"> {{val}} </mat-option>
+         
+       </mat-select>
+    </div>
+   <div class="ps-5 justify-content-center">
+       <mat-label class="fs-4">Table</mat-label>
+       <mat-select class="fs-4" >
+        
+           <mat-option *ngFor="let val of table" [value]="val"> {{val}} </mat-option>
+         
+       </mat-select>
+   </div>
+    </div>
+   </section>
+   <section class="py-4">
+   <app-timetable></app-timetable>
+   </section>
