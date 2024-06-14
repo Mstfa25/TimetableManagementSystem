@@ -932,33 +932,33 @@ public class adminService {
     public void insertCourseStaff(int courseId, int staffId, int branchId) {
         connection conn = new connection();
 
-        conn.execute("insert into courseStaff (courseId,staffId,branchId) value (" + courseId + "," + staffId + "," + branchId + ")");
+        conn.execute("insert into coursesstaff (courseId,staffId,branchId) value (" + courseId + "," + staffId + "," + branchId + ")");
         conn.close();
     }
 
     public void deleteCourseStaff(int id) {
         connection conn = new connection();
 
-        conn.execute("delete from courseStaff where id = " + id);
+        conn.execute("delete from coursesstaff where id = " + id);
         conn.close();
     }
 
     public void editCourseForCourseStaffInABranch(int courseId, int id) {
 
         connection conn = new connection();
-        conn.execute("update courseStaff set courseId = " + courseId + " where id = " + id);
+        conn.execute("update coursesstaff set courseId = " + courseId + " where id = " + id);
         conn.close();
     }
 
     public void editBranchForCourseStaffInCourse(int id, int branchId) {
         connection conn = new connection();
-        conn.execute("update courseStaff set branchId = " + branchId + " where id = " + id);
+        conn.execute("update coursesstaff set branchId = " + branchId + " where id = " + id);
         conn.close();
     }
 
     public void editCourseStaffInCourseForABranch(int staffId, int id) {
         connection conn = new connection();
-        conn.execute("update courseStaff set staffId = " + staffId + " where id= " + id);
+        conn.execute("update coursesstaff set staffId = " + staffId + " where id= " + id);
         conn.close();
     }
 
