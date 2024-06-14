@@ -936,29 +936,29 @@ public class adminService {
         conn.close();
     }
 
-    public void deleteCourseStaff(int courseId, int staffId, int branchId) {
+    public void deleteCourseStaff(int id) {
         connection conn = new connection();
 
-        conn.execute("delete from courseStaff where courseId = " + courseId + " and staffId = " + staffId + " and branchId = " + branchId + ")");
+        conn.execute("delete from courseStaff where id = " + id);
         conn.close();
     }
 
-    public void editCourseForCourseStaffInABranch(int courseId, int staffId, int branchId) {
+    public void editCourseForCourseStaffInABranch(int courseId, int id) {
 
         connection conn = new connection();
-        conn.execute("update courseStaff set courseId = " + courseId + " where staffId = " + staffId + " and branchId = " + branchId + ")");
+        conn.execute("update courseStaff set courseId = " + courseId + " where id = " + id);
         conn.close();
     }
 
-    public void editBranchForCourseStaffInCourse(int courseId, int staffId, int branchId) {
+    public void editBranchForCourseStaffInCourse(int id, int branchId) {
         connection conn = new connection();
-        conn.execute("update courseStaff set branchId = " + branchId + " where staffId = " + staffId + " and courseId = " + courseId + ")");
+        conn.execute("update courseStaff set branchId = " + branchId + " where id = " + id);
         conn.close();
     }
 
-    public void editCourseStaffInCourseForABranch(int courseId, int staffId, int branchId) {
+    public void editCourseStaffInCourseForABranch(int staffId, int id) {
         connection conn = new connection();
-        conn.execute("update courseStaff set staffId = " + staffId + " where courseId= " + courseId + " and branchId = " + branchId + ")");
+        conn.execute("update courseStaff set staffId = " + staffId + " where id= " + id);
         conn.close();
     }
 
@@ -967,7 +967,7 @@ public class adminService {
 
         try {
             ArrayList<CourseStaff> courseStaffs = new ArrayList<>();
-            ResultSet rs = conn.select("SELECT courses.id as courseId, courses.name as courseName,courses.code, courses.labHours, lecHours, courses.SemesterId, semester.number, courses.lectureGroupId, lecturegroups.name, courses.SectionsNumberOfGroupsID, sectionsnumberofgroups.name, courses.StudyplanId, studyplan.name, courses.facultyId, faculty.name, coursesstaff.staffId,staff.name,staff.JobTypeId,jobtype.name,staff.branchId,branch1.name,branch2.id,branch2.name   FROM coursesstaff  INNER JOIN courses ON courses.id=coursesstaff.courseId  INNER JOIN sectionsnumberofgroups ON courses.SectionsNumberOfGroupsID=sectionsnumberofgroups.id  INNER JOIN lecturegroups ON lecturegroups.id=courses.lectureGroupId    INNER JOIN semester ON semester.id=courses.SemesterId   INNER JOIN studyplan ON studyplan.id=courses.StudyplanId   INNER JOIN faculty ON faculty.id=courses.facultyId  INNER JOIN staff ON staff.id=coursesstaff.staffId  INNER JOIN jobtype ON jobtype.Id=staff.JobTypeId   INNER JOIN branch AS branch1 ON branch1.id=staff.branchId  INNER JOIN branch AS branch2 ON branch2.id=coursesstaff.BranchId");
+            ResultSet rs = conn.select("SELECT courses.id as courseId, courses.name as courseName,courses.code, courses.labHours, lecHours, courses.SemesterId, semester.number, courses.lectureGroupId, lecturegroups.name, courses.SectionsNumberOfGroupsID, sectionsnumberofgroups.name, courses.StudyplanId, studyplan.name, courses.facultyId, faculty.name, coursesstaff.staffId,staff.name,staff.JobTypeId,jobtype.name,staff.branchId,branch1.name,branch2.id,branch2.name,courseStaff.id   FROM coursesstaff  INNER JOIN courses ON courses.id=coursesstaff.courseId  INNER JOIN sectionsnumberofgroups ON courses.SectionsNumberOfGroupsID=sectionsnumberofgroups.id  INNER JOIN lecturegroups ON lecturegroups.id=courses.lectureGroupId    INNER JOIN semester ON semester.id=courses.SemesterId   INNER JOIN studyplan ON studyplan.id=courses.StudyplanId   INNER JOIN faculty ON faculty.id=courses.facultyId  INNER JOIN staff ON staff.id=coursesstaff.staffId  INNER JOIN jobtype ON jobtype.Id=staff.JobTypeId   INNER JOIN branch AS branch1 ON branch1.id=staff.branchId  INNER JOIN branch AS branch2 ON branch2.id=coursesstaff.BranchId");
             while (rs.next()) {
                 courseStaffs.add(new CourseStaff(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getInt(10), rs.getString(11), rs.getInt(12), rs.getString(13), rs.getInt(14), rs.getString(15), rs.getInt(16), rs.getString(17), rs.getInt(18), rs.getString(19), rs.getInt(20), rs.getString(21), rs.getInt(22), rs.getString(23)));
 
