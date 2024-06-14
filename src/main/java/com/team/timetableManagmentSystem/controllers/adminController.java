@@ -25,8 +25,8 @@ public class adminController {
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     public ResponseEntity<?> adminResponse(HttpSession session) {
         ArrayList<String> s = new ArrayList<>();
-        System.out.println(session.getAttribute("username"));
-        if (session.getAttribute("username") != null) {
+        System.out.println(session.getAttribute("userId"));
+        if (session.getAttribute("userId") != null) {
             if (session.getAttribute("role").equals(1)) {
                 s.add("done");
                 return new ResponseEntity<>(s, HttpStatus.OK);
