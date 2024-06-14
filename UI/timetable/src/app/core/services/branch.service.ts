@@ -27,6 +27,15 @@ export class BranchService {
     };
     return this._http.post(apiUrl, body, httpOptions);
   }
+
+  removev(body: any): Observable<any> {
+    const apiUrl = '';
+    const httpOptions = { 
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }), 
+      withCredentials: true 
+    };
+    return this._http.post(apiUrl, body, httpOptions);
+  }
   
   addBranch(body: any): Observable<any> {
     const apiUrl = 'http://localhost:7081/api/admin/addBranch';

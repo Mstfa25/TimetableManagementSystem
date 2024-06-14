@@ -97,6 +97,7 @@ applyFilter(event: Event) {
     this.dataSource.paginator.firstPage();
   }
 }
+
 deleteBranch(id: number){
       const body = { id };
   
