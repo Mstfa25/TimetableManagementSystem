@@ -30,6 +30,7 @@ export class FormbranchComponent implements OnInit {
       };
   
       if (this.data) {
+        if(confirm('Are you sure you want to update this branch?')){
         this._branchService.updateBranch(dataToSend).subscribe({
           next: (val: any) => {
             alert('Branch Updated Successful');
@@ -39,7 +40,8 @@ export class FormbranchComponent implements OnInit {
             console.error(err)
           }
         });
-      } else {
+      } }
+      else {
         this._branchService.addBranch(dataToSend).subscribe({
           next: (val: any) => {
             alert('Branch Added Successful');
