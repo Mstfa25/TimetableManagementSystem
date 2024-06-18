@@ -99,6 +99,7 @@ applyFilter(event: Event) {
 }
 
 deleteBranch(id: number){
+  if(confirm('Are you sure you want to delete this branch?')){
       const body = { id };
   
       this._brnService.removeBranch( body).subscribe({
@@ -109,6 +110,7 @@ deleteBranch(id: number){
       });
     
   }
+}
   
 openEditBranch(data: any){
  const dialogRef = this._dialog.open(FormbranchComponent,{
