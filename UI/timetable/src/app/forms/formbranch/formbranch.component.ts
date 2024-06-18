@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BranchService } from 'src/app/core/services/branch.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-formbranch',
@@ -29,18 +30,30 @@ export class FormbranchComponent implements OnInit {
         name: this.brnForm.value.name
       };
   
-      if (this.data) {
-        if(confirm('Are you sure you want to update this branch?')){
-        this._branchService.updateBranch(dataToSend).subscribe({
-          next: (val: any) => {
-            alert('Branch Updated Successful');
-            this._dialogRef.close(true)
-          },
-          error: (err: any) => {
-            console.error(err)
+      if (this.data) { // Check if data exists before proceeding
+        Swal.fire({
+          title: 'Are you sure you want to update this branch?',
+          text: "The updated information will be saved.",
+          icon: 'info', // Informative icon
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this._branchService.updateBranch(dataToSend).subscribe({
+              next: (val: any) => {
+                Swal.fire('Updated!', 'Branch has been updated successfully.', 'success');
+                this._dialogRef.close(true); // Assuming this closes the dialog after successful update
+              },
+              error: (err: any) => {
+                console.error('Error updating branch:', err);
+                Swal.fire('Error!', 'An error occurred while updating the branch.', 'error');
+              }
+            });
           }
         });
-      } }
+      }
       else {
         this._branchService.addBranch(dataToSend).subscribe({
           next: (val: any) => {
