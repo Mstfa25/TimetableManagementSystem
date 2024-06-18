@@ -779,6 +779,17 @@ public class Timetable {
                     } else {
                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                 semester.getCourses().get(0));
+                        if (canBeInOneDay(splitedSemesters, semester.getCourses().get(1)) != null) {
+                            addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                    canBeInOneDay(splitedSemesters, semester.getCourses().get(1)));
+                            if (canBeInOneDay(splitedSemesters, semester.getCourses().get(0)) != null) {
+                                addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                        canBeInOneDay(splitedSemesters, semester.getCourses().get(0)));
+                            } else {
+                                removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                        semester.getCourses().get(1));
+                            }
+                        }
                     }
                 }
             } else if (semester.getCourses().size() == 3) {
@@ -1586,7 +1597,8 @@ public class Timetable {
      *
      * @param staff
      */
-    void setHostingRoomsInDaysForStaff(ArrayList<Staff> staff) {
+    void setHostingRoomsInDaysForStaff(ArrayList<Staff> staff
+    ) {
         for (Staff staff1 : staff) {
             staff1.getBranch().setTheNumberOfHostingRooms();
         }
@@ -1598,7 +1610,8 @@ public class Timetable {
      *
      * @param staff
      */
-    void assineValuesToStaffIsSymmetricAndFreeTimeInDays(ArrayList<Staff> staff) {
+    void assineValuesToStaffIsSymmetricAndFreeTimeInDays(ArrayList<Staff> staff
+    ) {
         for (int i = 0; i < staff.size(); i++) {
             staff.get(i).cheackIsSymmetric();
             staff.get(i).computeNumberOfFreeHoursInDay();
@@ -1612,7 +1625,8 @@ public class Timetable {
      * @param courses
      * @return
      */
-    coursesWithDay canBeInOneDay(splitedSemestersWithDays splitedSemesters, Course... courses) {
+    coursesWithDay canBeInOneDay(splitedSemestersWithDays splitedSemesters, Course... courses
+    ) {
         coursesWithDay c = null;
         FreeTime f = new FreeTime(1);
         for (Course course : courses) {
@@ -1768,7 +1782,8 @@ public class Timetable {
         return c;
     }
 
-    void removeCoursesToTheLecuterTimeSplitedSemester(splitedSemestersWithDays splitedSemesters, Course course) {
+    void removeCoursesToTheLecuterTimeSplitedSemester(splitedSemestersWithDays splitedSemesters, Course course
+    ) {
         for (int i = 0; i < splitedSemesters.getCourses().size(); i++) {
             if (splitedSemesters.getCourses().get(i).contains(course)) {
                 splitedSemesters.getCourses().get(i).remove(course);
@@ -1790,7 +1805,8 @@ public class Timetable {
         }
     }
 
-    void addCoursesToTheLecuterTimeSplitedSemester(splitedSemestersWithDays splitedSemesters, coursesWithDay courses) {
+    void addCoursesToTheLecuterTimeSplitedSemester(splitedSemestersWithDays splitedSemesters, coursesWithDay courses
+    ) {
         //System.out.println("");
         splitedSemesters.add(
                 courses.getCourses(),
@@ -1813,7 +1829,9 @@ public class Timetable {
         }
     }
 
-    Course[] getAllCoursesDataForLectuer(List<Integer> coursesIds, Course[] courses, ArrayList<Branch> allBranchesWithHostingRooms) {
+    Course[] getAllCoursesDataForLectuer(List<Integer> coursesIds, Course[] courses,
+            ArrayList<Branch> allBranchesWithHostingRooms
+    ) {
         connection conn = new connection();
         ArrayList<Course> cours = new ArrayList<>();
         try {
@@ -2124,7 +2142,8 @@ public class Timetable {
      * @param semesters
      * @param branchs
      */
-    void makeBranchesForEachSemester(ArrayList<Semester> semesters, ArrayList<Branch> branchs) {
+    void makeBranchesForEachSemester(ArrayList<Semester> semesters, ArrayList<Branch> branchs
+    ) {
         for (Semester semester : semesters) {
             semester.setBranchs(branchs);
         }
@@ -2143,7 +2162,8 @@ public class Timetable {
      * @param courses
      * @return array list of the semesters in the courses and make the reference
      */
-    ArrayList<Semester> getSemesters(Course[] courses) {
+    ArrayList<Semester> getSemesters(Course[] courses
+    ) {
         ArrayList<Semester> s = new ArrayList<>();
         for (Course course : courses) {
             for (int j = 0; j <= s.size(); j++) {
@@ -2199,7 +2219,8 @@ public class Timetable {
      *
      * @param courses
      */
-    void makeTheStaffRefrance(Course[] courses) {
+    void makeTheStaffRefrance(Course[] courses
+    ) {
         for (int i = 0; i < courses.length; i++) {
             for (int j = i + 1; j < courses.length; j++) {
                 if (courses[i].getStaff().getId() == courses[j].getStaff().getId()) {
@@ -2216,7 +2237,8 @@ public class Timetable {
      * @param courses
      * @return array list of the staff
      */
-    ArrayList<Staff> getStaffFreeTime(Course[] courses) {
+    ArrayList<Staff> getStaffFreeTime(Course[] courses
+    ) {
         ArrayList<Staff> staff = new ArrayList<>();
         for (Course course : courses) {
             if (!staff.contains(course.getStaff())) {
@@ -2259,7 +2281,8 @@ public class Timetable {
      * @param courses
      * @param branchs
      */
-    void makeTheLecGroupBranchesRefrence(Course[] courses, ArrayList<Branch> branchs) {
+    void makeTheLecGroupBranchesRefrence(Course[] courses, ArrayList<Branch> branchs
+    ) {
         for (int i = 0; i < branchs.size(); i++) {
             for (Course course : courses) {
                 for (int k = 0; k < course.getLecGroups().size(); k++) {
@@ -2279,7 +2302,8 @@ public class Timetable {
      *
      * @param courses
      */
-    void makeHostingRoomsReference(Course[] courses) {
+    void makeHostingRoomsReference(Course[] courses
+    ) {
         for (Course course : courses) {
             for (int j = 0; j < course.getStaff().getBranch().getRooms().size(); j++) {
                 for (int k = 0; k < course.getLecGroups().size(); k++) {
