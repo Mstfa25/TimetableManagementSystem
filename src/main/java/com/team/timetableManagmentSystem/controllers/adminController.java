@@ -25,8 +25,8 @@ public class adminController {
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     public ResponseEntity<?> adminResponse(HttpSession session) {
         ArrayList<String> s = new ArrayList<>();
-        System.out.println(session.getAttribute("username"));
-        if (session.getAttribute("username") != null) {
+        System.out.println(session.getAttribute("userId"));
+        if (session.getAttribute("userId") != null) {
             if (session.getAttribute("role").equals(1)) {
                 s.add("done");
                 return new ResponseEntity<>(s, HttpStatus.OK);
@@ -839,7 +839,7 @@ public class adminController {
     @RequestMapping("deleteCourseStaff")
     public ResponseEntity<?> deleteCourseStaff(HttpSession session, @RequestBody CourseStaff courseStaff) {
         if (isadmin(session)) {
-            adminService.deleteCourseStaff(courseStaff.getCourse().getId(), courseStaff.getStaff().getId(), courseStaff.getBranch().getId());
+            adminService.deleteCourseStaff(courseStaff.getId());
         }
         return adminResponse(session);
     }
@@ -847,7 +847,7 @@ public class adminController {
     @RequestMapping("editCourseForCourseStaffInABranch")
     public ResponseEntity<?> editCourseForCourseStaffInABranch(HttpSession session, @RequestBody CourseStaff courseStaff) {
         if (isadmin(session)) {
-            adminService.editCourseForCourseStaffInABranch(courseStaff.getCourse().getId(), courseStaff.getStaff().getId(), courseStaff.getBranch().getId());
+            adminService.editCourseForCourseStaffInABranch(courseStaff.getCourse().getId(), courseStaff.getId());
         }
         return adminResponse(session);
     }
@@ -855,7 +855,7 @@ public class adminController {
     @RequestMapping("editBranchForCourseStaffInCourse")
     public ResponseEntity<?> editBranchForCourseStaffInCourse(HttpSession session, @RequestBody CourseStaff courseStaff) {
         if (isadmin(session)) {
-            adminService.editBranchForCourseStaffInCourse(courseStaff.getCourse().getId(), courseStaff.getStaff().getId(), courseStaff.getBranch().getId());
+            adminService.editBranchForCourseStaffInCourse(courseStaff.getId(), courseStaff.getBranch().getId());
         }
         return adminResponse(session);
     }
@@ -863,7 +863,7 @@ public class adminController {
     @RequestMapping("editCourseStaffInCourseForABranch")
     public ResponseEntity<?> editCourseStaffInCourseForABranch(HttpSession session, @RequestBody CourseStaff courseStaff) {
         if (isadmin(session)) {
-            adminService.editCourseStaffInCourseForABranch(courseStaff.getCourse().getId(), courseStaff.getStaff().getId(), courseStaff.getBranch().getId());
+            adminService.editCourseStaffInCourseForABranch(courseStaff.getStaff().getId(), courseStaff.getId());
         }
         return adminResponse(session);
     }
@@ -1028,9 +1028,10 @@ public class adminController {
 
     @RequestMapping("getFacutlysWithStudyPlansWithSemesters")
     public Object getFacutlysWithStudyPlansWithSemesters(HttpSession session) {
-        if(isadmin(session)){
+        if (isadmin(session)) {
             return adminService.getFacutlysWithStudyPlansWithSemesters();
-        }return adminResponse(session);
+        }
+        return adminResponse(session);
     }
 
     boolean isadmin(HttpSession session) {

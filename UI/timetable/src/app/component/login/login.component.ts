@@ -36,6 +36,8 @@ export class LoginComponent implements OnInit {
         (response) => {
           if (response[0] === 'home') {
             this._Router.navigate(['/home']);
+          } else if (response[0] === 'SubAdminHome') {
+            this._Router.navigate(['/home']);
           } else {
           }
         },

@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit {
       this.http.get<any>(apiUrl, { headers, withCredentials: true }).subscribe(
         (response) => {
           if (response[0] === 'home') {
+            
           } else {
             this.router.navigate(['/login']);
           }

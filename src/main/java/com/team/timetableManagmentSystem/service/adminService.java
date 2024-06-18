@@ -11,16 +11,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class adminService {
-
-    @Autowired
-    private connection conn;
 
     public boolean branchNameExist(String name) {
         connection conn = new connection();
@@ -36,17 +30,23 @@ public class adminService {
     }
 
     public void insertNewBranch(String name) {
+        connection conn = new connection();
+
         conn.execute("insert into branch (name) value ('" + name + "')");
         conn.close();
     }
 
     public void insertNewBranches(String values) {
+
+        connection conn = new connection();
+
         conn.execute("insert into branch (name) values " + values);
         conn.close();
     }
 
     public void updateUser(int userId, String username, int role, String password) {
-        conn = new connection();
+        connection conn = new connection();
+
         System.out.println("update login set username = '" + username + "' ,password= '" + password + "', role = " + role + " where id = " + username);
         conn.execute("update login set username = '" + username + "' ,password= '" + password + "', role = " + role + " where id = " + username);
         conn.close();
@@ -65,7 +65,7 @@ public class adminService {
     }
 
     public ArrayList<jobType> getAllJobTypes() {
-        conn = new connection();
+        connection conn = new connection();
         ArrayList<jobType> j = new ArrayList<>();
         ResultSet rs = conn.select("select * from jobtype");
         try {
@@ -81,8 +81,9 @@ public class adminService {
     }
 
     public ArrayList<userRole> getAllRoles() {
+        connection conn = new connection();
+
         try {
-            connection conn = new connection();
             ArrayList<userRole> roles = new ArrayList<>();
             ResultSet rs = conn.select("   select * from roletype ");
             while (rs.next()) {
@@ -98,8 +99,9 @@ public class adminService {
     }
 
     public ArrayList<Branch> getAllBranches() {
+        connection conn = new connection();
+
         try {
-            conn = new connection();
             ArrayList<Branch> branchs = new ArrayList<>();
             ResultSet rs = conn.select("select * from branch");
             while (rs.next()) {
@@ -116,21 +118,25 @@ public class adminService {
     }
 
     public void editBranchName(int id, String newName) {
+        connection conn = new connection();
         conn.execute("update branch set name ='" + newName + "' where id =" + id);
         conn.close();
     }
 
     public void removeBranch(int id) {
+        connection conn = new connection();
         conn.execute("delete from branch where id =" + id);
         conn.close();
     }
 
     public void updateRoom(int id, String name, int capacity, int branchId, int typeId) {
+        connection conn = new connection();
         conn.execute("update rooms set name = '" + name + "' , capacity = " + capacity + " , TypeId = " + typeId + ", branchId = " + branchId + " where id =" + id);
         conn.close();
     }
 
     public ArrayList<room> GetallRoomsInAllBranches() {
+        connection conn = new connection();
         try {
             ArrayList<room> rooms = new ArrayList<>();
 
@@ -155,6 +161,7 @@ public class adminService {
     }
 
     public ArrayList<room> GetallRoomsInoneBranch(int branchId) {
+        connection conn = new connection();
         try {
             ArrayList<room> rooms = new ArrayList<>();
 
@@ -179,6 +186,8 @@ public class adminService {
     }
 
     public void removeRoom(int roomId) {
+        connection conn = new connection();
+
         conn.execute("delete from rooms where id =" + roomId);
         conn.close();
     }
@@ -200,26 +209,36 @@ public class adminService {
     }
 
     public void addRoom(String name, int capacity, int typeId, int branchId) {
+        connection conn = new connection();
+
         conn.execute("insert into rooms (name,capacity,typeId,branchId) value ('" + name + "'," + capacity + "," + typeId + "," + branchId + ")");
         conn.close();
     }
 
     public void AddRooms(String values) {
+        connection conn = new connection();
+
         conn.execute("insert into rooms (name,capacity,typeId,branchId) values " + values);
         conn.close();
     }
 
     public void addStaff(String name, int jobTypeId, int branchId) {
+        connection conn = new connection();
+
         conn.execute("insert into staff (name,JobTypeId,branchId) value ('" + name + "'," + jobTypeId + "," + branchId + ")");
         conn.close();
     }
 
     public void addStaffs(String values) {
+        connection conn = new connection();
+
         conn.execute("insert into staff (name,JobTypeId,branchId) values " + values);
         conn.close();
     }
 
     public ArrayList<Staff> getAllStaffInAllBranches() {
+        connection conn = new connection();
+
         try {
             ArrayList<Staff> staffs = new ArrayList<>();
             ResultSet rs = conn.select("   select staff.id,"
@@ -244,6 +263,8 @@ public class adminService {
     }
 
     public ArrayList<Staff> getAllStaffInAllBranchesWithOutExistingUsers() {
+        connection conn = new connection();
+
         try {
             ArrayList<Staff> staffs = new ArrayList<>();
             ResultSet rs = conn.select("   select staff.id,"
@@ -268,6 +289,8 @@ public class adminService {
     }
 
     public ArrayList<Staff> getAllStaffInOneBranch(int branchId) {
+        connection conn = new connection();
+
         try {
             ArrayList<Staff> staffs = new ArrayList<>();
             ResultSet rs = conn.select("   select staff.id,staff.name,staff.JobTypeId,jobtype.name as jobtypename,staff.branchId,branch.name as branchname from staff inner join jobtype on jobtype.Id=staff.JobTypeId inner join branch on branch.id=staff.branchId where staff.branchId = " + branchId);
@@ -284,6 +307,8 @@ public class adminService {
     }
 
     public ArrayList<Staff> getAllStaffInAllBranchesWithType(int type) {
+        connection conn = new connection();
+
         try {
             ArrayList<Staff> staffs = new ArrayList<>();
             ResultSet rs = conn.select("   select staff.id,staff.name,staff.JobTypeId,jobtype.name as jobtypename,staff.branchId,branch.name as branchname from staff inner join jobtype on jobtype.Id=staff.JobTypeId inner join branch on branch.id=staff.branchId where staff.JobTypeId=" + type);
@@ -300,6 +325,8 @@ public class adminService {
     }
 
     public ArrayList<Staff> getAllStaffInAllBranchesWithTypeInOneBranch(int branchId, int type) {
+        connection conn = new connection();
+
         try {
             ArrayList<Staff> staffs = new ArrayList<>();
             ResultSet rs = conn.select("   select staff.id,staff.name,staff.JobTypeId,jobtype.name as jobtypename,staff.branchId,branch.name as branchname from staff inner join jobtype on jobtype.Id=staff.JobTypeId inner join branch on branch.id=staff.branchId where staff.JobTypeId=" + type + " and staff.branchId = " + branchId);
@@ -316,31 +343,43 @@ public class adminService {
     }
 
     public void updateStaff(int staffId, String staffName, int branchId, int jobTypeId) {
+        connection conn = new connection();
+
         conn.execute("update staff set name = '" + staffName + "',branchid =" + branchId + ",JobTypeId = " + jobTypeId + " where id = " + staffId + ";");
         conn.close();
     }
 
     public void editStaffType(int staffId, int staffType) {
+        connection conn = new connection();
+
         conn.execute("upadte staff set JobtypeId = " + staffType + " where id = " + staffId);
         conn.close();
     }
 
     public void editStaffBranch(int staffId, int branchId) {
+        connection conn = new connection();
+
         conn.execute("update staff set branchId = " + branchId + " where id = " + staffId);
         conn.close();
     }
 
     public void removeStaff(int staffId) {
+        connection conn = new connection();
+
         conn.execute("delete from staff where id = " + staffId);
         conn.close();
     }
 
     public void addFaculty(String name) {
+        connection conn = new connection();
+
         conn.execute("insert into faculty (name) value ('" + name + "')");
         conn.close();
     }
 
     public ArrayList<Faculty> getFacultys() {
+        connection conn = new connection();
+
         try {
             ArrayList<Faculty> facultys = new ArrayList<>();
             ResultSet rs = conn.select("select * from faculty");
@@ -357,36 +396,49 @@ public class adminService {
     }
 
     public void removeFaculty(int id) {
+        connection conn = new connection();
+
         conn.execute("delete from faculty where id = " + id);
         conn.close();
     }
 
     public void EditFacultyName(int facultyId, String facultyName) {
+        connection conn = new connection();
+
         conn.execute("update faculty set name ='" + facultyName + "' where id = " + facultyId);
         conn.close();
     }
 
     public void insertStudyPlan(String name, int facultyId) {
+        connection conn = new connection();
+
         conn.execute("insert into studyPlan (name,facultyId) value ('" + name + "', " + facultyId + ")");
         conn.close();
     }
 
     public void editStudyPlanName(int id, String name) {
+        connection conn = new connection();
+
         conn.execute("update studyPlan set name = '" + name + "' where id =" + id);
         conn.close();
     }
 
     public void editStudyPlanfaculty(int id, int facultyId) {
+        connection conn = new connection();
+
         conn.execute("update studyPlan set FacultyId = " + facultyId + " where id =" + id);
         conn.close();
     }
 
     public void removeStudyPlans(int id) {
+        connection conn = new connection();
         conn.execute("delete from studyPlan where id = " + id);
         conn.close();
     }
 
     public ArrayList<StudyPlan> getAllStudyPlans() {
+        connection conn = new connection();
+
         try {
             ArrayList<StudyPlan> studyPlans = new ArrayList<>();
             ResultSet rs = conn.select("select studyplan.id,studyplan.name,studyplan.facultyId,faculty.name from studyplan inner join faculty on studyplan.facultyId=faculty.id");
@@ -403,6 +455,8 @@ public class adminService {
     }
 
     public ArrayList<StudyPlan> getStudyPlansInFaculty(int facultyId) {
+        connection conn = new connection();
+
         try {
             ArrayList<StudyPlan> studyPlans = new ArrayList<>();
             ResultSet rs = conn.select("select studyplan.id,studyplan.name,studyplan.facultyId,faculty.name from studyplan inner join faculty on studyplan.facultyId=faculty.id where studyplan.facultyId = " + facultyId);
@@ -419,34 +473,44 @@ public class adminService {
     }
 
     public void addSemester(int number, int studyPlanId) {
+        connection conn = new connection();
+
         conn.execute("insert into semester (number,studyPlanId) value (" + number + "," + studyPlanId + ")");
         conn.close();
     }
 
     public void deleteUser(int id) {
+
         connection conn = new connection();
         conn.execute("delete from login where id = " + id);
         conn.close();
     }
 
     public void editSemesterNumber(int id, int number) {
+        connection conn = new connection();
+
         conn.execute("update Semester set number = " + number + " where id = " + id);
         conn.close();
     }
 
     public void editSemesterStudyPlan(int id, int StudyPlanId) {
+        connection conn = new connection();
+
         conn.execute("update Semester set StudyPlanId = " + StudyPlanId + " where id = " + id);
         conn.close();
     }
 
     public void removeSemester(int id) {
+        connection conn = new connection();
+
         conn.execute("delete from Semester where id = " + id);
         conn.close();
     }
 
     public ArrayList<Semester> getAllSemesters() {
+        connection conn = new connection();
+
         try {
-            connection conn = new connection();
             ArrayList<Semester> semesters = new ArrayList<>();
             ResultSet rs = conn.select("select semester.id,semester.number,semester.StudyPlanId,studyplan.name,faculty.id,faculty.name from semester inner join studyplan on studyplan.id=semester.StudyPlanId inner join faculty on studyplan.facultyId=faculty.id");
             while (rs.next()) {
@@ -462,6 +526,8 @@ public class adminService {
     }
 
     public ArrayList<Semester> getAllSemestersInStudyPlan(int studyPlanId) {
+        connection conn = new connection();
+
         try {
             ArrayList<Semester> semesters = new ArrayList<>();
             ResultSet rs = conn.select("select semester.id,semester.number,semester.StudyPlanId,studyplan.name,faculty.id,faculty.name from semester inner join studyplan on studyplan.id=semester.StudyPlanId inner join faculty on studyplan.facultyId=faculty.id where studyPlanId = " + studyPlanId);
@@ -478,6 +544,8 @@ public class adminService {
     }
 
     public ArrayList<Semester> getAllSemestersInFaculty(int facultyId) {
+        connection conn = new connection();
+
         try {
             ArrayList<Semester> semesters = new ArrayList<>();
             ResultSet rs = conn.select("select semester.id,semester.number,semester.StudyPlanId,studyplan.name,faculty.id,faculty.name from semester inner join studyplan on studyplan.id=semester.StudyPlanId inner join faculty on studyplan.facultyId=faculty.id where studyplan.facultyId = " + facultyId);
@@ -495,20 +563,28 @@ public class adminService {
 //----------------------------------------------------------------------------------------------//
 
     public void addLectureGroup(String name) {
+        connection conn = new connection();
+
         conn.execute("insert into lectureGroup (name) value ('" + name + "')");
         conn.close();
     }
 
     public void editLectuerGroupName(int id, String name) {
+        connection conn = new connection();
+
         conn.execute("update lectureGroup set name = '" + name + "' where id = " + id);
         conn.close();
     }
 
     public void removeLectuerGroup(int id) {
+        connection conn = new connection();
+
         conn.select("delete from lectureGroup where id = " + id);
     }
 
     public ArrayList<LectureGroup> getAllLectuerGroups() {
+        connection conn = new connection();
+
         try {
             ArrayList<LectureGroup> lectuerGoups = new ArrayList<>();
             ResultSet rs = conn.select("select * from lecturegroups");
@@ -525,32 +601,44 @@ public class adminService {
     }
 
     public void addLecGroupInALectuerGroup(int lectureGroupId, String name) {
+        connection conn = new connection();
+
         conn.execute("insert into lecGroups (name,lectureGroupId) value ('" + name + "'," + lectureGroupId + ")");
         conn.close();
     }
 
     public void editLecGroupInALectuerGroupName(int lecGroupId, String name) {
+        connection conn = new connection();
+
         conn.execute("update lecGroup set name = '" + name + "' where id = " + lecGroupId);
         conn.close();
     }
 
     public void editLecGroupInALectuerGroupLectuerGroup(int Id, int lectuerGroupId) {
+        connection conn = new connection();
+
         conn.execute("update lecGroup set lectuerGroupId = " + lectuerGroupId + " where id = " + Id);
         conn.close();
     }
 
     public void removeLecGroupInALectuerGroupLectuerGroup(int Id) {
+        connection conn = new connection();
+
         conn.execute("delete from lecGroup where id = " + Id);
         conn.close();
     }
 
     /*--------------------------------------------------------------------------------------------*/
     public void addBranchInALecGroup(int BranchId, int lecGroupId) {
+        connection conn = new connection();
+
         conn.execute("insert into lecgroupbranches  value (" + lecGroupId + "," + BranchId + ")");
         conn.close();
     }
 
     public void removeBranchFromLecGroup(int branchId, int lecGroupId) {
+        connection conn = new connection();
+
         conn.execute("delete from lecgroupbranches where lecGroupId = " + lecGroupId + " and branchId = " + branchId);
         conn.close();
     }
@@ -590,6 +678,8 @@ public class adminService {
     }
 
     public ArrayList<Branch> getAllBranchesInLecGroup(int lecGroupId) {
+        connection conn = new connection();
+
         try {
             LecGroup lecGroup = new LecGroup();
             lecGroup.setBranchs(new ArrayList<>());
@@ -607,21 +697,29 @@ public class adminService {
     }
 
     public void addSectionGroup(String name) {
+        connection conn = new connection();
+
         conn.execute("insert into sectionsnumberofgroups (name) value ('" + name + "')");
         conn.close();
     }
 
     public void editSectionGroupName(int id, String name) {
+        connection conn = new connection();
+
         conn.execute("update sectionsnumberofgroups set name = '" + name + "' where id = " + id);
         conn.close();
     }
 
     public void removeSectionGroup(int id) {
+        connection conn = new connection();
+
         conn.select("delete from sectionsnumberofgroups where id = " + id);
         conn.close();
     }
 
     public ArrayList<SectionGroup> getAllSectionGroups() {
+        connection conn = new connection();
+
         try {
             ArrayList<SectionGroup> sectionGroup = new ArrayList<>();
             ResultSet rs = conn.select("select * from section");
@@ -638,42 +736,57 @@ public class adminService {
     }
 
     public void insertBranchInSectionGroup(int branchId, int sectionsnumberofgroupsId, int numberOfGroups) {
+        connection conn = new connection();
+
         conn.execute("insert into section sectionsfgroups (sectionsnumberofgroupsId,branchId,numberOfGroups) value (" + sectionsnumberofgroupsId + "," + branchId + "," + numberOfGroups + ")");
         conn.close();
     }
 
     public void editBranchSectionGroupnumberOfGroups(int branchId, int sectionsnumberofgroupsId, int numberOfGroups) {
+        connection conn = new connection();
+
         conn.execute("edit sectionsfgroups set  numberOfGroups = " + numberOfGroups + " where bracnhId = " + branchId + " and sectionsnumberofgroupsId = " + sectionsnumberofgroupsId);
         conn.close();
     }
 
     public void changeBranchSectionGroup(int branchId, int sectionsnumberofgroupsId, int newsectionNumberOfGroups) {
+        connection conn = new connection();
+
         conn.execute("edit sectionsfgroups set  sectionsnumberofgroupsId = " + newsectionNumberOfGroups + " where bracnhId = " + branchId + " and sectionsnumberofgroupsId = " + sectionsnumberofgroupsId);
         conn.close();
     }
 
     public void removeBranchFromSectionGroup(int branchId, int sectionsnumberofgroupsId) {
+        connection conn = new connection();
+
         conn.execute("delete from sectionsfgroups where branchId = " + branchId + " and sectionsnumberofgroupsId = " + sectionsnumberofgroupsId);
         conn.close();
 
     }
 
     public void insertCourse(String name, String code, int lecHour, int labHours, int SemesterId, int StudyPlanId, int facultyId) {
+        connection conn = new connection();
+
         conn.execute("insert into courses (name,code,lecHours,labHours,semesterId,facultyId,studyplanId,lectureGroupId,sectionsnumberofgroupsId) values('" + name + "','" + code + "'," + lecHour + "," + labHours + "," + SemesterId + "," + facultyId + "," + StudyPlanId + ",0,0)");
         conn.close();
     }
 
     public void setLecGroupIdForCourse(int courseId, int lecGroupId) {
+        connection conn = new connection();
+
         conn.execute("update courses set lectureGroupId = " + lecGroupId + " where id = " + courseId);
         conn.close();
     }
 
     public void setSectionGroupIdForCourse(int courseId, int SectionGroupId) {
+        connection conn = new connection();
+
         conn.execute("update courses set sectionsnumberofgroupsId = " + SectionGroupId + " where id = " + courseId);
         conn.close();
     }
 
     public ArrayList<course> getALLCourses() {
+        connection conn = new connection();
         try {
             ArrayList<course> courses = new ArrayList<>();
             ResultSet rs = conn.select("select courses.id,"
@@ -720,6 +833,7 @@ public class adminService {
     }
 
     public ArrayList<course> getALLCoursesInSemester(int semesterId) {
+        connection conn = new connection();
         try {
             ArrayList<course> courses = new ArrayList<>();
             ResultSet rs = conn.select("select courses.id,courses.name,courses.code,courses.labHours,courses.lecHours,courses.SemesterId,semester.number,courses.lectureGroupId,lecturegroups.name,courses.SectionsNumberOfGroupsID,   sectionsnumberofgroups.name,courses.StudyplanId,studyplan.name,courses.facultyId,faculty.name from courses inner join sectionsnumberofgroups on courses.SectionsNumberOfGroupsID=sectionsnumberofgroups.id inner join lecturegroups on lecturegroups.id=courses.lectureGroupId  inner join semester on semester.id=courses.SemesterId inner join studyplan on studyplan.id=courses.StudyplanId inner join faculty on faculty.id=courses.facultyId where courses.semesterId = " + semesterId);
@@ -751,6 +865,7 @@ public class adminService {
     }
 
     public ArrayList<course> getALLCoursesInFaculty(int FacultyId) {
+        connection conn = new connection();
         try {
             ArrayList<course> courses = new ArrayList<>();
             ResultSet rs = conn.select("select courses.id,courses.name,courses.code,courses.labHours,courses.lecHours,courses.SemesterId,semester.number,courses.lectureGroupId,lecturegroups.name,courses.SectionsNumberOfGroupsID,   sectionsnumberofgroups.name,courses.StudyplanId,studyplan.name,courses.facultyId,faculty.name from courses inner join sectionsnumberofgroups on courses.SectionsNumberOfGroupsID=sectionsnumberofgroups.id inner join lecturegroups on lecturegroups.id=courses.lectureGroupId  inner join semester on semester.id=courses.SemesterId inner join studyplan on studyplan.id=courses.StudyplanId inner join faculty on faculty.id=courses.facultyId where courses.facultyId = " + FacultyId);
@@ -782,6 +897,8 @@ public class adminService {
     }
 
     public ArrayList<course> getALLCoursesInStudyPlan(int studyPlanId) {
+        connection conn = new connection();
+
         try {
             ArrayList<course> courses = new ArrayList<>();
             ResultSet rs = conn.select("select courses.id,courses.name,courses.code,courses.labHours,courses.lecHours,courses.SemesterId,semester.number,courses.lectureGroupId,lecturegroups.name,courses.SectionsNumberOfGroupsID,   sectionsnumberofgroups.name,courses.StudyplanId,studyplan.name,courses.facultyId,faculty.name from courses inner join sectionsnumberofgroups on courses.SectionsNumberOfGroupsID=sectionsnumberofgroups.id inner join lecturegroups on lecturegroups.id=courses.lectureGroupId  inner join semester on semester.id=courses.SemesterId inner join studyplan on studyplan.id=courses.StudyplanId inner join faculty on faculty.id=courses.facultyId where courses.studyPlanId = " + studyPlanId);
@@ -813,34 +930,44 @@ public class adminService {
     }
 
     public void insertCourseStaff(int courseId, int staffId, int branchId) {
-        conn.execute("insert into courseStaff (courseId,staffId,branchId) value (" + courseId + "," + staffId + "," + branchId + ")");
+        connection conn = new connection();
+
+        conn.execute("insert into coursesstaff (courseId,staffId,branchId) value (" + courseId + "," + staffId + "," + branchId + ")");
         conn.close();
     }
 
-    public void deleteCourseStaff(int courseId, int staffId, int branchId) {
-        conn.execute("delete from courseStaff where courseId = " + courseId + " and staffId = " + staffId + " and branchId = " + branchId + ")");
+    public void deleteCourseStaff(int id) {
+        connection conn = new connection();
+
+        conn.execute("delete from coursesstaff where id = " + id);
         conn.close();
     }
 
-    public void editCourseForCourseStaffInABranch(int courseId, int staffId, int branchId) {
-        conn.execute("update courseStaff set courseId = " + courseId + " where staffId = " + staffId + " and branchId = " + branchId + ")");
+    public void editCourseForCourseStaffInABranch(int courseId, int id) {
+
+        connection conn = new connection();
+        conn.execute("update coursesstaff set courseId = " + courseId + " where id = " + id);
         conn.close();
     }
 
-    public void editBranchForCourseStaffInCourse(int courseId, int staffId, int branchId) {
-        conn.execute("update courseStaff set branchId = " + branchId + " where staffId = " + staffId + " and courseId = " + courseId + ")");
+    public void editBranchForCourseStaffInCourse(int id, int branchId) {
+        connection conn = new connection();
+        conn.execute("update coursesstaff set branchId = " + branchId + " where id = " + id);
         conn.close();
     }
 
-    public void editCourseStaffInCourseForABranch(int courseId, int staffId, int branchId) {
-        conn.execute("update courseStaff set staffId = " + staffId + " where courseId= " + courseId + " and branchId = " + branchId + ")");
+    public void editCourseStaffInCourseForABranch(int staffId, int id) {
+        connection conn = new connection();
+        conn.execute("update coursesstaff set staffId = " + staffId + " where id= " + id);
         conn.close();
     }
 
     public ArrayList<CourseStaff> getAllCourseStaff() {
+        connection conn = new connection();
+
         try {
             ArrayList<CourseStaff> courseStaffs = new ArrayList<>();
-            ResultSet rs = conn.select("SELECT courses.id as courseId, courses.name as courseName,courses.code, courses.labHours, lecHours, courses.SemesterId, semester.number, courses.lectureGroupId, lecturegroups.name, courses.SectionsNumberOfGroupsID, sectionsnumberofgroups.name, courses.StudyplanId, studyplan.name, courses.facultyId, faculty.name, coursesstaff.staffId,staff.name,staff.JobTypeId,jobtype.name,staff.branchId,branch1.name,branch2.id,branch2.name   FROM coursesstaff  INNER JOIN courses ON courses.id=coursesstaff.courseId  INNER JOIN sectionsnumberofgroups ON courses.SectionsNumberOfGroupsID=sectionsnumberofgroups.id  INNER JOIN lecturegroups ON lecturegroups.id=courses.lectureGroupId    INNER JOIN semester ON semester.id=courses.SemesterId   INNER JOIN studyplan ON studyplan.id=courses.StudyplanId   INNER JOIN faculty ON faculty.id=courses.facultyId  INNER JOIN staff ON staff.id=coursesstaff.staffId  INNER JOIN jobtype ON jobtype.Id=staff.JobTypeId   INNER JOIN branch AS branch1 ON branch1.id=staff.branchId  INNER JOIN branch AS branch2 ON branch2.id=coursesstaff.BranchId");
+            ResultSet rs = conn.select("SELECT courses.id as courseId, courses.name as courseName,courses.code, courses.labHours, lecHours, courses.SemesterId, semester.number, courses.lectureGroupId, lecturegroups.name, courses.SectionsNumberOfGroupsID, sectionsnumberofgroups.name, courses.StudyplanId, studyplan.name, courses.facultyId, faculty.name, coursesstaff.staffId,staff.name,staff.JobTypeId,jobtype.name,staff.branchId,branch1.name,branch2.id,branch2.name,courseStaff.id   FROM coursesstaff  INNER JOIN courses ON courses.id=coursesstaff.courseId  INNER JOIN sectionsnumberofgroups ON courses.SectionsNumberOfGroupsID=sectionsnumberofgroups.id  INNER JOIN lecturegroups ON lecturegroups.id=courses.lectureGroupId    INNER JOIN semester ON semester.id=courses.SemesterId   INNER JOIN studyplan ON studyplan.id=courses.StudyplanId   INNER JOIN faculty ON faculty.id=courses.facultyId  INNER JOIN staff ON staff.id=coursesstaff.staffId  INNER JOIN jobtype ON jobtype.Id=staff.JobTypeId   INNER JOIN branch AS branch1 ON branch1.id=staff.branchId  INNER JOIN branch AS branch2 ON branch2.id=coursesstaff.BranchId");
             while (rs.next()) {
                 courseStaffs.add(new CourseStaff(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getInt(10), rs.getString(11), rs.getInt(12), rs.getString(13), rs.getInt(14), rs.getString(15), rs.getInt(16), rs.getString(17), rs.getInt(18), rs.getString(19), rs.getInt(20), rs.getString(21), rs.getInt(22), rs.getString(23)));
 
@@ -855,6 +982,8 @@ public class adminService {
     }
 
     public ArrayList<CourseStaff> getAllCourseStaffForACourse(int courseId) {
+        connection conn = new connection();
+
         try {
             ArrayList<CourseStaff> courseStaffs = new ArrayList<>();
             ResultSet rs = conn.select("SELECT courses.id as courseId, courses.name as courseName,courses.code, courses.labHours, lecHours, courses.SemesterId, semester.number, courses.lectureGroupId, lecturegroups.name, courses.SectionsNumberOfGroupsID, sectionsnumberofgroups.name, courses.StudyplanId, studyplan.name, courses.facultyId, faculty.name, coursesstaff.staffId,staff.name,staff.JobTypeId,jobtype.name,staff.branchId,branch1.name,branch2.id,branch2.name   FROM coursesstaff  INNER JOIN courses ON courses.id=coursesstaff.courseId  INNER JOIN sectionsnumberofgroups ON courses.SectionsNumberOfGroupsID=sectionsnumberofgroups.id  INNER JOIN lecturegroups ON lecturegroups.id=courses.lectureGroupId    INNER JOIN semester ON semester.id=courses.SemesterId   INNER JOIN studyplan ON studyplan.id=courses.StudyplanId   INNER JOIN faculty ON faculty.id=courses.facultyId  INNER JOIN staff ON staff.id=coursesstaff.staffId  INNER JOIN jobtype ON jobtype.Id=staff.JobTypeId   INNER JOIN branch AS branch1 ON branch1.id=staff.branchId  INNER JOIN branch AS branch2 ON branch2.id=coursesstaff.BranchId where coursesstaff.courseId = " + courseId);
@@ -872,6 +1001,8 @@ public class adminService {
     }
 
     public ArrayList<CourseStaff> getAllCourseStaffInSemester(int semesterId) {
+
+        connection conn = new connection();
         try {
             ArrayList<CourseStaff> courseStaffs = new ArrayList<>();
             ResultSet rs = conn.select("SELECT courses.id as courseId, courses.name as courseName,courses.code, courses.labHours, lecHours, courses.SemesterId, semester.number, courses.lectureGroupId, lecturegroups.name, courses.SectionsNumberOfGroupsID, sectionsnumberofgroups.name, courses.StudyplanId, studyplan.name, courses.facultyId, faculty.name, coursesstaff.staffId,staff.name,staff.JobTypeId,jobtype.name,staff.branchId,branch1.name,branch2.id,branch2.name   FROM coursesstaff  INNER JOIN courses ON courses.id=coursesstaff.courseId  INNER JOIN sectionsnumberofgroups ON courses.SectionsNumberOfGroupsID=sectionsnumberofgroups.id  INNER JOIN lecturegroups ON lecturegroups.id=courses.lectureGroupId    INNER JOIN semester ON semester.id=courses.SemesterId   INNER JOIN studyplan ON studyplan.id=courses.StudyplanId   INNER JOIN faculty ON faculty.id=courses.facultyId  INNER JOIN staff ON staff.id=coursesstaff.staffId  INNER JOIN jobtype ON jobtype.Id=staff.JobTypeId   INNER JOIN branch AS branch1 ON branch1.id=staff.branchId  INNER JOIN branch AS branch2 ON branch2.id=coursesstaff.BranchId where semester.id = " + semesterId);
@@ -889,6 +1020,7 @@ public class adminService {
     }
 
     public ArrayList<CourseStaff> getAllCourseStaffInStudyPlan(int StudyPlanId) {
+        connection conn = new connection();
         try {
             ArrayList<CourseStaff> courseStaffs = new ArrayList<>();
             ResultSet rs = conn.select("SELECT courses.id as courseId, courses.name as courseName,courses.code, courses.labHours, lecHours, courses.SemesterId, semester.number, courses.lectureGroupId, lecturegroups.name, courses.SectionsNumberOfGroupsID, sectionsnumberofgroups.name, courses.StudyplanId, studyplan.name, courses.facultyId, faculty.name, coursesstaff.staffId,staff.name,staff.JobTypeId,jobtype.name,staff.branchId,branch1.name,branch2.id,branch2.name   FROM coursesstaff  INNER JOIN courses ON courses.id=coursesstaff.courseId  INNER JOIN sectionsnumberofgroups ON courses.SectionsNumberOfGroupsID=sectionsnumberofgroups.id  INNER JOIN lecturegroups ON lecturegroups.id=courses.lectureGroupId    INNER JOIN semester ON semester.id=courses.SemesterId   INNER JOIN studyplan ON studyplan.id=courses.StudyplanId   INNER JOIN faculty ON faculty.id=courses.facultyId  INNER JOIN staff ON staff.id=coursesstaff.staffId  INNER JOIN jobtype ON jobtype.Id=staff.JobTypeId   INNER JOIN branch AS branch1 ON branch1.id=staff.branchId  INNER JOIN branch AS branch2 ON branch2.id=coursesstaff.BranchId where studyPlan.id = " + StudyPlanId);
@@ -906,6 +1038,8 @@ public class adminService {
     }
 
     public ArrayList<CourseStaff> getAllCourseStaffInBranch(int branchId) {
+
+        connection conn = new connection();
         try {
             ArrayList<CourseStaff> courseStaffs = new ArrayList<>();
             ResultSet rs = conn.select("SELECT courses.id as courseId,"
@@ -979,6 +1113,8 @@ public class adminService {
     }
 
     public ArrayList<CourseStaff> getAllStaffTypeInCourseStaffInBranch(int branchId, int type) {
+
+        connection conn = new connection();
         try {
             ArrayList<CourseStaff> StaffJobTypeId = new ArrayList<>();
             ResultSet rs = conn.select(""
@@ -1040,26 +1176,31 @@ public class adminService {
 
     /*------------------------------------------------------------------------------------------------*/
     public void addUser(int id, String username, String password, int role) {
+        connection conn = new connection();
         conn.execute("insert into login (id,username, password, role) value(" + id + ",'" + username + "','" + password + "'," + role + ")");
         conn.close();
     }
 
     public void changeUserPassword(int id, String password) {
+        connection conn = new connection();
         conn.execute("update login set password = '" + password + "' where id = " + id);
         conn.close();
     }
 
     public void editUser(int id, String username, int role) {
+        connection conn = new connection();
         conn.execute("update login set username = '" + username + "', role = " + role + " where id = " + id);
         conn.close();
     }
 
     public void changeUserRole(int id, int role) {
+        connection conn = new connection();
         conn.execute("update login set role= '" + role + "' where id = " + id);
         conn.close();
     }
 
     public ArrayList<user> GetUsers() {
+        connection conn = new connection();
         try {
             ArrayList<user> users = new ArrayList<>();
             ResultSet rs = conn.select("select login.id,"
@@ -1099,6 +1240,7 @@ public class adminService {
     }
 
     public ArrayList<user> GetOneUser(int userId) {
+        connection conn = new connection();
         try {
             ArrayList<user> users = new ArrayList<>();
             ResultSet rs = conn.select("select * from login where id = " + userId);
@@ -1179,6 +1321,8 @@ public class adminService {
     }
 
     public ArrayList<timeInTimetable> getLectuerTimesInTimetable(int timeTableId) {
+        connection conn = new connection();
+
         ArrayList<timeInTimetable> t = new ArrayList<>();
         try {
             ResultSet rs = conn.select("""
@@ -1259,6 +1403,8 @@ public class adminService {
     }
 
     public ArrayList<TimeInTimetable> getLectuerTimesInTimetable1(int timeTableId) {
+        connection conn = new connection();
+
         ArrayList<TimeInTimetable> t = new ArrayList<>();
         try {
             ResultSet rs = conn.select("""
@@ -1339,6 +1485,7 @@ public class adminService {
     }
 
     public ArrayList<timeInTimetable> getLectuerTimesInTimetableForCourses(int timeTableId, int[] coursesIds) {
+        connection conn = new connection();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < coursesIds.length; i++) {
             sb.append(coursesIds[i] + ",");
@@ -1423,6 +1570,8 @@ public class adminService {
     }
 
     public ArrayList<timeInTimetable> getLectuerTimesInTimetableWithBranches(int timeTableId, int[] branchesIds) {
+        connection conn = new connection();
+
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < branchesIds.length; i++) {
             sb.append(branchesIds[i]).append(",");
@@ -1507,6 +1656,8 @@ public class adminService {
     }
 
     public ArrayList<timeInTimetable> getLectuerTimesInTimetableWithStaff(int timeTableId, int[] staffIds) {
+        connection conn = new connection();
+
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < staffIds.length; i++) {
             sb.append(staffIds[i]).append(",");
@@ -1622,6 +1773,8 @@ public class adminService {
     }
 
     public void addFreeTimeForStaff(freeTime freeTime) {
+        connection conn = new connection();
+
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < freeTime.getDayStartEnd().size(); i++) {
             sb.append("(").append(freeTime.getId()).append(",").append(freeTime.getDayStartEnd().get(i).getDayId()).append(",").append(freeTime.getDayStartEnd().get(i).getStartSession()).append(",").append(freeTime.getDayStartEnd().get(i).getEndSession()).append("),");
@@ -1631,6 +1784,8 @@ public class adminService {
     }
 
     public Object getFreeTimeForStaff() {
+
+        connection conn = new connection();
         ArrayList<freetimeForStaff> f = new ArrayList<>();
         try {
             ResultSet rs;
@@ -1647,6 +1802,7 @@ public class adminService {
     }
 
     public void updateFreeTimeForStaff(freeTime freeTime) {
+        connection conn = new connection();
         conn.execute("delete from freetimeforstaff where StaffId = " + freeTime.getId());
         addFreeTimeForStaff(freeTime);
         try {
@@ -1656,6 +1812,7 @@ public class adminService {
     }
 
     public void addFreeTimeForRooms(int RoomId, freeTime freeTime) {
+        connection conn = new connection();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < freeTime.getDayStartEnd().size(); i++) {
             sb.append("(").append(freeTime.getId()).append(",").append(freeTime.getDayStartEnd().get(i).getDayId()).append(",").append(freeTime.getDayStartEnd().get(i).getStartSession()).append(",").append(freeTime.getDayStartEnd().get(i).getEndSession()).append("),");
@@ -1665,6 +1822,7 @@ public class adminService {
     }
 
     public Object getFreeTimeForRooms() {
+        connection conn = new connection();
         ArrayList<FreeTimeForRooms> f = new ArrayList<>();
         try {
             ResultSet rs;
@@ -1682,6 +1840,7 @@ public class adminService {
     }
 
     public freeTime getFreeTimeForARoom(int RoomId) {
+        connection conn = new connection();
         freeTime f = new freeTime();
         try {
             ResultSet rs;
@@ -1698,6 +1857,7 @@ public class adminService {
     }
 
     public void updateFreeTimeForRooms(int RoomsId, freeTime freeTime) {
+        connection conn = new connection();
         conn.execute("delete from freetimeforstaff where StaffId = " + RoomsId);
         addFreeTimeForRooms(RoomsId, freeTime);
         try {
@@ -1707,6 +1867,7 @@ public class adminService {
     }
 
     public ArrayList<timeInTimetable> getATimetable(int timetableId) {
+        connection conn = new connection();
         ArrayList<timeInTimetable> tims = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
         ResultSet rs = conn.select("select timesintimetable.id,"

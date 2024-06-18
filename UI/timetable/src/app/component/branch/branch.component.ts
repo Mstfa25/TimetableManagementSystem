@@ -97,6 +97,7 @@ applyFilter(event: Event) {
     this.dataSource.paginator.firstPage();
   }
 }
+
 deleteBranch(id: number){
   if(confirm('Are you sure you want to delete this branch?')){
       const body = { id };

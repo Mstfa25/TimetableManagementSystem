@@ -1,5 +1,6 @@
 package com.team.timetableManagmentSystem.controllers;
 
+import com.team.timetableManagmentSystem.DTOs.Branch;
 import com.team.timetableManagmentSystem.DTOs.user;
 import com.team.timetableManagmentSystem.service.userServices;
 import jakarta.servlet.http.HttpSession;
@@ -24,18 +25,19 @@ public class UserController {
     @CrossOrigin(allowCredentials = "true", origins = "localhost:4200", originPatterns = "*")
     @PostMapping(value = "/login")
     public ResponseEntity<?> loginUser(@RequestBody user user, HttpSession session) {
-        int userRole;
+        int[] userRole;
         System.out.println(user.getUsername());
         userRole = userService.userRole(user.getUsername(), user.getPassword());
-        if (userRole == -1) {
+        if (userRole[0] == -1) {
             ArrayList<String> s = new ArrayList<>();
             s.add("Invalid Credentials");
             return new ResponseEntity<>(s, HttpStatus.UNAUTHORIZED);
         }
-        session.setAttribute("username", user.getUsername());
-        session.setAttribute("role", userRole);
-        if (userRole == 2) {
-            
+        session.setAttribute("userId", userRole[0]);
+        session.setAttribute("role", userRole[1]);
+        if (userRole[1] == 2) {
+            ArrayList<Branch> branchs = (ArrayList<Branch>) userService.getSubAdminBranches(userRole[0]);
+            session.setAttribute("branchs", branchs);
         }
         ArrayList<String> s = new ArrayList<>();
         s.add("Login Successful");
@@ -46,7 +48,7 @@ public class UserController {
     @RequestMapping("/logout")
     public ResponseEntity<?> logoutUser(HttpSession session) {
         // Remove user information from the session
-        session.removeAttribute("username");
+        session.removeAttribute("userId");
         session.removeAttribute("role");
         ArrayList<String> s = new ArrayList<>();
         s.add("Logout Successful");
@@ -56,17 +58,22 @@ public class UserController {
     @CrossOrigin(allowCredentials = "true", originPatterns = "*", origins = "localhost:4200")
     @RequestMapping("/home")
     public ResponseEntity<?> home(HttpSession session) {
-        System.out.println(session.getAttribute("username"));
-        if (session.getAttribute("username") != null) {
-            
-            ArrayList<String> s = new ArrayList<>();
-            s.add("home");
-            return new ResponseEntity<>(s, HttpStatus.OK);
-        } else {
-            ArrayList<String> s = new ArrayList<>();
-            s.add("login first");
-            return new ResponseEntity<>(s, HttpStatus.OK);
+        System.out.println(session.getAttribute("userId"));
+        if (session.getAttribute("userId") != null) {
+            if (session.getAttribute("role").equals(1)) {
+                ArrayList<String> s = new ArrayList<>();
+                s.add("home");
+                return new ResponseEntity<>(s, HttpStatus.OK);
+            } else if (session.getAttribute("role").equals(2)) {
+                ArrayList<String> s = new ArrayList<>();
+                s.add("SubAdminHome");
+                return new ResponseEntity<>(s, HttpStatus.OK);
+            }
         }
+
+        ArrayList<String> s = new ArrayList<>();
+        s.add("login first");
+        return new ResponseEntity<>(s, HttpStatus.OK);
     }
 
 }

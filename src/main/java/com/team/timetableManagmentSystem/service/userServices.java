@@ -1,46 +1,48 @@
 package com.team.timetableManagmentSystem.service;
 
+import com.team.timetableManagmentSystem.DTOs.Branch;
 import com.team.timetableManagmentSystem.database.connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class userServices {
 
-    @Autowired
-    private connection conn;
-
-    public Object getSubAdminBranches() {
-        try {
-            ResultSet rs = conn.select("");
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            conn.close();
-        }
-        return null;
-    }
-
-    public int userRole(String username, String password) {
+    public int[] userRole(String username, String password) {
+        connection conn = new connection();
         try {
             ResultSet rs = conn.select(
-            "SELECT username, role "
+                    "SELECT id, role "
                     + "FROM login "
                     + "WHERE BINARY username = \"" + username + "\" AND BINARY password = \"" + password + "\""
             );
             if (rs.next()) {
-                return rs.getInt(2);
+                return new int[]{rs.getInt("id"), rs.getInt("role")};
             }
         } catch (SQLException ex) {
             Logger.getLogger(userServices.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             conn.close();
         }
-        return -1;
+        return new int[]{-1};
+    }
+
+    public Object getSubAdminBranches(int staffId) {
+        connection conn = new connection();
+        ArrayList<Branch> branches = new ArrayList<>();
+        ResultSet rs = conn.select("select branchId from subadmin where id = " + staffId);
+        try {
+            while (rs.next()) {
+                branches.add(new Branch(rs.getInt("branchId")));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return branches;
     }
 
 }
