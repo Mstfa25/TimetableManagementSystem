@@ -44,7 +44,7 @@ public class adminController {
     @RequestMapping("/addBranch")
     public Object addBranch(@RequestBody Branch branch, HttpSession session) {
         if (isadmin(session)) {
-            if (!branch.getName().isEmpty() && !branch.getName().equals(null)) {
+            if (!branch.getName().isEmpty() && branch.getName() != null) {
                 if (!adminService.branchNameExist(branch.getName())) {
                     adminService.insertNewBranch(branch.getName());
                 } else {
@@ -65,13 +65,13 @@ public class adminController {
         if (isadmin(session)) {
             if (branchs.length > 0) {
                 ArrayList<Branch> branchs1 = new ArrayList<>();
-                for (int i = 0; i < branchs.length; i++) {
-                    if (!branchs[i].getName().equals(null) && !branchs[i].getName().isEmpty() && !adminService.branchNameExist(branchs[i].getName())) {
-                        branchs1.add(branchs[i]);
+                for (Branch branch : branchs) {
+                    if (branch.getName() != null && !branch.getName().isEmpty() && !adminService.branchNameExist(branch.getName())) {
+                        branchs1.add(branch);
                     }
                 }
                 StringBuilder sb = new StringBuilder();
-                if (branchs1.size() > 0) {
+                if (!branchs1.isEmpty()) {
                     for (Branch branch : branchs) {
                         sb.append("('").append(branch.getName()).append("'),");
                     }
@@ -557,13 +557,13 @@ public class adminController {
         if (isadmin(session)) {
 
             ArrayList<timeInTimetable> t = adminService.createLectureTimeTable(nameWithCourses.getName(), nameWithCourses.getCourses());
-            InsertTimetable insertTimeTable = new InsertTimetable((timeInTimetable[]) t.toArray(new timeInTimetable[t.size()]));
+            InsertTimetable insertTimeTable = new InsertTimetable((timeInTimetable[]) t.toArray(timeInTimetable[]::new));
             insertTimeTable.start();
             while (insertTimeTable.isAlive()) {
                 Thread.sleep(100);
             }
-            System.out.println((t.size() > 0) ? t.get(0).getTimetable().getId() : -1);
-            return adminService.getATimetable((t.size() > 0) ? t.get(0).getTimetable().getId() : -1);
+            System.out.println((!t.isEmpty()) ? t.get(0).getTimetable().getId() : -1);
+            return adminService.getATimetable((!t.isEmpty()) ? t.get(0).getTimetable().getId() : -1);
         }
         return adminResponse(session);
     }
@@ -921,7 +921,7 @@ public class adminController {
 
         if (isadmin(session)) {
             ArrayList<timeInTimetable> t = adminService.createSectionTimeTable(idAndBranch_WithCourses.getId(), idAndBranch_WithCourses.getBranchId(), idAndBranch_WithCourses.getCourses());
-            InsertTimetable insertTimeTable = new InsertTimetable((timeInTimetable[]) t.toArray(new timeInTimetable[t.size()]));
+            InsertTimetable insertTimeTable = new InsertTimetable((timeInTimetable[]) t.toArray(timeInTimetable[]::new));
             insertTimeTable.start();
             return t;
         }
