@@ -13,6 +13,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -98,18 +99,32 @@ applyFilter(event: Event) {
   }
 }
 
-deleteBranch(id: number){
-  if(confirm('Are you sure you want to delete this branch?')){
-      const body = { id };
-  
-      this._brnService.removeBranch( body).subscribe({
+deleteBranch(id: number) {
+  Swal.fire({
+    title: 'Are you sure you want to delete this branch?',
+    text: "This action cannot be undone!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const body = { id }; // Prepare data for deletion
+
+      // Handle deletion with proper error handling
+      this._brnService.removeBranch(body).subscribe({
         next: (res) => {
-          alert('done');
+          Swal.fire('Deleted!', 'Branch has been deleted successfully.', 'success');
+          this.getBranch(); // Refresh branch data (assuming this refreshes data)
         },
-        error: console.log
+        error: (error) => {
+          console.error('Error deleting branch:', error);
+          Swal.fire('Error!', 'An error occurred while deleting the branch.', 'error');
+        }
       });
-    
-  }
+    }
+  });
 }
   
 openEditBranch(data: any){
