@@ -1,7 +1,8 @@
 
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Observable, of } from 'rxjs';
 import { BranchService } from 'src/app/core/services/branch.service';
 import Swal from 'sweetalert2';
 
@@ -36,7 +37,7 @@ export class FormbranchComponent implements OnInit {
           text: "The updated information will be saved.",
           icon: 'info', // Informative icon
           showCancelButton: true,
-          confirmButtonColor: '#3085d6',
+          confirmButtonColor: '#1475CB',
           cancelButtonColor: '#d33',
           confirmButtonText: 'Yes, update it!'
         }).then((result) => {

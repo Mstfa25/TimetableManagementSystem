@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FacultyService } from 'src/app/core/services/faculty.service';
 import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-formcourse',
@@ -55,16 +56,30 @@ export class FormcourseComponent {
   onFormSubmit() {
     if (this.courseform.valid) {
       if (this.data) {
-        this._courseService.updatecourse(this.data.id, this.courseform.value).subscribe({
-          next: (val: any) => {
-            alert('Update Successfuly')
-            this._dialogRef.close(true);
-          },
-          error: (err: any) => {
-            console.error(err)
+        Swal.fire({
+          title: 'Are you sure you want to update this course?',
+          text: "The updated information will be saved.",
+          icon: 'info', // Informative icon
+          showCancelButton: true,
+          confirmButtonColor: '#1475CB',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this._courseService.updatecourse(this.data.id, this.courseform.value).subscribe({
+              next: (val: any) => {
+                Swal.fire('Updated!', 'Course has been updated successfully.', 'success');
+                this._dialogRef.close(true); // Assuming this closes the dialog after successful update
+              },
+              error: (err: any) => {
+                console.error('Error updating course:', err);
+                Swal.fire('Error!', 'An error occurred while updating the course.', 'error');
+              }
+            });
           }
-        })
+        });
       }
+    }
       else {
 
         this._courseService.addcourse(this.courseform.value).subscribe({
@@ -78,17 +93,16 @@ export class FormcourseComponent {
         })
       }
     }
+    onFacultySelect(event: any) {
+      const selectedFaculty = event.value;
+      this.study=event.value.studyPlans;
+      console.log('Selected Faculty:', event.value.studyPlans);
+    }
+  
+    onStudyPlanSelect(event: any) {
+      this.semster=event.value.semesters;
+      console.log('Selected Faculty:', event.value.semesters);
+    }
+  
   }
 
-  onFacultySelect(event: any) {
-    const selectedFaculty = event.value;
-    this.study=event.value.studyPlans;
-    console.log('Selected Faculty:', event.value.studyPlans);
-  }
-
-  onStudyPlanSelect(event: any) {
-    this.semster=event.value.semesters;
-    console.log('Selected Faculty:', event.value.semesters);
-  }
-
-}

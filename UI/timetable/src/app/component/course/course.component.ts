@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FacultyService } from 'src/app/core/services/faculty.service';
 import { FormcourseComponent } from 'src/app/forms/formcourse/formcourse.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-course',
@@ -85,14 +86,29 @@ applyFilter(event: Event) {
     this.dataSource.paginator.firstPage();
   }
 }
-deletecourse(id:number){
-this._coursService.deletecourse(id).subscribe({
-  next: (res) => {
-   alert(' Deleted !')
-   this.getCourse();
-  },
-  error: console.log
-})
+deletecourse(id: number) {
+  Swal.fire({
+    title: 'Are you sure you want to delete this course?',
+    text: "This action cannot be undone.",
+    icon: 'warning', // Warning icon for emphasis
+    showCancelButton: true,
+    confirmButtonColor: '#d33', // Red for delete action
+    cancelButtonColor: '#1475CB', // Blue for cancel
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this._coursService.deletecourse(id).subscribe({
+        next: (res) => {
+          Swal.fire('Deleted!', 'Course has been deleted successfully.', 'success');
+          this.getCourse(); // Refresh or update course list (adjust as needed)
+        },
+        error: (err) => {
+          console.error('Error deleting course:', err);
+          Swal.fire('Error!', 'An error occurred while deleting the course.', 'error');
+        }
+      });
+    }
+  });
 }
 openEditcourse(data: any){
 const dialogRef = this._dialog.open(FormcourseComponent , {

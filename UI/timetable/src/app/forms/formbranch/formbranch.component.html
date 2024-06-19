@@ -7,6 +7,18 @@
             <mat-form-field appearance="outline">
                 <mat-label >NameBranch</mat-label>
                 <input matInput type="text" placeholder="Enter Name of Branch" formControlName="name">
+                <!-- <mat-error *ngIf="brnForm.hasError('required')">
+                    Branch name is required.
+                  </mat-error>
+                  <mat-error *ngIf="brnForm.hasError('minlength')">
+                    Branch name must be at least 4 characters long.
+                  </mat-error>
+                  <mat-error *ngIf="brnForm.hasError('maxlength')">
+                    Branch name cannot exceed 30 characters.
+                  </mat-error>
+                  <mat-error *ngIf="brnForm.hasError('pattern')">
+                    Branch name cannot contain symbols, numbers, or spaces.
+                  </mat-error> -->
               </mat-form-field>
         </div>
     </div>
