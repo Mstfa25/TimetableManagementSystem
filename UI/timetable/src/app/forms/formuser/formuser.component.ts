@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-formuser',
@@ -54,17 +55,31 @@ export class FormuserComponent {
           id: this.userform.get('sId')?.value,
           username: this.userform.get('username')?.value,
           role: this.userform.get('rId')?.value,
-        }
-        console.log(data)
-        this._userService.updateUser(data).subscribe({
-          next: (val: any) => {
-            alert('Update Successfuly')
-            this._dialogRef.close(true);
-          },
-          error: (err: any) => {
-            console.error(err)
+        };
+    
+        // Informative confirmation message
+        Swal.fire({
+          title: 'Are you sure you want to update this user?',
+          text: "The updated information, including username and role, will be saved.",
+          icon: 'info', // Informative icon
+          showCancelButton: true,
+          confirmButtonColor: '#1475CB',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this._userService.updateUser(data).subscribe({
+              next: (val: any) => {
+                Swal.fire('Updated!', 'User has been updated successfully.', 'success');
+                this._dialogRef.close(true); // Assuming this closes the dialog after successful update
+              },
+              error: (err: any) => {
+                console.error('Error updating user:', err);
+                Swal.fire('Error!', 'An error occurred while updating the user.', 'error');
+              }
+            });
           }
-        })
+        });
       }
       else {
         const data = {

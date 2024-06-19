@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FacultyService } from 'src/app/core/services/faculty.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-formfaculty',
@@ -26,18 +27,32 @@ export class FormfacultyComponent {
         const data = {
           id: this.data.id,
           name: this.fForm.get("name")?.value
-        }
-        console.log(data)
-        this._facultyService.updateFaculty(data).subscribe({
-          next: (val: any) => {
-            alert('Faculty Updated Successful');
-            this._dialogRef.close(true)
-          },
-          error: (err: any) => {
-            console.error(err)
+        };
+    
+        Swal.fire({
+          title: 'Are you sure you want to update this faculty?',
+          text: "The updated information will be saved.",
+          icon: 'info', // Informative icon
+          showCancelButton: true,
+          confirmButtonColor: '#1475CB',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this._facultyService.updateFaculty(data).subscribe({
+              next: (val: any) => {
+                Swal.fire('Updated!', 'Faculty has been updated successfully.', 'success');
+                this._dialogRef.close(true); // Assuming this closes the dialog after successful update
+              },
+              error: (err: any) => {
+                console.error('Error updating faculty:', err);
+                Swal.fire('Error!', 'An error occurred while updating the faculty.', 'error');
+              }
+            });
           }
         });
-      } else {
+      }
+      else {
         const data = {
           Faculty: { id: this.fForm.get("name")?.value }
         }

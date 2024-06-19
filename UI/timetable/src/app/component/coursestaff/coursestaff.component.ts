@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { BranchService } from 'src/app/core/services/branch.service';
 import { FormcourstaffComponent } from 'src/app/forms/formcourstaff/formcourstaff.component';
 import { FormsecstafComponent } from 'src/app/forms/formsecstaf/formsecstaf.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-coursestaff',
@@ -89,14 +90,29 @@ applyFilter(event: Event) {
     this.dataSource.paginator.firstPage();
   }
 }
-deleteCostaf(id:number){
-this._corStaService.deletecourStaff(id).subscribe({
-  next: (res) => {
-   alert(' Deleted !')
-   this.getCostaf();
-  },
-  error: console.log
-})
+deleteCostaf(id: number) {
+  Swal.fire({
+    title: 'Are you sure you want to delete this course staff member?',
+    text: "This action cannot be undone.",
+    icon: 'warning', // Warning icon for emphasis
+    showCancelButton: true,
+    confirmButtonColor: '#d33', // Red for delete action
+    cancelButtonColor: '#1475CB', // Blue for cancel
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this._corStaService.deletecourStaff(id).subscribe({
+        next: (res) => {
+          Swal.fire('Deleted!', 'Course staff member has been deleted successfully.', 'success');
+          this.getCostaf(); // Refresh or update course staff list (adjust as needed)
+        },
+        error: (err) => {
+          console.error('Error deleting course staff:', err);
+          Swal.fire('Error!', 'An error occurred while deleting the staff member.', 'error');
+        }
+      });
+    }
+  });
 }
 openEditcostaf(data: any){
 const dialogRef = this._dialog.open(FormcourstaffComponent  , {

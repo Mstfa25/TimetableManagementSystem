@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FacultyService } from 'src/app/core/services/faculty.service';
 import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-formstudyit',
@@ -34,22 +35,39 @@ export class FormstudyitComponent implements OnInit {
     this.studyform.patchValue(this.data);}
      onFormSubmit() {
       if (this.studyform.valid) {
-      if (this.data) {
-        const data = {
-          id: this.studyform.get("sId")?.value,
-          name: this.studyform.get("sname")?.value,
-          faculty: {
-            id: this.studyform.get("fname")?.value,
-          }}
-        this._studtService.updateStudyit(data).subscribe({
-          next: (val: any) => {
-            console.log(val);
-            alert('Update Successfuly')
-            this._dialogRef.close(true);
-          },
-          error: (err: any) => {
-            console.error(err)
-          }})}
+        if (this.data) {
+          const data = {
+            id: this.studyform.get("sId")?.value,
+            name: this.studyform.get("sname")?.value,
+            faculty: {
+              id: this.studyform.get("fname")?.value,
+            }
+          };
+      
+          // Informative confirmation message (consider tailoring to your context)
+          Swal.fire({
+            title: 'Are you sure you want to update this study?',
+            text: 'The updated information, including name and faculty, will be saved.',
+            icon: 'info', // Informative icon
+            showCancelButton: true,
+            confirmButtonColor: '#1475CB',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this._studtService.updateStudyit(data).subscribe({
+                next: (val: any) => {
+                  Swal.fire('Updated!', 'Study has been updated successfully.', 'success');
+                  this._dialogRef.close(true); // Assuming this closes the dialog after successful update
+                },
+                error: (err: any) => {
+                  console.error('Error updating study:', err);
+                  Swal.fire('Error!', 'An error occurred while updating the study.', 'error');
+                }
+              });
+            }
+          });
+        }
       else {
         const data = {
           name: this.studyform.get("sname")?.value,

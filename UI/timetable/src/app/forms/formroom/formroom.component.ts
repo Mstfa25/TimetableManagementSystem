@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { BranchService } from 'src/app/core/services/branch.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-formroom',
@@ -64,15 +65,28 @@ export class FormroomComponent implements OnInit {
           capacity: capacity,
           roomtype: { id: roomtype }
         };
-        this._roomService.updateRoom(room).subscribe({
-          next: (val: any) => {
-            alert('Room Update Successfuly')
-            this._dialogRef.close(true);
-          },
-          error: (err: any) => {
-            console.error(err)
+        Swal.fire({
+          title: 'Are you sure you want to update this room?',
+          text: "The updated information will be saved.",
+          icon: 'info', // Informative icon
+          showCancelButton: true,
+          confirmButtonColor: '#1475CB',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this._roomService.updateRoom(room).subscribe({
+              next: (val: any) => {
+                Swal.fire('Updated!', 'Room has been updated successfully.', 'success');
+                this._dialogRef.close(true); // Assuming this closes the dialog after successful update
+              },
+              error: (err: any) => {
+                console.error('Error updating room:', err);
+                Swal.fire('Error!', 'An error occurred while updating the room.', 'error');
+              }
+            });
           }
-        })
+        });
       }
       else {
         let optionname = this.roomform.get('roomname');

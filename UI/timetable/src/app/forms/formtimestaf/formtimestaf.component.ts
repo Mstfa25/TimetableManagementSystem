@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FreetimeService } from 'src/app/core/services/freetime.service';
 import { TablesService } from 'src/app/core/services/tables.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-formtimestaf',
@@ -32,17 +33,31 @@ export class FormtimestafComponent {
 
   }
   onFormSubmit(){
-    if(this.timestafform.valid){
-      if(this.data){
-        this._freetimeService.updatetimestaff(this.data.id).subscribe({
-          next: (val: any) =>{
-           alert('Update Successfuly')
-           this._dialogRef.close(true);
-          },
-          error: (err:any) =>{
-            console.error(err)
+    if (this.timestafform.valid) {
+      if (this.data) {
+        // Confirmation dialog with informative message
+        Swal.fire({
+          title: 'Are you sure you want to update this timestaff member?',
+          text: "The updated information will be saved.", // Consider tailoring the text if specific fields are updated
+          icon: 'info', // Informative icon
+          showCancelButton: true,
+          confirmButtonColor: '#1475CB',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this._freetimeService.updatetimestaff(this.data.id).subscribe({
+              next: (val: any) => {
+                Swal.fire('Updated!', 'Timestuff member has been updated successfully.', 'success');
+                this._dialogRef.close(true); // Assuming this closes the dialog after successful update
+              },
+              error: (err: any) => {
+                console.error('Error updating timestuff member:', err);
+                Swal.fire('Error!', 'An error occurred while updating the timestuff member.', 'error');
+              }
+            });
           }
-         })
+        });
       }
       else{
         

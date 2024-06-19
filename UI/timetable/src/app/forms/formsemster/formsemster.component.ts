@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { FacultyService } from 'src/app/core/services/faculty.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-formsemster',
@@ -34,20 +35,37 @@ export class FormsemsterComponent {
   }
   onFormSubmit() {
     if (this.semform.valid) {
-      
       if (this.data) {
-        const data={
-          id:this.semform.get('sId')?.value,
-          number:this.semform.get('snumber')?.value,
-          studyPlan:{id:this.semform.get('studyname')?.value}
-      }
-      console.log(data);
-        this._semsService.updateSemsterit(data).subscribe({
-          next: (val: any) => {
-            alert('Update Successfuly')
-            this._dialogRef.close(true);
+        const data = {
+          id: this.semform.get('sId')?.value,
+          number: this.semform.get('snumber')?.value,
+          studyPlan: { id: this.semform.get('studyname')?.value }
+        };
+    
+        // Informative confirmation message (consider tailoring to your context):
+        Swal.fire({
+          title: 'Are you sure you want to update this semester?',
+          text: "The updated information, including semester number and study plan, will be saved.",
+          icon: 'info', // Informative icon
+          showCancelButton: true,
+          confirmButtonColor: '#1475CB',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this._semsService.updateSemsterit(data).subscribe({
+              next: (val: any) => {
+                Swal.fire('Updated!', 'Semester has been updated successfully.', 'success');
+                this._dialogRef.close(true); // Assuming this closes the dialog after successful update
+              },
+              error: (err: any) => {
+                console.error('Error updating semester:', err);
+                Swal.fire('Error!', 'An error occurred while updating the semester.', 'error');
+              }
+            });
           }
-        })
+        });
+    
       }
       else {
         const data={
