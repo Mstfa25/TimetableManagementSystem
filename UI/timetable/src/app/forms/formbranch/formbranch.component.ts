@@ -39,7 +39,7 @@ export class FormbranchComponent implements OnInit {
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
           confirmButtonText: 'Yes, update it!'
-        }).then((result) => {
+        }).then((result:any) => {
           if (result.isConfirmed) {
             this._branchService.updateBranch(dataToSend).subscribe({
               next: (val: any) => {
