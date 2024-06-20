@@ -10,6 +10,7 @@ import { Room } from 'src/app/core/interfaces/branch';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { BranchService } from 'src/app/core/services/branch.service';
 import { FormroomComponent } from 'src/app/forms/formroom/formroom.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-branch',
@@ -101,17 +102,29 @@ export class RoomComponent implements OnInit {
     }
   }
   deleteRoom(id: number) {
-      // Include the ID in the body of the request
-      const body = { id };
-      // Make the HTTP request with the updated headers
-      this._roomService.deleteRoom(body).subscribe({
-        next: (res) => {
-          // Handle the response as needed
-          alert('Room Deleted !')
-          this.getRoom();
-        },
-        error: console.log
-      });
+    Swal.fire({
+      title: 'Are you sure you want to delete this room?',
+      text: "This action cannot be undone.", // Emphasize irreversible nature
+      icon: 'warning', // Warning icon
+      showCancelButton: true,
+      confirmButtonColor: '#d33', // Red for delete
+      cancelButtonColor: '#1475CB', // Blue for cancel
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const body = { id }; // Destructuring assignment for concise body creation
+        this._roomService.deleteRoom(body).subscribe({
+          next: (res) => {
+            Swal.fire('Deleted!', 'Room has been deleted successfully.', 'success');
+            this.getRoom(); // Assuming this refreshes the room list
+          },
+          error: (err: any) => {
+            console.error('Error deleting room:', err);
+            Swal.fire('Error!', 'An error occurred while deleting the room.', 'error');
+          }
+        });
+      }
+    });
     }
   
    

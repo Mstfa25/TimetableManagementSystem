@@ -7,6 +7,7 @@ import { Studyit } from 'src/app/core/interfaces/branch';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FacultyService } from 'src/app/core/services/faculty.service';
 import { FormstudyitComponent } from 'src/app/forms/formstudyit/formstudyit.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-studyit',
@@ -66,15 +67,30 @@ export class StudyitComponent {
     }
   }
   deleteStudy(id: number) {
-    const data = { id: id }
-    this._studyervice.deleteStudyit(data).subscribe({
-      next: (res) => {
-        console.log(res);
-        alert('Deleted !')
-        this.getStudy();
-      },
-      error: console.log
-    })
+    Swal.fire({
+      title: 'Are you sure you want to delete this study record?',
+      text: "This action cannot be undone.", // Emphasize irreversible nature
+      icon: 'warning', // Warning icon
+      showCancelButton: true,
+      confirmButtonColor: '#d33', // Red for delete
+      cancelButtonColor: '#1475CB', // Blue for cancel
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const data = { id }; // Destructuring assignment for concise data creation
+        this._studyervice.deleteStudyit(data).subscribe({
+          next: (res) => {
+            console.log('Study deleted successfully:', res); // Log response for debugging or potential further actions
+            Swal.fire('Deleted!', 'Study record has been deleted successfully.', 'success');
+            this.getStudy(); // Assuming this refreshes the study list
+          },
+          error: (err: any) => {
+            console.error('Error deleting study record:', err);
+            Swal.fire('Error!', 'An error occurred while deleting the study record.', 'error');
+          }
+        });
+      }
+    });
   }
   openEditStudy(data: any) {
     const dialogRef = this._dialog.open(FormstudyitComponent, {

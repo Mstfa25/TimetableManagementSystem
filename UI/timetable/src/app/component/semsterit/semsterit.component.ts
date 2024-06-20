@@ -7,6 +7,7 @@ import { Semsterit } from 'src/app/core/interfaces/branch';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FacultyService } from 'src/app/core/services/faculty.service';
 import { FormsemsterComponent } from 'src/app/forms/formsemster/formsemster.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-semsterit',
@@ -65,14 +66,29 @@ export class SemsteritComponent {
     }
   }
   deleteSemster(id: number) {
-    const data={id:id}
-    this._semservice.deleteSemsterit(data).subscribe({
-      next: (res) => {
-        alert('Deleted !')
-        this.getSemster();
-      },
-      error: console.log
-    })
+    Swal.fire({
+      title: 'Are you sure you want to delete this semester record?',
+      text: "This action cannot be undone. All courses and associated data for this semester will also be deleted.", // Emphasize irreversible nature and consequences
+      icon: 'warning', // Warning icon
+      showCancelButton: true,
+      confirmButtonColor: '#d33', // Red for delete
+      cancelButtonColor: '#1475CB', // Blue for cancel
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const data = { id }; // Destructuring assignment for concise data creation
+        this._semservice.deleteSemsterit(data).subscribe({
+          next: (res) => {
+            Swal.fire('Deleted!', 'Semester record has been deleted successfully.', 'success');
+            this.getSemster(); // Assuming this refreshes the semester list
+          },
+          error: (err: any) => {
+            console.error('Error deleting semester record:', err);
+            Swal.fire('Error!', 'An error occurred while deleting the semester record.', 'error');
+          }
+        });
+      }
+    });
   }
   openEditSemster(data: any) {
     const dialogRef = this._dialog.open(FormsemsterComponent, {

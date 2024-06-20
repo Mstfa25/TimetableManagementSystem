@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FacultyService } from 'src/app/core/services/faculty.service';
 import { FormsecComponent } from 'src/app/forms/formsec/formsec.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-section',
@@ -83,14 +84,29 @@ applyFilter(event: Event) {
     this.dataSource.paginator.firstPage();
   }
 }
-deletesec(id:number){
-this._secService.deletesec(id).subscribe({
-  next: (res) => {
-   alert(' Deleted !')
-   this.getSec();
-  },
-  error: console.log
-})
+deletesec(id: number) {
+  Swal.fire({
+    title: 'Are you sure you want to delete this section record?',
+    text: "This action cannot be undone.", // Emphasize irreversible nature
+    icon: 'warning', // Warning icon
+    showCancelButton: true,
+    confirmButtonColor: '#d33', // Red for delete
+    cancelButtonColor: '#1475CB', // Blue for cancel
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this._secService.deletesec(id).subscribe({
+        next: (res) => {
+          Swal.fire('Deleted!', 'Section record has been deleted successfully.', 'success');
+          this.getSec(); // Assuming this refreshes the section list
+        },
+        error: (err: any) => {
+          console.error('Error deleting section record:', err);
+          Swal.fire('Error!', 'An error occurred while deleting the section record.', 'error');
+        }
+      });
+    }
+  });
 }
 openEditSec(data: any){
 const dialogRef = this._dialog.open(FormsecComponent , {

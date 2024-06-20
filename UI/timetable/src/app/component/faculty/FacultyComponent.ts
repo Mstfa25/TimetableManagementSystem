@@ -7,6 +7,7 @@ import { faculty } from 'src/app/core/interfaces/branch';
 import { FacultyService } from 'src/app/core/services/faculty.service';
 import { FormfacultyComponent } from 'src/app/forms/formfaculty/formfaculty.component';
 import { AuthService } from 'src/app/core/services/auth.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -57,13 +58,28 @@ export class FacultyComponent {
     }
   }
   deleteFaculty(id: number) {
-    const data = { id: id };
-    this._facultyService.deleteFaculty(data).subscribe({
-      next: (res) => {
-        alert('Faculty deleted !');
-        this.getFaculty();
-      },
-      error: console.log
+    Swal.fire({
+      title: 'Are you sure you want to delete this faculty?',
+      text: "This action cannot be undone.", // Emphasize irreversible nature
+      icon: 'warning', // Warning icon
+      showCancelButton: true,
+      confirmButtonColor: '#d33', // Red for delete
+      cancelButtonColor: '#1475CB', // Blue for cancel
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const data = { id }; // Destructuring assignment for brevity
+        this._facultyService.deleteFaculty(data).subscribe({
+          next: (res) => {
+            Swal.fire('Deleted!', 'Faculty has been deleted successfully.', 'success');
+            this.getFaculty(); // Assuming this refreshes the faculty list
+          },
+          error: (err: any) => {
+            console.error('Error deleting faculty:', err);
+            Swal.fire('Error!', 'An error occurred while deleting the faculty.', 'error');
+          }
+        });
+      }
     });
   }
   openEditFaculty(data: any) {

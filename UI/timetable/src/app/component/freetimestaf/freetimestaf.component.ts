@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FreetimeService } from 'src/app/core/services/freetime.service';
 import { FormtimestafComponent } from 'src/app/forms/formtimestaf/formtimestaf.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-freetimestaf',
@@ -111,13 +112,28 @@ export class FreetimestafComponent {
     }
   }
   deletefretimes(id: number) {
-    this._freetimeService.deletetimestaff(id).subscribe({
-      next: (res) => {
-        alert(' Deleted !')
-        this.getfretimes();
-      },
-      error: console.log
-    })
+    Swal.fire({
+      title: 'Are you sure you want to delete this free time staff member?',
+      text: "This action cannot be undone.", // Emphasize irreversible nature
+      icon: 'warning', // Warning icon
+      showCancelButton: true,
+      confirmButtonColor: '#d33', // Red for delete
+      cancelButtonColor: '#1475CB', // Blue for cancel
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._freetimeService.deletetimestaff(id).subscribe({
+          next: (res) => {
+            Swal.fire('Deleted!', 'Free time staff member has been deleted successfully.', 'success');
+            this.getfretimes(); // Assuming this refreshes the free time staff list
+          },
+          error: (err: any) => {
+            console.error('Error deleting free time staff member:', err);
+            Swal.fire('Error!', 'An error occurred while deleting the free time staff member.', 'error');
+          }
+        });
+      }
+    });
   }
   openEditfretimes(data: any) {
     const dialogRef = this._dialog.open(FormtimestafComponent, {

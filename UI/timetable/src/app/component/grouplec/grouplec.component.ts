@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LecgroupService } from 'src/app/core/services/lecgroup.service';
 import { FormgrouplecComponent } from 'src/app/forms/formgrouplec/formgrouplec.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-grouplec',
@@ -56,14 +57,29 @@ getgrlec(){
   })
 }
 
-deletegrlec(id:number){
-this._lecService.deletegrouplec(id).subscribe({
-  next: (res) => {
-   alert(' Deleted !')
-   this.getgrlec();
-  },
-  error: console.log
-})
+deletegrlec(id: number) {
+  Swal.fire({
+    title: 'Are you sure you want to delete this group lecture record?',
+    text: "This action cannot be undone.", // Emphasize irreversible nature
+    icon: 'warning', // Warning icon
+    showCancelButton: true,
+    confirmButtonColor: '#d33', // Red for delete
+    cancelButtonColor: '#1475CB', // Blue for cancel
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this._lecService.deletegrouplec(id).subscribe({
+        next: (res) => {
+          Swal.fire('Deleted!', 'Group lecture record has been deleted successfully.', 'success');
+          this.getgrlec(); // Assuming this refreshes the group lecture list
+        },
+        error: (err: any) => {
+          console.error('Error deleting group lecture record:', err);
+          Swal.fire('Error!', 'An error occurred while deleting the group lecture record.', 'error');
+        }
+      });
+    }
+  });
 }
 openEditgrlec(data: any){
 const dialogRef = this._dialog.open(FormgrouplecComponent, {

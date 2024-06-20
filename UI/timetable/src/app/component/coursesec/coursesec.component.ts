@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { BranchService } from 'src/app/core/services/branch.service';
 import { FormsecstafComponent } from 'src/app/forms/formsecstaf/formsecstaf.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-coursesec',
@@ -85,14 +86,29 @@ getSecStaf(){
     error: console.log
   })
 }
-deleteSecstaf(id:number){
-  this._corStaService.deletecourStaff(id).subscribe({
-    next: (res) => {
-     alert(' Deleted !')
-     this.getSecStaf();
-    },
-    error: console.log
-  })
+deleteSecstaf(id: number) {
+  Swal.fire({
+    title: 'Are you sure you want to delete ?',
+    text: "This action cannot be undone.", // Emphasize irreversible nature
+    icon: 'warning', // Warning icon
+    showCancelButton: true,
+    confirmButtonColor: '#d33', // Red for delete
+    cancelButtonColor: '#1475CB', // Blue for cancel
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this._corStaService.deleteSecStaff(id).subscribe({
+        next: (res) => {
+          Swal.fire('Deleted!', ' has been deleted successfully.', 'success');
+          this.getSecStaf(); // Assuming this refreshes the staff list
+        },
+        error: (err: any) => {
+          console.error('Error deleting staff member:', err);
+          Swal.fire('Error!', 'An error occurred while deleting the staff member.', 'error');
+        }
+      });
+    }
+  });
   }
   openEditSecStaf(data: any){
   const dialogRef = this._dialog.open(FormsecstafComponent  , {

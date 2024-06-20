@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { FormuserComponent } from 'src/app/forms/formuser/formuser.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user',
@@ -75,14 +76,29 @@ export class UserComponent {
     }
   }
   deleteUser(id: number) {
-    const data = { id: id }
-    this._userservice.deleteUser(data).subscribe({
-      next: (res) => {
-        alert('Deleted !')
-        this.getUser();
-      },
-      error: console.log
-    })
+    Swal.fire({
+      title: 'Are you sure you want to delete this user?',
+      text: "This action cannot be undone.", // Emphasize irreversible nature
+      icon: 'warning', // Warning icon
+      showCancelButton: true,
+      confirmButtonColor: '#d33', // Red for delete
+      cancelButtonColor: '#1475CB', // Blue for cancel
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const data = { id }; // Destructuring assignment for concise data creation
+        this._userservice.deleteUser(data).subscribe({
+          next: (res) => {
+            Swal.fire('Deleted!', 'User has been deleted successfully.', 'success');
+            this.getUser(); // Assuming this refreshes the user list
+          },
+          error: (err: any) => {
+            console.error('Error deleting user:', err);
+            Swal.fire('Error!', 'An error occurred while deleting the user.', 'error');
+          }
+        });
+      }
+    });
   }
   openEditUser(data: any) {
     const dialogRef = this._dialog.open(FormuserComponent, {

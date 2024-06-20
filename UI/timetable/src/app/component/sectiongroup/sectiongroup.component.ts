@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FacultyService } from 'src/app/core/services/faculty.service';
 import { FormsecGroupComponent } from 'src/app/forms/formsecstaf/formsec-group/formsec-group.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sectiongroup',
@@ -83,14 +84,29 @@ export class SectiongroupComponent {
       this.dataSource.paginator.firstPage();
     }
   }
-  deletesecgrp(id:number){
-  this._secgrop.deletesecgrop(id).subscribe({
-    next: (res) => {
-     alert(' Deleted !')
-     this.getsecgrop();
-    },
-    error: console.log
-  })
+  deletesecgrp(id: number) {
+    Swal.fire({
+      title: 'Are you sure you want to delete ?',
+      text: "This action cannot be undone.", // Emphasize irreversible nature
+      icon: 'warning', // Warning icon
+      showCancelButton: true,
+      confirmButtonColor: '#d33', // Red for delete
+      cancelButtonColor: '#1475CB', // Blue for cancel
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._secgrop.deletesecgrop(id).subscribe({
+          next: (res) => {
+            Swal.fire('Deleted!', ' deleted successfully.', 'success');
+            this.getsecgrop(); // Assuming this refreshes the section group list
+          },
+          error: (err: any) => {
+            console.error('Error deleting section group record:', err);
+            Swal.fire('Error!', 'An error occurred while deleting the section group record.', 'error');
+          }
+        });
+      }
+    });
   }
   openEditsecgrop(data: any){
   const dialogRef = this._dialog.open(FormsecGroupComponent  , {

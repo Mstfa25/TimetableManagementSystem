@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FreetimeService } from 'src/app/core/services/freetime.service';
 import { FormtimeroomComponent } from 'src/app/forms/formtimeroom/formtimeroom.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-freetimeroom',
@@ -112,13 +113,28 @@ export class FreetimeroomComponent {
     }
   }
   deletefretimer(id: number) {
-    this._freetimeService.deletetimeroom(id).subscribe({
-      next: (res) => {
-        alert(' Deleted !')
-        this.getfretimer();
-      },
-      error: console.log
-    })
+    Swal.fire({
+      title: 'Are you sure you want to delete this free time room?',
+      text: "This action cannot be undone.", // Emphasize irreversible nature
+      icon: 'warning', // Warning icon
+      showCancelButton: true,
+      confirmButtonColor: '#d33', // Red for delete
+      cancelButtonColor: '#1475CB', // Blue for cancel
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._freetimeService.deletetimeroom(id).subscribe({
+          next: (res) => {
+            Swal.fire('Deleted!', 'Free time room has been deleted successfully.', 'success');
+            this.getfretimer(); // Assuming this refreshes the free time room list
+          },
+          error: (err: any) => {
+            console.error('Error deleting free time room:', err);
+            Swal.fire('Error!', 'An error occurred while deleting the free time room.', 'error');
+          }
+        });
+      }
+    });
   }
   openEditfretimer(data: any) {
     const dialogRef = this._dialog.open(FormtimeroomComponent, {

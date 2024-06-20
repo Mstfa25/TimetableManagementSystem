@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LecgroupService } from 'src/app/core/services/lecgroup.service';
 import { FormsecgroupComponent } from 'src/app/forms/formsecgroup/formsecgroup.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-secgroup',
@@ -56,14 +57,29 @@ ngOnInit(): void {
     })
   }
   
-  deletesec(id:number){
-  this._lecService.deletesecgroup(id).subscribe({
-    next: (res) => {
-     alert(' Deleted !')
-     this.getsec();
-    },
-    error: console.log
-  })
+  deletesec(id: number) {
+    Swal.fire({
+      title: 'Are you sure you want to delete this section group record?',
+      text: "This action cannot be undone.", // Emphasize irreversible nature
+      icon: 'warning', // Warning icon
+      showCancelButton: true,
+      confirmButtonColor: '#d33', // Red for delete
+      cancelButtonColor: '#1475CB', // Blue for cancel
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._lecService.deletesecgroup(id).subscribe({
+          next: (res) => {
+            Swal.fire('Deleted!', 'Section group record has been deleted successfully.', 'success');
+            this.getsec(); // Assuming this refreshes the section group list
+          },
+          error: (err: any) => {
+            console.error('Error deleting section group record:', err);
+            Swal.fire('Error!', 'An error occurred while deleting the section group record.', 'error');
+          }
+        });
+      }
+    });
   }
   openEditsec(data: any){
   const dialogRef = this._dialog.open(FormsecgroupComponent, {

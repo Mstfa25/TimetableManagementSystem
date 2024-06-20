@@ -8,6 +8,7 @@ import { LecgroupService } from 'src/app/core/services/lecgroup.service';
 
 import { FormlecgroupComponent } from 'src/app/forms/formlecgroup/formlecgroup.component';
 import { FormsecgroupComponent } from 'src/app/forms/formsecgroup/formsecgroup.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-lecgroup',
@@ -60,13 +61,28 @@ export class LecgroupComponent {
     }
   }
   deletelec(id: number) {
-    this._lecService.deletelecgroup(id).subscribe({
-      next: (res) => {
-        alert(' Deleted !')
-        this.getlec();
-      },
-      error: console.log
-    })
+    Swal.fire({
+      title: 'Are you sure you want to delete ?',
+      text: "This action cannot be undone.", // Emphasize irreversible nature
+      icon: 'warning', // Warning icon
+      showCancelButton: true,
+      confirmButtonColor: '#d33', // Red for delete
+      cancelButtonColor: '#1475CB', // Blue for cancel
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._lecService.deletelecgroup(id).subscribe({
+          next: (res) => {
+            Swal.fire('Deleted!', ' deleted successfully.', 'success');
+            this.getlec(); // Assuming this refreshes the lecture list
+          },
+          error: (err: any) => {
+            console.error('Error deleting lecture record:', err);
+            Swal.fire('Error!', 'An error occurred while deleting the lecture record.', 'error');
+          }
+        });
+      }
+    });
   }
   openEditlec(data: any) {
     const dialogRef = this._dialog.open(FormlecgroupComponent, {
