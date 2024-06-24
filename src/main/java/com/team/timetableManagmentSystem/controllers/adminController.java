@@ -775,7 +775,63 @@ public class adminController {
     @RequestMapping("insertCourse")
     public ResponseEntity<?> insertCourse(HttpSession session, @RequestBody course course) {
         if (isadmin(session)) {
-            adminService.insertCourse(course.getName(), course.getCode(), course.getLectureHours(), course.getLabHours(), course.getSemester().getId(), course.getStudyPlan().getId(), course.getFaculty().getId());
+            adminService.insertCourse(course.getName(), course.getCode(), course.getLectureHours(), course.getLabHours(), course.getSemester().getId(), course.getStudyPlan().getId(), course.getFaculty().getId(), course.getGroup().getId(), course.getLectuerGoup().getId());
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("deleteCourse")
+    public ResponseEntity<?> deleteCourse(HttpSession session, @RequestBody course course) {
+        if (isadmin(session)) {
+            adminService.deleteCourse(course.getId());
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("updateCourseName")
+    public ResponseEntity<?> updateCourseName(HttpSession session, @RequestBody course course) {
+        if (isadmin(session)) {
+            adminService.updateCourseName(course.getId(), course.getName());
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("updateCourseCode")
+    public ResponseEntity<?> updateCourseCode(HttpSession session, @RequestBody course course) {
+        if (isadmin(session)) {
+            adminService.updateCourseCode(course.getId(), course.getCode());
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("updateCourseSectionGroup")
+    public ResponseEntity<?> updateCourseSectionGroup(HttpSession session, @RequestBody course course) {
+        if (isadmin(session)) {
+            adminService.updateCourseSectionGroup(course.getId(), course.getGroup().getId());
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("updateCourseLectureGroup")
+    public ResponseEntity<?> updateCourseLectureGroup(HttpSession session, @RequestBody course course) {
+        if (isadmin(session)) {
+            adminService.updateCourseLectureGroup(course.getId(), course.getLectuerGoup().getId());
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("updateCourseLectureHours")
+    public ResponseEntity<?> updateCourseLectureHours(HttpSession session, @RequestBody course course) {
+        if (isadmin(session)) {
+            adminService.updateCourseLectureHours(course.getId(), course.getLectureHours());
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("updateCourseLabHours")
+    public ResponseEntity<?> updateCourseLabHours(HttpSession session, @RequestBody course course) {
+        if (isadmin(session)) {
+            adminService.updateCourseLabHours(course.getId(), course.getLabHours());
         }
         return adminResponse(session);
     }
@@ -1031,6 +1087,14 @@ public class adminController {
     public Object getFacutlysWithStudyPlansWithSemesters(HttpSession session) {
         if (isadmin(session)) {
             return adminService.getFacutlysWithStudyPlansWithSemesters();
+        }
+        return adminResponse(session);
+    }
+
+    @RequestMapping("getFacutlysWithStudyPlansWithSemestersWithCourses")
+    public Object getFacutlysWithStudyPlansWithSemestersWithCourses(HttpSession session) {
+        if (isadmin(session)) {
+            return adminService.getFacutlysWithStudyPlansWithSemestersWithCourses();
         }
         return adminResponse(session);
     }

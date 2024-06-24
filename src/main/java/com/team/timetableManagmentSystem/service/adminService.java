@@ -771,6 +771,55 @@ public class adminService {
         conn.close();
     }
 
+    public void insertCourse(String name, String code, int lecHour, int labHours, int SemesterId, int StudyPlanId, int facultyId, int sectiongroupId, int lectureGroupId) {
+        connection conn = new connection();
+        conn.execute("insert into courses (name,code,lecHours,labHours,semesterId,facultyId,studyplanId,lectureGroupId,sectionsnumberofgroupsId) values('" + name + "','" + code + "'," + lecHour + "," + labHours + "," + SemesterId + "," + facultyId + "," + StudyPlanId + "," + lectureGroupId + "," + sectiongroupId + ")");
+        conn.close();
+    }
+
+    public void deleteCourse(int Id) {
+        connection conn = new connection();
+        conn.execute("delete from courses where id = " + Id);
+        conn.close();
+    }
+    
+    public void updateCourseName(int Id,String name) {
+        connection conn = new connection();
+        conn.execute("update courses set name = '"+ name+"' where id = " + Id);
+        conn.close();
+    }
+    
+    public void updateCourseCode(int Id,String code) {
+        connection conn = new connection();
+        conn.execute("update courses set code = '"+ code+"' where id = " + Id);
+        conn.close();
+    }
+    
+    
+    public void updateCourseLectureHours(int Id,int lecturehours) {
+        connection conn = new connection();
+        conn.execute("update courses set lecHours = "+ lecturehours+" where id = " + Id);
+        conn.close();
+    }
+    
+    public void updateCourseLabHours(int Id,int labhours) {
+        connection conn = new connection();
+        conn.execute("update courses set labHours = "+ labhours+" where id = " + Id);
+        conn.close();
+    }    
+    
+        public void updateCourseLectureGroup(int Id,int lectureGroup) {
+        connection conn = new connection();
+        conn.execute("update courses set lectureGroupId = "+ lectureGroup+" where id = " + Id);
+        conn.close();
+    }
+        
+            public void updateCourseSectionGroup(int Id,int sectionGroup) {
+        connection conn = new connection();
+        conn.execute("update courses set sectionsnumberofgroupsId = "+ sectionGroup+" where id = " + Id);
+        conn.close();
+    }
+
     public void setLecGroupIdForCourse(int courseId, int lecGroupId) {
         connection conn = new connection();
 
@@ -2203,6 +2252,38 @@ public class adminService {
 
                 facultyMap.put(facultyId, faculty);
                 studyPlanMap.put(studyPlanId, studyPlan);
+            }
+        }
+
+        return new ArrayList<>(facultyMap.values());
+    }
+
+    public Object getFacutlysWithStudyPlansWithSemestersWithCourses() {
+        ArrayList<course> Courses = getALLCourses();
+        HashMap<Integer, Faculty> facultyMap = new HashMap<>();
+        HashMap<Integer, StudyPlan> studyPlanMap = new HashMap<>();
+        HashMap<Integer, Semester> semesterMap = new HashMap<>();
+        if (Courses != null && !Courses.isEmpty()) {
+            for (course course : Courses) {
+                int facultyId = course.getFaculty().getId();
+                int studyPlanId = course.getStudyPlan().getId();
+                int semesterId = course.getSemester().getId();
+                Faculty faculty = facultyMap.getOrDefault(facultyId, new Faculty(facultyId, course.getFaculty().getName()));
+                StudyPlan studyPlan = studyPlanMap.getOrDefault(studyPlanId, new StudyPlan(studyPlanId, course.getStudyPlan().getName(), 0, null));
+                Semester semester = semesterMap.getOrDefault(semesterId, new Semester(semesterId, course.getSemester().getNumber(), 0, null, 0, null));
+                course c = new course(course.getId(), course.getName(), course.getCode());
+                semester.getCourses().add(c);
+
+                if (!faculty.getStudyPlans().contains(studyPlan)) {
+                    faculty.getStudyPlans().add(studyPlan);
+                }
+                if (!studyPlan.getSemesters().contains(semester)) {
+                    studyPlan.getSemesters().add(semester);
+                }
+
+                facultyMap.put(facultyId, faculty);
+                studyPlanMap.put(studyPlanId, studyPlan);
+                semesterMap.put(semesterId, semester);
             }
         }
 

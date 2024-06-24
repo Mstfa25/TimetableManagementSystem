@@ -47,6 +47,14 @@ public class Course {
         roomsTypesForSection.add(2);
     }
 
+    public Course(int id,String name,String code) {
+        this.id=id;
+        this.name=name;
+        this.code=code;
+    }
+    
+    
+
     public Course(int id,
             String name,
             String code,

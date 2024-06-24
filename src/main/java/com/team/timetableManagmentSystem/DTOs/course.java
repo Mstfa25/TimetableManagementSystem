@@ -32,6 +32,12 @@ public class course {
     }
     
     
+    public course(int id,String name,String code) {
+        this.id=id;
+        this.name=name;
+        this.code=code;
+    }
+    
 
     public course(int id) {
         this.id = id;

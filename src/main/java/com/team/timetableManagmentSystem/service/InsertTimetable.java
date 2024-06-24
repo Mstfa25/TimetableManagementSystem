@@ -46,15 +46,12 @@ public class InsertTimetable extends Thread {
                     conn.execute("insert into roomsInTimeInTimetable (roomId) values " + TimesIntimetable1.getRooms().toString().substring(1, TimesIntimetable1.getRooms().toString().length() - 1));
                     conn.execute("insert into BranchesInTimeInTimetable (BranchId) values " + TimesIntimetable1.getBranchs().toString().substring(1, TimesIntimetable1.getBranchs().toString().length() - 1));
                     conn.execute("update roomsInTimeInTimetable set timeInTimetableId = " + id + " where timeInTimetableId=0;");
-                    System.out.println("update roomsInTimeInTimetable set timeInTimetableId = " + id + " where timeInTimetableId=0;");
                     conn.execute("update branchesintimeintimetable set branchesintimeintimetable.timeInTimetableId = " + id + " where timeInTimetableId=0;");
-                    System.out.println("update branchesintimeintimetable set branchesintimeintimetable.timeInTimetableId = " + id + " where timeInTimetableId=0;");
                 }
 
-                System.out.println("out");
             }
         } catch (Exception e) {
-            System.out.println(e + "\nhere");
+            System.out.println(e );
         } finally {
             conn.close(); // Close connection
         }

@@ -62,10 +62,10 @@ public class UpdateStaffAndRoomsFreeTime extends Thread {
             conn.execute("delete from freetimeforrooms where roomid in (" + roomsIds.substring(0, roomsIds.length() - 1) + ")");
         }
         if (staffStr.length() > 1) {
-            conn.execute("insert into freetimeforstaff values " + staffStr.substring(0, staffStr.length() - 1));
+            conn.execute("insert into freetimeforstaff (staffId, DayId, startingTime, enddingTime) values " + staffStr.substring(0, staffStr.length() - 1));
         }
         if (roomsStr.length() > 1) {
-            conn.execute("insert into freetimeforrooms values " + roomsStr.substring(0, roomsStr.length() - 1));
+            conn.execute("insert into freetimeforrooms (RoomId, DayId, startingTime, enddingTime) values " + roomsStr.substring(0, roomsStr.length() - 1));
         }
         conn.close();
     }
