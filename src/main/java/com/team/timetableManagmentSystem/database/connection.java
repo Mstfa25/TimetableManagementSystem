@@ -26,6 +26,7 @@ public class connection {
             stat = null;
         }
     }
+    
 
     public void close() {
         try {

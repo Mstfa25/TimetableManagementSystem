@@ -13,6 +13,14 @@ public class CourseStaff {
         this.staff = new Staff(StaffId, staffName);
         this.branch = new Branch(branchId, branchName);
     }
+    
+    public CourseStaff(int id,int courseid, String Coursename, int StaffId, String staffName,
+            int branchId, String branchName) {
+        this.id=id;
+        this.course = new course(courseid, Coursename);
+        this.staff = new Staff(StaffId, staffName);
+        this.branch = new Branch(branchId, branchName);
+    }
 
     public CourseStaff(int courseid, String Coursename, String code, int labHours, int lectureHours, int semesterId, int semesterNumber, int lectuerGoupId, String lectureGroupName, int sectionGroupId, String sectionGroupName, int studyPlanId, String studyPlanName, int facultyId, String facultyName,
             int StaffId, String staffName, int Stafftypeid, String StaffTypeName, int staffbranchId, String staffbranchName,
@@ -21,6 +29,16 @@ public class CourseStaff {
         this.staff = new Staff(StaffId, staffName, Stafftypeid, StaffTypeName, staffbranchId, branchName);
         this.branch = new Branch(branchId, branchName);
     }
+    
+    public CourseStaff(int id,int courseid, String Coursename, String code, int labHours, int lectureHours, int semesterId, int semesterNumber, int lectuerGoupId, String lectureGroupName, int sectionGroupId, String sectionGroupName, int studyPlanId, String studyPlanName, int facultyId, String facultyName,
+            int StaffId, String staffName, int Stafftypeid, String StaffTypeName, int staffbranchId, String staffbranchName,
+            int branchId, String branchName) {
+        this.id=id;
+        this.course = new course(courseid, Coursename, code, labHours, lectureHours, semesterId, semesterNumber, lectuerGoupId, lectureGroupName, sectionGroupId, sectionGroupName, studyPlanId, studyPlanName, facultyId, facultyName);
+        this.staff = new Staff(StaffId, staffName, Stafftypeid, StaffTypeName, staffbranchId, branchName);
+        this.branch = new Branch(branchId, branchName);
+    }
+    
 
     public CourseStaff() {
     }

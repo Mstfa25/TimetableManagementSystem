@@ -103,11 +103,7 @@ public class Branch {
                     + " and TypeId = " + 3);
             while (rs.next()) {
                 getRooms()
-                        .add(
-                                new Room(
-                                        rs.getInt(1),
-                                        3)
-                        );
+                        .add(new Room(rs.getInt(1), 3));
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -156,6 +152,41 @@ public class Branch {
             ResultSet rs = conn.select("select branch.id, rooms.id, rooms.TypeId"
                     + " from branch "
                     + "inner join rooms on branch.id = rooms.branchId");
+            Branch b1 = null;
+            while (rs.next()) {
+                if (sb.indexOf("--" + rs.getInt(1) + "--") == -1) {
+                    sb.append("--" + rs.getInt(1) + "--");
+                    b1 = new Branch(rs.getInt(1));
+                    branchs.add(b1);
+                    b1.getRooms().add(new Room(rs.getInt(2), rs.getInt(3)));
+                } else {
+                    for (int i = 0; i < branchs.size(); i++) {
+                        if (branchs.get(i).getId() == rs.getInt(1)) {
+                            branchs.get(i).getRooms().add(new Room(rs.getInt(2), rs.getInt(3)));
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            conn.close();
+        }
+        for (Branch branch : branchs) {
+            branch.setTheNumberOfRooms();
+        }
+        return branchs;
+    }
+
+    static ArrayList<Branch> getAllBranchesWithAllRoomsForLectures() {
+        ArrayList<Branch> branchs = new ArrayList<>();
+        connection conn = new connection();
+        try {
+            StringBuilder sb = new StringBuilder();
+            ResultSet rs = conn.select("select branch.id, rooms.id, rooms.TypeId"
+                    + " from branch "
+                    + "inner join rooms on branch.id = rooms.branchId "
+                    + "where rooms.TypeId in (1 , 3)");
             Branch b1 = null;
             while (rs.next()) {
                 if (sb.indexOf("--" + rs.getInt(1) + "--") == -1) {
@@ -319,11 +350,22 @@ public class Branch {
      */
     public Room getARoomFreeAt(int day, int hour) {
         rooms.sort((o1, o2) -> {
-            return o1
-                    .getRoomtype()
-                    .getId() - o2
-                            .getRoomtype()
-                            .getId();
+            // Get the IDs of the rooms
+            int id1 = o1.getRoomtype().getId();
+            int id2 = o2.getRoomtype().getId();
+
+            // Determine if the IDs are odd or even
+            boolean isOdd1 = id1 % 2 != 0;
+            boolean isOdd2 = id2 % 2 != 0;
+
+            // Compare based on odd/even
+            if (isOdd1 && !isOdd2) {
+                return -1; // o1 is odd, o2 is even, so o1 should come before o2
+            } else if (!isOdd1 && isOdd2) {
+                return 1; // o1 is even, o2 is odd, so o2 should come before o1
+            } else {
+                return id1 - id2; // Both are either odd or even, compare IDs directly
+            }
         });
         for (Room room : rooms) {
             if (room
@@ -339,11 +381,22 @@ public class Branch {
 
     public Room getARoomFreeAtSameHourInTwoDays(int day, int hour, int dayTwo) {
         rooms.sort((o1, o2) -> {
-            return o1
-                    .getRoomtype()
-                    .getId() - o2
-                            .getRoomtype()
-                            .getId();
+            // Get the IDs of the rooms
+            int id1 = o1.getRoomtype().getId();
+            int id2 = o2.getRoomtype().getId();
+
+            // Determine if the IDs are odd or even
+            boolean isOdd1 = id1 % 2 != 0;
+            boolean isOdd2 = id2 % 2 != 0;
+
+            // Compare based on odd/even
+            if (isOdd1 && !isOdd2) {
+                return -1; // o1 is odd, o2 is even, so o1 should come before o2
+            } else if (!isOdd1 && isOdd2) {
+                return 1; // o1 is even, o2 is odd, so o2 should come before o1
+            } else {
+                return id1 - id2; // Both are either odd or even, compare IDs directly
+            }
         });
         for (Room room : rooms) {
             if (room.getFreeTime().isFreeAt(day, hour)
@@ -363,7 +416,7 @@ public class Branch {
      */
     Room getARoomWithATypeFreeAt(int day, int hour, int... types) {
         for (Room room : rooms) {
-            for (int i = 0;i < types.length;i++) {
+            for (int i = 0; i < types.length; i++) {
                 if (room.getRoomtype().getId() == types[i]
                         && room.getFreeTime().isFreeAt(day, hour)) {
                     return room;

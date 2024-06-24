@@ -967,7 +967,7 @@ public class adminService {
 
         try {
             ArrayList<CourseStaff> courseStaffs = new ArrayList<>();
-            ResultSet rs = conn.select("SELECT courses.id as courseId, courses.name as courseName,courses.code, courses.labHours, lecHours, courses.SemesterId, semester.number, courses.lectureGroupId, lecturegroups.name, courses.SectionsNumberOfGroupsID, sectionsnumberofgroups.name, courses.StudyplanId, studyplan.name, courses.facultyId, faculty.name, coursesstaff.staffId,staff.name,staff.JobTypeId,jobtype.name,staff.branchId,branch1.name,branch2.id,branch2.name,courseStaff.id   FROM coursesstaff  INNER JOIN courses ON courses.id=coursesstaff.courseId  INNER JOIN sectionsnumberofgroups ON courses.SectionsNumberOfGroupsID=sectionsnumberofgroups.id  INNER JOIN lecturegroups ON lecturegroups.id=courses.lectureGroupId    INNER JOIN semester ON semester.id=courses.SemesterId   INNER JOIN studyplan ON studyplan.id=courses.StudyplanId   INNER JOIN faculty ON faculty.id=courses.facultyId  INNER JOIN staff ON staff.id=coursesstaff.staffId  INNER JOIN jobtype ON jobtype.Id=staff.JobTypeId   INNER JOIN branch AS branch1 ON branch1.id=staff.branchId  INNER JOIN branch AS branch2 ON branch2.id=coursesstaff.BranchId");
+            ResultSet rs = conn.select("SELECT courses.id as courseId, courses.name as courseName,courses.code, courses.labHours, lecHours, courses.SemesterId, semester.number, courses.lectureGroupId, lecturegroups.name, courses.SectionsNumberOfGroupsID, sectionsnumberofgroups.name, courses.StudyplanId, studyplan.name, courses.facultyId, faculty.name, coursesstaff.staffId,staff.name,staff.JobTypeId,jobtype.name,staff.branchId,branch1.name,branch2.id,branch2.name,coursesstaff.id   FROM coursesstaff  INNER JOIN courses ON courses.id=coursesstaff.courseId  INNER JOIN sectionsnumberofgroups ON courses.SectionsNumberOfGroupsID=sectionsnumberofgroups.id  INNER JOIN lecturegroups ON lecturegroups.id=courses.lectureGroupId    INNER JOIN semester ON semester.id=courses.SemesterId   INNER JOIN studyplan ON studyplan.id=courses.StudyplanId   INNER JOIN faculty ON faculty.id=courses.facultyId  INNER JOIN staff ON staff.id=coursesstaff.staffId  INNER JOIN jobtype ON jobtype.Id=staff.JobTypeId   INNER JOIN branch AS branch1 ON branch1.id=staff.branchId  INNER JOIN branch AS branch2 ON branch2.id=coursesstaff.BranchId");
             while (rs.next()) {
                 courseStaffs.add(new CourseStaff(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getInt(10), rs.getString(11), rs.getInt(12), rs.getString(13), rs.getInt(14), rs.getString(15), rs.getInt(16), rs.getString(17), rs.getInt(18), rs.getString(19), rs.getInt(20), rs.getString(21), rs.getInt(22), rs.getString(23)));
 
@@ -1891,6 +1891,7 @@ public class adminService {
                 + "left join branch on branch.id=timesintimetable.hostingbranchId "
                 + "left join rooms on rooms.id=timesintimetable.hostingRoomId "
                 + "left join lecgroup on lecgroup.id=timesintimetable.lecgroupId "
+                + "where timesintimetable.timeTableId = " + timetableId + " "
                 + "order by timesintimetable.id");
         try {
             while (rs.next()) {
@@ -1972,14 +1973,15 @@ public class adminService {
     public Object getCourseStaff() {
         ArrayList<CourseStaff> cs = new ArrayList<>();
         connection conn = new connection();
-        ResultSet rs = conn.select("select coursesstaff.courseId ,courses.name as courseName,coursesstaff.staffId,staff.name as staffName,coursesstaff.BranchId,branch.name as branchName "
+        ResultSet rs = conn.select("select coursesstaff.courseId ,courses.name as courseName,coursesstaff.staffId,staff.name as staffName,coursesstaff.BranchId,branch.name as branchName ,coursesstaff.id as id "
                 + "from coursesstaff "
                 + "inner join courses on courses.id=coursesstaff.courseId "
                 + "inner join staff on staff.id=coursesstaff.staffId "
                 + "inner join branch on branch.id=coursesstaff.BranchId;");
         try {
             while (rs.next()) {
-                cs.add(new CourseStaff(rs.getInt("courseId"), rs.getString("courseName"), rs.getInt("staffId"), rs.getString("staffName"), rs.getInt("BranchId"), rs.getString("branchName")));
+                cs.add(new CourseStaff(rs.getInt("id"),
+                        rs.getInt("courseId"), rs.getString("courseName"), rs.getInt("staffId"), rs.getString("staffName"), rs.getInt("BranchId"), rs.getString("branchName")));
             }
             return cs;
         } catch (Exception e) {

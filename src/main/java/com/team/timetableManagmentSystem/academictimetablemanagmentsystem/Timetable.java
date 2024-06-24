@@ -110,6 +110,7 @@ public class Timetable {
         semesters.sort((o1, o2) -> {
             return o1.getCourses().get(0).getStaff().getFreeTime().getNumberOfDays() - o2.getCourses().get(0).getStaff().getFreeTime().getNumberOfDays();
         });
+   
         splitedSemestersWithDays s = splitTheSemesterIntoDays(semesters);
         if (!cheekIfallSemestersWereAddAndRemoveTheAddedSemesters(s, semesters)) {
             System.out.println("not all the semesters were added");
@@ -194,6 +195,26 @@ public class Timetable {
         ArrayList<Branch> allBranchesWithHostingRooms = Branch.getAllBranchesWithHostingRooms();
         courses = getAllCoursesDataForLectuer(courses, allBranchesWithHostingRooms);
         ArrayList<Branch> branchsWithRooms = Branch.getAllBranchesWithAllRooms();
+        branchsWithRooms.forEach(branch -> {
+            branch.getRooms().sort((Room o1, Room o2) -> {
+                // Get the IDs of the rooms
+                int id1 = o1.getRoomtype().getId();
+                int id2 = o2.getRoomtype().getId();
+
+                // Determine if the IDs are odd or even
+                boolean isOdd1 = id1 % 2 != 0;
+                boolean isOdd2 = id2 % 2 != 0;
+
+                // Compare based on odd/even
+                if (isOdd1 && !isOdd2) {
+                    return -1; // o1 is odd, o2 is even, so o1 should come before o2
+                } else if (!isOdd1 && isOdd2) {
+                    return 1; // o1 is even, o2 is odd, so o2 should come before o1
+                } else {
+                    return id1 - id2; // Both are either odd or even, compare IDs directly
+                }
+            });
+        });
         makeTheLecGroupBranchesRefrence(courses, branchsWithRooms);
         makeTheStaffRefrance(courses);
         ArrayList<Staff> staff = getStaffFreeTime(courses);
@@ -1625,8 +1646,7 @@ public class Timetable {
      * @param courses
      * @return
      */
-    coursesWithDay canBeInOneDay(splitedSemestersWithDays splitedSemesters, Course... courses
-    ) {
+    coursesWithDay canBeInOneDay(splitedSemestersWithDays splitedSemesters, Course... courses) {
         coursesWithDay c = null;
         FreeTime f = new FreeTime(1);
         for (Course course : courses) {
@@ -2281,8 +2301,7 @@ public class Timetable {
      * @param courses
      * @param branchs
      */
-    void makeTheLecGroupBranchesRefrence(Course[] courses, ArrayList<Branch> branchs
-    ) {
+    void makeTheLecGroupBranchesRefrence(Course[] courses, ArrayList<Branch> branchs) {
         for (int i = 0; i < branchs.size(); i++) {
             for (Course course : courses) {
                 for (int k = 0; k < course.getLecGroups().size(); k++) {

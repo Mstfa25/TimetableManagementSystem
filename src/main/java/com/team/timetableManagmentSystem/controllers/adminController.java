@@ -937,8 +937,9 @@ public class adminController {
     }
 
     @RequestMapping("getTimeTable")
-    public Object getTimetable(HttpSession session, Timetable timetable) {
+    public Object getTimetable(HttpSession session, @RequestBody Timetable timetable) {
         if (isadmin(session)) {
+            System.out.println("timetable id : " + timetable.getId());
             return adminService.getATimetable(timetable.getId());
         }
 
