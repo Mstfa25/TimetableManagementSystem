@@ -1318,6 +1318,22 @@ public class Timetable {
                                                     semester.getCourses().get(arr[l + 1][0]));
                                             removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                                     semester.getCourses().get(arr[l + 1][1]));
+                                            addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters,
+                                                    semester.getCourses().get(arr[l][0]),
+                                                    semester.getCourses().get(arr[l][1])));
+                                            if (canBeInOneDay(splitedSemesters,
+                                                    semester.getCourses().get(arr[l + 1][0]),
+                                                    semester.getCourses().get(arr[l + 1][1])) != null) {
+                                                addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters,
+                                                        semester.getCourses().get(arr[l + 1][0]),
+                                                        semester.getCourses().get(arr[l + 1][1])));
+                                                return;
+                                            } else {
+                                                removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                        semester.getCourses().get(arr[l][0]));
+                                                removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                        semester.getCourses().get(arr[l][1]));
+                                            }
                                         }
                                     }
                                 }
