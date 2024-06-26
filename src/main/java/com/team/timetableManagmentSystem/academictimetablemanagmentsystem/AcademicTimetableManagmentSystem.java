@@ -3,7 +3,7 @@ package com.team.timetableManagmentSystem.academictimetablemanagmentsystem;
 import java.util.ArrayList;
 
 public class AcademicTimetableManagmentSystem {
-
+    
     public static void main(String[] args) {
         Timetable t = new Timetable(7);
         t.createLectureTimetable(25);
@@ -39,5 +39,5 @@ public class AcademicTimetableManagmentSystem {
                     + ((timesInTimetable.get(i).getSectionGroupName() != null) ? timesInTimetable.get(i).getSectionGroupName() : (timesInTimetable.get(i).getLecGroup().getId()) + "\t" + timesInTimetable.get(i).getBranchs()) + "\t" + timesInTimetable.get(i).getRooms());
         }
     }
-
+    
 }

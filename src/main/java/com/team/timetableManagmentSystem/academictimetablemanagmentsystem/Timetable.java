@@ -110,7 +110,7 @@ public class Timetable {
         semesters.sort((o1, o2) -> {
             return o1.getCourses().get(0).getStaff().getFreeTime().getNumberOfDays() - o2.getCourses().get(0).getStaff().getFreeTime().getNumberOfDays();
         });
-   
+
         splitedSemestersWithDays s = splitTheSemesterIntoDays(semesters);
         if (!cheekIfallSemestersWereAddAndRemoveTheAddedSemesters(s, semesters)) {
             System.out.println("not all the semesters were added");
@@ -800,30 +800,25 @@ public class Timetable {
                     } else {
                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                 semester.getCourses().get(0));
-                        if (canBeInOneDay(splitedSemesters, semester.getCourses().get(1)) != null) {
+
+                        addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                canBeInOneDay(splitedSemesters, semester.getCourses().get(1)));
+                        if (canBeInOneDay(splitedSemesters, semester.getCourses().get(0)) != null) {
                             addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
-                                    canBeInOneDay(splitedSemesters, semester.getCourses().get(1)));
-                            if (canBeInOneDay(splitedSemesters, semester.getCourses().get(0)) != null) {
-                                addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
-                                        canBeInOneDay(splitedSemesters, semester.getCourses().get(0)));
-                            } else {
-                                removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
-                                        semester.getCourses().get(1));
-                            }
+                                    canBeInOneDay(splitedSemesters, semester.getCourses().get(0)));
+                            return;
+                        } else {
+                            removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                    semester.getCourses().get(1));
                         }
+
                     }
                 }
             } else if (semester.getCourses().size() == 3) {
-                if (canBeInOneDay(splitedSemesters,
-                        semester.getCourses().get(0),
-                        semester.getCourses().get(1)) != null
+                if (canBeInOneDay(splitedSemesters, semester.getCourses().get(0), semester.getCourses().get(1)) != null
                         && canBeInOneDay(splitedSemesters, semester.getCourses().get(2)) != null) {
-                    addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
-                            canBeInOneDay(splitedSemesters,
-                                    semester.getCourses().get(0),
-                                    semester.getCourses().get(1)));
-                    if (canBeInOneDay(splitedSemesters,
-                            semester.getCourses().get(2)) != null) {
+                    addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters, semester.getCourses().get(0), semester.getCourses().get(1)));
+                    if (canBeInOneDay(splitedSemesters, semester.getCourses().get(2)) != null) {
                         addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                 canBeInOneDay(splitedSemesters, semester.getCourses().get(2)));
                         return;
@@ -832,6 +827,16 @@ public class Timetable {
                                 semester.getCourses().get(0));
                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                 semester.getCourses().get(1));
+                        addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                canBeInOneDay(splitedSemesters, semester.getCourses().get(2)));
+                        if (canBeInOneDay(splitedSemesters, semester.getCourses().get(0), semester.getCourses().get(1)) != null) {
+                            addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                    canBeInOneDay(splitedSemesters, semester.getCourses().get(2)));
+                            return;
+                        } else {
+                            removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                    semester.getCourses().get(2));
+                        }
                     }
                 } else if (canBeInOneDay(splitedSemesters,
                         semester.getCourses().get(0),
@@ -850,6 +855,18 @@ public class Timetable {
                                 semester.getCourses().get(0));
                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                 semester.getCourses().get(2));
+                        addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                canBeInOneDay(splitedSemesters, semester.getCourses().get(1)));
+                        if (canBeInOneDay(splitedSemesters,
+                                semester.getCourses().get(0),
+                                semester.getCourses().get(2)) != null) {
+                            addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                    canBeInOneDay(splitedSemesters, semester.getCourses().get(1)));
+                            return;
+                        } else {
+                            removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                    semester.getCourses().get(1));
+                        }
                     }
                 } else if (canBeInOneDay(splitedSemesters,
                         semester.getCourses().get(2), semester.getCourses().get(1)) != null
@@ -868,12 +885,22 @@ public class Timetable {
                                 semester.getCourses().get(1));
                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                 semester.getCourses().get(2));
+                        addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                canBeInOneDay(splitedSemesters, semester.getCourses().get(0)));
+                        if (canBeInOneDay(splitedSemesters, semester.getCourses().get(2), semester.getCourses().get(1)) != null) {
+                            addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                    canBeInOneDay(splitedSemesters,
+                                            semester.getCourses().get(2), semester.getCourses().get(1)));
+                            return;
+                        } else {
+                            removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                    semester.getCourses().get(0));
+                        }
                     }
 
                 }
                 if (canBeInOneDay(splitedSemesters, semester.getCourses().get(0)) != null) {
-                    addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
-                            canBeInOneDay(splitedSemesters, semester.getCourses().get(0)));
+                    addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters, semester.getCourses().get(0)));
                     if (canBeInOneDay(splitedSemesters, semester.getCourses().get(1)) != null) {
                         addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                 canBeInOneDay(splitedSemesters, semester.getCourses().get(1)));
@@ -885,11 +912,12 @@ public class Timetable {
                     if (canBeInOneDay(splitedSemesters, semester.getCourses().get(2)) != null) {
                         addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                 canBeInOneDay(splitedSemesters, semester.getCourses().get(2)));
+                        return;
+                    } else {
                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                 semester.getCourses().get(0));
                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                 semester.getCourses().get(1));
-                    } else {
                     }
 
                 }
@@ -901,29 +929,27 @@ public class Timetable {
                     for (int i = 0; i < semester.getCourses().size(); i++) {
                         for (int j = i + 1; j < semester.getCourses().size(); j++) {
                             int arr[] = getTheOtherTwocourses(i, j);
-                            if (canBeInOneDay(splitedSemesters,
-                                    semester.getCourses().get(i),
-                                    semester.getCourses().get(j)) != null
-                                    && canBeInOneDay(splitedSemesters,
-                                            semester.getCourses().get(arr[0]),
-                                            semester.getCourses().get(arr[1])) != null) {
-                                addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
-                                        canBeInOneDay(splitedSemesters,
-                                                semester.getCourses().get(i),
-                                                semester.getCourses().get(j)));
-                                if (canBeInOneDay(splitedSemesters,
-                                        semester.getCourses().get(arr[0]),
-                                        semester.getCourses().get(arr[1])) != null) {
-                                    addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
-                                            canBeInOneDay(splitedSemesters,
-                                                    semester.getCourses().get(arr[0]),
-                                                    semester.getCourses().get(arr[1])));
+                            if (canBeInOneDay(splitedSemesters, semester.getCourses().get(i), semester.getCourses().get(j)) != null
+                                    && canBeInOneDay(splitedSemesters, semester.getCourses().get(arr[0]), semester.getCourses().get(arr[1])) != null) {
+                                addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters, semester.getCourses().get(i), semester.getCourses().get(j)));
+                                if (canBeInOneDay(splitedSemesters, semester.getCourses().get(arr[0]), semester.getCourses().get(arr[1])) != null) {
+                                    addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters, semester.getCourses().get(arr[0]), semester.getCourses().get(arr[1])));
                                     return;
                                 } else {
                                     removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                             semester.getCourses().get(i));
                                     removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                             semester.getCourses().get(j));
+                                    addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters, semester.getCourses().get(arr[0]), semester.getCourses().get(arr[1])));
+                                    if (canBeInOneDay(splitedSemesters, semester.getCourses().get(i), semester.getCourses().get(j)) != null) {
+                                        addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters, semester.getCourses().get(i), semester.getCourses().get(j)));
+                                        return;
+                                    } else {
+                                        removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                semester.getCourses().get(arr[0]));
+                                        removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                semester.getCourses().get(arr[1]));
+                                    }
                                 }
                             }
                         }
@@ -958,6 +984,23 @@ public class Timetable {
                                                 semester.getCourses().get(j));
                                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                                 semester.getCourses().get(k));
+                                        addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                canBeInOneDay(splitedSemesters,
+                                                        semester.getCourses().get(x)));
+                                        if (canBeInOneDay(splitedSemesters,
+                                                semester.getCourses().get(i),
+                                                semester.getCourses().get(j),
+                                                semester.getCourses().get(k))
+                                                != null) {
+                                            addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                    canBeInOneDay(splitedSemesters, semester.getCourses().get(i),
+                                                            semester.getCourses().get(j),
+                                                            semester.getCourses().get(k)));
+                                            return;
+                                        } else {
+                                            removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                    semester.getCourses().get(x));
+                                        }
                                     }
                                 }
                             }
@@ -1079,6 +1122,29 @@ public class Timetable {
                                                 semester.getCourses().get(k));
                                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                                 semester.getCourses().get(j));
+                                        addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                canBeInOneDay(splitedSemesters,
+                                                        semester.getCourses().get(getTheOtherThreeCourses(k, j, i)[0]),
+                                                        semester.getCourses().get(getTheOtherThreeCourses(k, j, i)[1]),
+                                                        semester.getCourses().get(getTheOtherThreeCourses(k, j, i)[2])));
+
+                                        if (canBeInOneDay(splitedSemesters, semester.getCourses().get(i),
+                                                semester.getCourses().get(j),
+                                                semester.getCourses().get(k)) != null) {
+                                            addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                    canBeInOneDay(splitedSemesters, semester.getCourses().get(i),
+                                                            semester.getCourses().get(j),
+                                                            semester.getCourses().get(k)));
+
+                                            return;
+                                        } else {
+                                            removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                    semester.getCourses().get(getTheOtherThreeCourses(k, j, i)[0]));
+                                            removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                    semester.getCourses().get(getTheOtherThreeCourses(k, j, i)[1]));
+                                            removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                    semester.getCourses().get(getTheOtherThreeCourses(k, j, i)[2]));
+                                        }
                                     }
                                 }
                             }
@@ -1115,6 +1181,26 @@ public class Timetable {
                                                     semester.getCourses().get(j));
                                             removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                                     semester.getCourses().get(l));
+                                            addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters,
+                                                    semester.getCourses().get(getTheOtherTwocourses(l, k, j, i)[0]),
+                                                    semester.getCourses().get(getTheOtherTwocourses(l, k, j, i)[1])));
+                                            if (canBeInOneDay(splitedSemesters, semester.getCourses().get(i),
+                                                    semester.getCourses().get(j),
+                                                    semester.getCourses().get(k),
+                                                    semester.getCourses().get(l)) != null) {
+                                                addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                        canBeInOneDay(splitedSemesters,
+                                                                semester.getCourses().get(i),
+                                                                semester.getCourses().get(j),
+                                                                semester.getCourses().get(k),
+                                                                semester.getCourses().get(l)));
+                                                return;
+                                            } else {
+                                                removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                        semester.getCourses().get(getTheOtherTwocourses(l, k, j, i)[0]));
+                                                removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                        semester.getCourses().get(getTheOtherTwocourses(l, k, j, i)[1]));
+                                            }
                                         }
                                     }
                                 }
@@ -1160,13 +1246,36 @@ public class Timetable {
                                             semester.getCourses().get(arr[2]));
                                     removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                             semester.getCourses().get(arr[3]));
+                                    addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters,
+                                            semester.getCourses().get(i),
+                                            semester.getCourses().get(j),
+                                            semester.getCourses().get(k)));
+                                    if (canBeInOneDay(splitedSemesters, semester.getCourses().get(arr[0]),
+                                            semester.getCourses().get(arr[1]),
+                                            semester.getCourses().get(arr[2]),
+                                            semester.getCourses().get(3)) != null) {
+                                        addCoursesToTheLecuterTimeSplitedSemester(splitedSemesters, canBeInOneDay(splitedSemesters,
+                                                semester.getCourses().get(arr[0]),
+                                                semester.getCourses().get(arr[1]),
+                                                semester.getCourses().get(arr[2]),
+                                                semester.getCourses().get(arr[3])));
+                                        return;
+                                    } else {
+                                        removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                semester.getCourses().get(i));
+                                        removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                semester.getCourses().get(j));
+                                        removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
+                                                semester.getCourses().get(k));
+                                    }
+
                                 }
 
                             }
                         }
                     }
                 }
-                /*                                      4  2  2                                   */
+                /*                                      3  2  2                                   */
                 for (int i = 0; i < semester.getCourses().size(); i++) {
                     for (int j = i + 1; j < semester.getCourses().size(); j++) {
                         for (int k = j + 1; k < semester.getCourses().size(); k++) {
@@ -1180,7 +1289,7 @@ public class Timetable {
                                 int arr[][] = getTheOtherFourCoursesByTwo(i, j, k);
                                 for (int l = 0; l <= arr.length; l += 2) {
 
-                                    if (l <= arr.length) {
+                                    if (l >= arr.length) {
                                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
                                                 semester.getCourses().get(i));
                                         removeCoursesToTheLecuterTimeSplitedSemester(splitedSemesters,
